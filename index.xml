@@ -248,10 +248,10 @@ sha256 of the sample is: edda95f68c0cdf9f4c13e4e35211b42666c014f2c0831210b592960
         </item>
         <item>
         <title>Android Application Security Part2</title>
-        <link>https://thuri10.github.io/p/android-application-security-part2/</link>
+        <link>https://thuri10.github.io/p/firebase/</link>
         <pubDate>Mon, 25 Oct 2021 15:53:55 +0300</pubDate>
         
-        <guid>https://thuri10.github.io/p/android-application-security-part2/</guid>
+        <guid>https://thuri10.github.io/p/firebase/</guid>
         <description>&lt;img src="https://thuri10.github.io/firebase.jpg" alt="Featured image of post Android Application Security Part2" /&gt;&lt;h2 id=&#34;insecure-storages&#34;&gt;Insecure Storages&lt;/h2&gt;
 &lt;p&gt;This is the second part of the android application security. This part focuses on the local sqlite databases, firebase and AWS security.&lt;/p&gt;
 &lt;h3 id=&#34;flag7---sqlite&#34;&gt;Flag7 - Sqlite&lt;/h3&gt;

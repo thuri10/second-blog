@@ -9,10 +9,10 @@
     <lastBuildDate>Mon, 25 Oct 2021 15:53:55 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/tags/appsec/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android Application Security Part2</title>
-      <link>https://thuri10.github.io/p/android-application-security-part2/</link>
+      <link>https://thuri10.github.io/p/firebase/</link>
       <pubDate>Mon, 25 Oct 2021 15:53:55 +0300</pubDate>
       
-      <guid>https://thuri10.github.io/p/android-application-security-part2/</guid>
+      <guid>https://thuri10.github.io/p/firebase/</guid>
       <description>Insecure Storages This is the second part of the android application security. This part focuses on the local sqlite databases, firebase and AWS security.
 Flag7 - Sqlite This is level is about understanding the sqlite local database in the applications folder.
 public FlagSevenSqliteActivity() { byte[] bArr = this.x; //sqlite  d.m.b.d.b(bArr, &amp;#34;decodedDirectoryOne&amp;#34;); Charset charset = StandardCharsets.UTF_8; d.m.b.d.b(charset, &amp;#34;StandardCharsets.UTF_8&amp;#34;); this.z = new String(bArr, charset); byte[] bArr2 = this.y; //f1ag-pa55  d.m.b.d.b(bArr2, &amp;#34;decodedDirectoryTwo&amp;#34;); Charset charset2 = StandardCharsets.</description>
