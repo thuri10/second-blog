@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Solar Bits</title>
+    <link>https://thuri10.github.io/tags/</link>
+    <description>Recent content in Tags on Solar Bits</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 20 Dec 2021 20:50:44 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>pwn</title>
+      <link>https://thuri10.github.io/tags/pwn/</link>
+      <pubDate>Mon, 20 Dec 2021 20:50:44 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/pwn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rop</title>
+      <link>https://thuri10.github.io/tags/rop/</link>
+      <pubDate>Mon, 20 Dec 2021 20:50:44 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/rop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ropemprium</title>
+      <link>https://thuri10.github.io/tags/ropemprium/</link>
+      <pubDate>Mon, 20 Dec 2021 20:50:44 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/ropemprium/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ctf</title>
+      <link>https://thuri10.github.io/tags/ctf/</link>
+      <pubDate>Mon, 20 Dec 2021 20:49:37 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Android</title>
+      <link>https://thuri10.github.io/tags/android/</link>
+      <pubDate>Sun, 12 Dec 2021 19:02:05 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>malware</title>
+      <link>https://thuri10.github.io/tags/malware/</link>
+      <pubDate>Sun, 12 Dec 2021 19:02:05 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/malware/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>reverse</title>
+      <link>https://thuri10.github.io/tags/reverse/</link>
+      <pubDate>Sun, 12 Dec 2021 19:02:05 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/reverse/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>static</title>
+      <link>https://thuri10.github.io/tags/static/</link>
+      <pubDate>Tue, 07 Dec 2021 19:02:36 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/static/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shellcode</title>
+      <link>https://thuri10.github.io/tags/shellcode/</link>
+      <pubDate>Tue, 07 Dec 2021 19:02:24 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/shellcode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Appsec</title>
+      <link>https://thuri10.github.io/tags/appsec/</link>
+      <pubDate>Mon, 25 Oct 2021 15:53:55 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/appsec/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

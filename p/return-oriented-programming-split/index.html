@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='disassembling of the usefulfunction in the binary
+(gdb) disas usefulFunction Dump of assembler code for function usefulFunction: 0x0000000000400742 &amp;lt;&#43;0&amp;gt;:	push rbp 0x0000000000400743 &amp;lt;&#43;1&amp;gt;:	mov rbp,rsp 0x0000000000400746 &amp;lt;&#43;4&amp;gt;:	mov edi,0x40084a 0x000000000040074b &amp;lt;&#43;9&amp;gt;:	call 0x400560 &amp;lt;system@plt&amp;gt; 0x0000000000400750 &amp;lt;&#43;14&amp;gt;:	nop 0x0000000000400751 &amp;lt;&#43;15&amp;gt;:	pop rbp 0x0000000000400752 &amp;lt;&#43;16&amp;gt;:	ret End of assembler dump. (gdb) x/s 0x40084a 0x40084a:	&amp;#34;/bin/ls&amp;#34; (gdb) let look at the strings in order to get useful strings for our case. The goal is to read the flag from the system.'><title>Return-Oriented Programming - Split</title>
+
+<link rel='canonical' href='https://thuri10.github.io/p/return-oriented-programming-split/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Return-Oriented Programming - Split'>
+<meta property='og:description' content='disassembling of the usefulfunction in the binary
+(gdb) disas usefulFunction Dump of assembler code for function usefulFunction: 0x0000000000400742 &amp;lt;&#43;0&amp;gt;:	push rbp 0x0000000000400743 &amp;lt;&#43;1&amp;gt;:	mov rbp,rsp 0x0000000000400746 &amp;lt;&#43;4&amp;gt;:	mov edi,0x40084a 0x000000000040074b &amp;lt;&#43;9&amp;gt;:	call 0x400560 &amp;lt;system@plt&amp;gt; 0x0000000000400750 &amp;lt;&#43;14&amp;gt;:	nop 0x0000000000400751 &amp;lt;&#43;15&amp;gt;:	pop rbp 0x0000000000400752 &amp;lt;&#43;16&amp;gt;:	ret End of assembler dump. (gdb) x/s 0x40084a 0x40084a:	&amp;#34;/bin/ls&amp;#34; (gdb) let look at the strings in order to get useful strings for our case. The goal is to read the flag from the system.'>
+<meta property='og:url' content='https://thuri10.github.io/p/return-oriented-programming-split/'>
+<meta property='og:site_name' content='Solar Bits'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ropemprium' /><meta property='article:tag' content='rop' /><meta property='article:tag' content='pwn' /><meta property='article:tag' content='ctf' /><meta property='article:published_time' content='2021-12-20T20:49:37&#43;03:00'/><meta property='article:modified_time' content='2021-12-20T20:49:37&#43;03:00'/>
+<meta name="twitter:title" content="Return-Oriented Programming - Split">
+<meta name="twitter:description" content="disassembling of the usefulfunction in the binary
+(gdb) disas usefulFunction Dump of assembler code for function usefulFunction: 0x0000000000400742 &amp;lt;&#43;0&amp;gt;:	push rbp 0x0000000000400743 &amp;lt;&#43;1&amp;gt;:	mov rbp,rsp 0x0000000000400746 &amp;lt;&#43;4&amp;gt;:	mov edi,0x40084a 0x000000000040074b &amp;lt;&#43;9&amp;gt;:	call 0x400560 &amp;lt;system@plt&amp;gt; 0x0000000000400750 &amp;lt;&#43;14&amp;gt;:	nop 0x0000000000400751 &amp;lt;&#43;15&amp;gt;:	pop rbp 0x0000000000400752 &amp;lt;&#43;16&amp;gt;:	ret End of assembler dump. (gdb) x/s 0x40084a 0x40084a:	&amp;#34;/bin/ls&amp;#34; (gdb) let look at the strings in order to get useful strings for our case. The goal is to read the flag from the system.">
+    </head>
+    <body class="
+    article-page 
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        on-phone--column extended
+    
+">
+    
+        <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu82c25fa98cd4e9a8103220017be4b8cb_139991_300x0_resize_box_3.png" width="300"
+                            height="276" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🥷</span>
+                
+            </figure>
+            
+        
+        
+        <h1 class="site-name"><a href="/">Solar Bits</a></h1>
+        <h2 class="site-description">Bit Flipping.</h2><ol class="social-menu">
+                
+                    <li>
+                        <a 
+                            href='https://github.com/thuri10'
+                            target="_blank"
+                            title="GitHub"
+                        >
+                            
+                            
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a 
+                            href='https://twitter.com/0xhexski'
+                            target="_blank"
+                            title="Twitter"
+                        >
+                            
+                            
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                            
+                        </a>
+                    </li>
+                
+            </ol></header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/return-oriented-programming-split/">Return-Oriented Programming - Split</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 20, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <p>disassembling of the usefulfunction in the binary</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">(gdb) disas usefulFunction 
+Dump of assembler code <span style="color:#ff79c6">for</span> function <span style="color:#8be9fd;font-style:italic">usefulFunction</span>:
+   <span style="color:#bd93f9">0x0000000000400742</span> <span style="color:#ff79c6">&lt;+</span><span style="color:#bd93f9">0</span><span style="color:#ff79c6">&gt;:</span>	push   rbp
+   <span style="color:#bd93f9">0x0000000000400743</span> <span style="color:#ff79c6">&lt;+</span><span style="color:#bd93f9">1</span><span style="color:#ff79c6">&gt;:</span>	mov    rbp,rsp
+   <span style="color:#bd93f9">0x0000000000400746</span> <span style="color:#ff79c6">&lt;+</span><span style="color:#bd93f9">4</span><span style="color:#ff79c6">&gt;:</span>	mov    edi,<span style="color:#bd93f9">0x40084a</span>
+   <span style="color:#bd93f9">0x000000000040074b</span> <span style="color:#ff79c6">&lt;+</span><span style="color:#bd93f9">9</span><span style="color:#ff79c6">&gt;:</span>	call   <span style="color:#bd93f9">0x400560</span> <span style="color:#ff79c6">&lt;</span>system@plt<span style="color:#ff79c6">&gt;</span>
+   <span style="color:#bd93f9">0x0000000000400750</span> <span style="color:#ff79c6">&lt;+</span><span style="color:#bd93f9">14</span><span style="color:#ff79c6">&gt;:</span>	nop
+   <span style="color:#bd93f9">0x0000000000400751</span> <span style="color:#ff79c6">&lt;+</span><span style="color:#bd93f9">15</span><span style="color:#ff79c6">&gt;:</span>	pop    rbp
+   <span style="color:#bd93f9">0x0000000000400752</span> <span style="color:#ff79c6">&lt;+</span><span style="color:#bd93f9">16</span><span style="color:#ff79c6">&gt;:</span>	ret    
+End of assembler dump.
+(gdb) x<span style="color:#ff79c6">/</span>s <span style="color:#bd93f9">0x40084a</span>
+<span style="color:#bd93f9">0x40084a</span><span style="color:#ff79c6">:</span>	<span style="color:#f1fa8c">&#34;/bin/ls&#34;</span>
+(gdb) 
+</code></pre></div><p>let look at the strings in order to get useful strings for our case. The goal is to read the flag from the system.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">[<span style="color:#bd93f9">0x004005b0</span>]<span style="color:#ff79c6">&gt;</span> iz
+[Strings]
+nth paddr      vaddr      len size section type  string
+―――――――――――――――――――――――――――――――――――――――――――――――――――――――
+<span style="color:#bd93f9">0</span>   <span style="color:#bd93f9">0x000007e8</span> <span style="color:#bd93f9">0x004007e8</span> <span style="color:#bd93f9">21</span>  <span style="color:#bd93f9">22</span>   .rodata ascii split by ROP Emporium
+<span style="color:#bd93f9">1</span>   <span style="color:#bd93f9">0x000007fe</span> <span style="color:#bd93f9">0x004007fe</span> <span style="color:#bd93f9">7</span>   <span style="color:#bd93f9">8</span>    .rodata ascii x86_64\n
+<span style="color:#bd93f9">2</span>   <span style="color:#bd93f9">0x00000806</span> <span style="color:#bd93f9">0x00400806</span> <span style="color:#bd93f9">8</span>   <span style="color:#bd93f9">9</span>    .rodata ascii \nExiting
+<span style="color:#bd93f9">3</span>   <span style="color:#bd93f9">0x00000810</span> <span style="color:#bd93f9">0x00400810</span> <span style="color:#bd93f9">43</span>  <span style="color:#bd93f9">44</span>   .rodata ascii Contriving a reason to ask user <span style="color:#ff79c6">for</span> data...
+<span style="color:#bd93f9">4</span>   <span style="color:#bd93f9">0x0000083f</span> <span style="color:#bd93f9">0x0040083f</span> <span style="color:#bd93f9">10</span>  <span style="color:#bd93f9">11</span>   .rodata ascii Thank you<span style="color:#ff79c6">!</span>
+<span style="color:#bd93f9">5</span>   <span style="color:#bd93f9">0x0000084a</span> <span style="color:#bd93f9">0x0040084a</span> <span style="color:#bd93f9">7</span>   <span style="color:#bd93f9">8</span>    .rodata ascii <span style="color:#ff79c6">/</span>bin<span style="color:#ff79c6">/</span>ls
+<span style="color:#bd93f9">0</span>   <span style="color:#bd93f9">0x00001060</span> <span style="color:#bd93f9">0x00601060</span> <span style="color:#bd93f9">17</span>  <span style="color:#bd93f9">18</span>   .data   ascii <span style="color:#ff79c6">/</span>bin<span style="color:#ff79c6">/</span>cat flag.txt
+</code></pre></div><p>using radare2 to get strings of the binary we have now an important string &ldquo;/bin/cat flag.txt&rdquo;</p>
+<p>we need to chain our rop to be like system('/bin/cat flag.txt')</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/ropemprium/">ropemprium</a>
+        
+            <a href="/tags/rop/">rop</a>
+        
+            <a href="/tags/pwn/">pwn</a>
+        
+            <a href="/tags/ctf/">ctf</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/return-oriented-programming-ret2win/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Return-Oriented Programming - Ret2win</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/return-oriented-programming-retcsu/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Return-Oriented Programming - Retcsu</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/return-oriented-programming-pivot/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Return-Oriented Programming - Pivot</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/return-oriented-programming-fluff/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Return-Oriented Programming - Fluff</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/return-oriented-programming-badchars/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Return-Oriented Programming - Badchars</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 Solar Bits
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

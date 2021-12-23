@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Understanding Intents, Exported Activity, Resources and Weak Cryptographic Algorithms'><title>Android Application Security Series- Part 1</title>
+
+<link rel='canonical' href='https://thuri10.github.io/p/android-application-security-series-part-1/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Android Application Security Series- Part 1'>
+<meta property='og:description' content='Understanding Intents, Exported Activity, Resources and Weak Cryptographic Algorithms'>
+<meta property='og:url' content='https://thuri10.github.io/p/android-application-security-series-part-1/'>
+<meta property='og:site_name' content='Solar Bits'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Android' /><meta property='article:tag' content='Appsec' /><meta property='article:published_time' content='2021-10-20T20:19:29&#43;03:00'/><meta property='article:modified_time' content='2021-10-20T20:19:29&#43;03:00'/><meta property='og:image' content='https://thuri10.github.io/android.jpg' />
+<meta name="twitter:title" content="Android Application Security Series- Part 1">
+<meta name="twitter:description" content="Understanding Intents, Exported Activity, Resources and Weak Cryptographic Algorithms"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://thuri10.github.io/android.jpg' />
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>Back</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/android-application-security-series-part-1/">
+                
+                    <img src="/android.jpg" loading="lazy" alt="Featured image of post Android Application Security Series- Part 1" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/android-application-security-series-part-1/">Android Application Security Series- Part 1</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        Understanding Intents, Exported Activity, Resources and Weak Cryptographic Algorithms
+    </h3>
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 20, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    8 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h2 id="introduction">Introduction</h2>
+<p>This is a five part beginner series of Android application security with Vulnerable Android application examples. The application used in the first three part series is a vulnerable Android application developed by <a class="link" href="https://twitter.com/B3nac"  target="_blank" rel="noopener"
+    >@B3nac</a>.</p>
+<p>The application is <em><strong>InjuredAndroid</strong></em>,  it covers different security concepts such as hardcoded secrets, weak cryptographic algorithms, misconfiguration etc. The application can be downloaded from the following provided links  <a class="link" href="https://play.google.com/store/apps/details?id=b3nac.injuredandroid"  target="_blank" rel="noopener"
+    >playstore</a> or from <a class="link" href="https://github.com/B3nac/InjuredAndroid"  target="_blank" rel="noopener"
+    >github</a>.</p>
+<p>Inorder to solve the challenges or follow through the guides is you need to have an android phone or an emulator. I will be using an android emulator throughout the series, my emulator of choice is android emulator which is part of android studio.</p>
+<h3 id="enviroment-setup-and-decompilation">Enviroment setup and decompilation</h3>
+<p>For installation of application to the emulator we will use Android debug bridge(adb). adb is a set of command line tools which are installed as part of android studio. adb enables communication between emulator/real android phone with connected computer.</p>
+<p>To install the application, use install command as shown in the Linux terminal below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">adb install InjuredAndroid-1.0.12-release.apk 
+</code></pre></div><p>Launching the application in the emulator ,the interface will look like the image below.</p>
+<p><figure 
+	>
+	<a href="https://raw.githubusercontent.com/thuri10/images-blog/development/android/android_injured.png" >
+		<img src="https://raw.githubusercontent.com/thuri10/images-blog/development/android/android_injured.png"
+			
+			
+			
+			loading="lazy"
+			alt="InjuredAndroid">
+	</a>
+	
+	<figcaption>InjuredAndroid</figcaption>
+	
+</figure></p>
+<p>Tools used throughout the series are:</p>
+<ol>
+<li><a class="link" href="https://github.com/skylot/jadx"  target="_blank" rel="noopener"
+    >JADX</a></li>
+<li>Text Editor (visual studio)</li>
+<li>Android Studio</li>
+</ol>
+<p>JADX is a bundle of command line and GUI tools.jadx enables one to produce java source code from android Dex and APK files. This  will aid us to decompile the android application to java code which is human readable.</p>
+<blockquote>
+<p>For reverse engineering/ code auditing of every application, you need to have a clear set of goal or objective of what you want to achieve. This helps narrow down the analysis and avoid many rabbit holes.</p>
+</blockquote>
+<h2 id="flag-one---login">FLAG ONE - LOGIN</h2>
+<p><strong>Goal : Input the right flag.</strong></p>
+<p>For the first challenge is to get the correct flag. flag is a piece of reward if you do correct task you are asked to do. Looking at the decompiled code in the editor as shown below, there is an interesting function called <strong>submitFlag</strong>. submit flag function is responsible for validation of the user input.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">submitFlag</span><span style="color:#ff79c6">(</span>View view<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        EditText editText <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>EditText<span style="color:#ff79c6">)</span> findViewById<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">id</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">editText2</span><span style="color:#ff79c6">);</span>
+        C2724g<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m882d</span><span style="color:#ff79c6">(</span>editText<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;editText2&#34;</span><span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>C2724g<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m885a</span><span style="color:#ff79c6">(</span>editText<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getText</span><span style="color:#ff79c6">().</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(),</span> <span style="color:#f1fa8c">&#34;F1ag_0n3&#34;</span><span style="color:#ff79c6">))</span> <span style="color:#ff79c6">{</span>
+            Intent intent <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Intent<span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> FlagOneSuccess<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">);</span>
+            <span style="color:#ff79c6">new</span> FlagsOverview<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4085J</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+            <span style="color:#ff79c6">new</span> ApplicationC1492j<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4065b</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;flagOneButtonColor&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+            startActivity<span style="color:#ff79c6">(</span>intent<span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>From the above code, the <strong>FlagoneActivity</strong> class implements a functionality which the user input is compared with hardcoded flag in the application.</p>
+<p>The user entered flag string is compared with the hardcoded flag which is &ldquo;<strong>F1ag_0n3</strong>&rdquo;. The class <strong>m10785a</strong> compares the two objects ( user input flag and hardcoded flag) and return a boolean depending on the result of the comparison of two objects. A boolean result can be either true or false.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">m10785a</span><span style="color:#ff79c6">(</span>Object obj<span style="color:#ff79c6">,</span> Object obj2<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> obj <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">?</span> obj2 <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">:</span> obj<span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>obj2<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>If the condition is True, new Intent is started which is <strong>FlagOneSuccess</strong>. Entering hardcoded flag as our input, we get a success message and color of <strong>Flag1</strong> in flagsOverview Activity changes to green, meaning we have successfully solved the challenge1.</p>
+<p><figure 
+	>
+	<a href="https://raw.githubusercontent.com/thuri10/images-blog/development/android/solved.png" >
+		<img src="https://raw.githubusercontent.com/thuri10/images-blog/development/android/solved.png"
+			
+			
+			
+			loading="lazy"
+			alt="Flag one solved">
+	</a>
+	
+	<figcaption>Flag one solved</figcaption>
+	
+</figure></p>
+<p>The flag for level1 is &ldquo;<strong>F1ag_0n3</strong>&rdquo;.<br>
+For other levels if solved successfully, the color of the flag corresponding to that level will change to green.</p>
+<h2 id="flag-two---exported-activity">FLAG TWO - EXPORTED ACTIVITY</h2>
+<p>Goal : <strong>There is a way to  bypass the main activity and invoke other activities that are exported.</strong></p>
+<p><strong>what is an activity?</strong></p>
+<p>An activity is a single, focused thing that the user can do. It is an application component that provide a user Interface for users to interact with.</p>
+<p>Looking at the <strong>flagtwoactivity</strong>, the source code looks like the one shown below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">FlagTwoActivity</span> <span style="color:#8be9fd;font-style:italic">extends</span> ActivityC0453c <span style="color:#ff79c6">{</span>
+
+    <span style="color:#6272a4">/* renamed from: w */</span>
+    <span style="color:#8be9fd">int</span> f4461w <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+
+    <span style="color:#6272a4">/* renamed from: F */</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#6272a4">/* synthetic */</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">m4090F</span><span style="color:#ff79c6">(</span>View view<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">f4461w</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>i <span style="color:#ff79c6">==</span> 0<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            Snackbar X <span style="color:#ff79c6">=</span> Snackbar<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m2647X</span><span style="color:#ff79c6">(</span>view<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;Key words Activity and exported.&#34;</span><span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">);</span>
+            X<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m2646Y</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Action&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">);</span>
+            X<span style="color:#ff79c6">.</span><span style="color:#50fa7b">mo2650N</span><span style="color:#ff79c6">();</span>
+            <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">f4461w</span><span style="color:#ff79c6">++;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>i <span style="color:#ff79c6">==</span> 1<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            Snackbar X2 <span style="color:#ff79c6">=</span> Snackbar<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m2647X</span><span style="color:#ff79c6">(</span>view<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;Exported Activities can be accessed with adb or Drozer.&#34;</span><span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">);</span>
+            X2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m2646Y</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Action&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">);</span>
+            X2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">mo2650N</span><span style="color:#ff79c6">();</span>
+            <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">f4461w</span> <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">/* access modifiers changed from: protected */</span>
+    @Override <span style="color:#6272a4">// androidx.appcompat.app.ActivityC0453c, androidx.fragment.app.ActivityC0797d, androidx.activity.ComponentActivity, androidx.core.app.ActivityC0714e, android.app.Activity
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onCreate</span><span style="color:#ff79c6">(</span>Bundle bundle<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">onCreate</span><span style="color:#ff79c6">(</span>bundle<span style="color:#ff79c6">);</span>
+        setContentView<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">layout</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">activity_flag_two</span><span style="color:#ff79c6">);</span>
+        m8078C<span style="color:#ff79c6">((</span>Toolbar<span style="color:#ff79c6">)</span> findViewById<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">id</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">toolbar</span><span style="color:#ff79c6">));</span>
+        <span style="color:#ff79c6">((</span>FloatingActionButton<span style="color:#ff79c6">)</span> findViewById<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">id</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">fab</span><span style="color:#ff79c6">)).</span><span style="color:#50fa7b">setOnClickListener</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> View<span style="color:#ff79c6">.</span><span style="color:#50fa7b">OnClickListener</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span> <span style="color:#6272a4">// from class: b3nac.injuredandroid.d
+</span><span style="color:#6272a4"></span>            @Override <span style="color:#6272a4">// android.view.View.OnClickListener
+</span><span style="color:#6272a4"></span>            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onClick</span><span style="color:#ff79c6">(</span>View view<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                FlagTwoActivity<span style="color:#ff79c6">.</span><span style="color:#50fa7b">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">m4090F</span><span style="color:#ff79c6">(</span>view<span style="color:#ff79c6">);</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">});</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>The <strong>oncreate</strong> method is used for initializing our activity. The goal of the challenge is to invoke the flagtwoactivity from an external application. This activity is called <em><strong>exported activity</strong></em>, meaning it can be started outside the context of the application.</p>
+<p>Activities in android are defined in a file called <em>AndroidManifest.xml</em> .</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;activity</span> <span style="color:#50fa7b">android:name=</span><span style="color:#f1fa8c">&#34;b3nac.injuredandroid.b25lActivity&#34;</span> <span style="color:#50fa7b">android:exported=</span><span style="color:#f1fa8c">&#34;true&#34;</span><span style="color:#ff79c6">/&gt;</span>
+</code></pre></div><p>As you see above, the activity <em>b3nac.injuredandroid.b25lActivity</em> can be invoked by external application because <em>android:exported</em>  attribute is set to true.</p>
+<p>For exploitation of the above issue we will use adb. First we use adb to list the installed packages in the device and grep the application of our interest using Linux grep utility.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vx@archie:~$ adb shell pm list packages | grep injuredandroid
+package:b3nac.injuredandroid
+</code></pre></div><p><strong>what happens when invoke b25lActivity class activity?</strong></p>
+<p>When b25lActivity activity is invoked by an external program, it sets the flag2 color to green in the FlagsOverview activity.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">/* loaded from: classes.dex */</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">b25lActivity</span> <span style="color:#8be9fd;font-style:italic">extends</span> ActivityC0453c <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">/* access modifiers changed from: protected */</span>
+    @Override <span style="color:#6272a4">// androidx.appcompat.app.ActivityC0453c, androidx.fragment.app.ActivityC0797d, androidx.activity.ComponentActivity, androidx.core.app.ActivityC0714e, android.app.Activity
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onCreate</span><span style="color:#ff79c6">(</span>Bundle bundle<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">onCreate</span><span style="color:#ff79c6">(</span>bundle<span style="color:#ff79c6">);</span>
+        setContentView<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">layout</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">activity_b25l</span><span style="color:#ff79c6">);</span>
+        ApplicationC1492j<span style="color:#ff79c6">.</span><span style="color:#50fa7b">f4506j</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">m4062a</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">new</span> FlagsOverview<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4082M</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">new</span> ApplicationC1492j<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4065b</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;flagTwoButtonColor&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>Invoke the activity b25lActivity using adb</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vx@archie:~$ adb shell am start  -n b3nac.injuredandroid/.b25lActivity
+Starting: Intent <span style="color:#ff79c6">{</span> <span style="color:#8be9fd;font-style:italic">cmp</span><span style="color:#ff79c6">=</span>b3nac.injuredandroid/.b25lActivity <span style="color:#ff79c6">}</span>
+</code></pre></div><p>We successfully start Flag two activity and we are rewarded with a flag.</p>
+<p><figure 
+	>
+	<a href="https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag2.png" >
+		<img src="https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag2.png"
+			
+			
+			
+			loading="lazy"
+			alt="Flag two">
+	</a>
+	
+	<figcaption>Flag two</figcaption>
+	
+</figure></p>
+<h2 id="flag-three---resources">FLAG THREE - RESOURCES</h2>
+<p><strong>Goal: Understanding how an application references Resources.</strong></p>
+<p><strong>what are resources?</strong></p>
+<p>Resources are used for anything from defining colors, images, layouts, menus and string values. Everything defined here is referenced in the application`s code.</p>
+<p>The decompiled code for FlagThreeActivity is as shown below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">submitFlag</span><span style="color:#ff79c6">(</span>View view<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        EditText editText <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>EditText<span style="color:#ff79c6">)</span> findViewById<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">id</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">editText2</span><span style="color:#ff79c6">);</span>
+        C2724g<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m882d</span><span style="color:#ff79c6">(</span>editText<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;editText2&#34;</span><span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>C2724g<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m885a</span><span style="color:#ff79c6">(</span>editText<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getText</span><span style="color:#ff79c6">().</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(),</span> getString<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">string</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">cmVzb3VyY2VzX3lv</span><span style="color:#ff79c6">)))</span> <span style="color:#ff79c6">{</span>
+            Intent intent <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Intent<span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> FlagOneSuccess<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">);</span>
+            <span style="color:#ff79c6">new</span> FlagsOverview<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4083L</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+            <span style="color:#ff79c6">new</span> ApplicationC1492j<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4065b</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;flagThreeButtonColor&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+            startActivity<span style="color:#ff79c6">(</span>intent<span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>Looking at the above  <strong>submitFlag</strong> function defined in <em><strong>FlagThreeActivity.java</strong></em>, we arecomparing the user input with the value referenced at Resource  <em><strong>cmVzb3VyY2VzX3lv</strong></em> . R stands for resource.</p>
+<p>Looking at the strings we get our flags as referenced by the string above.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&lt;string <span style="color:#8be9fd;font-style:italic">name</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;cmVzb3VyY2VzX3lv&#34;</span>&gt;F1ag_thr33&lt;/string&gt;
+</code></pre></div><p>The  flag is  <strong>F1ag_thr33</strong></p>
+<h2 id="flag-four---login2">FLAG FOUR - LOGIN2</h2>
+<p><strong>Goal: Get the right flag</strong></p>
+<p>For flag four we analyze <strong>FlagFourActivity.java.</strong>. First we need figure out the logic implemented in the submitflag class in the code below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">submitFlag</span><span style="color:#ff79c6">(</span>View view<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        EditText editText <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>EditText<span style="color:#ff79c6">)</span> findViewById<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">id</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">editText2</span><span style="color:#ff79c6">);</span>
+        C2724g<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m882d</span><span style="color:#ff79c6">(</span>editText<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;editText2&#34;</span><span style="color:#ff79c6">);</span>
+        String obj <span style="color:#ff79c6">=</span> editText<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getText</span><span style="color:#ff79c6">().</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">();</span>
+        <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[]</span> a <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> C1489g<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4070a</span><span style="color:#ff79c6">();</span>
+        C2724g<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m882d</span><span style="color:#ff79c6">(</span>a<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;decoder.getData()&#34;</span><span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>C2724g<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m885a</span><span style="color:#ff79c6">(</span>obj<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> String<span style="color:#ff79c6">(</span>a<span style="color:#ff79c6">,</span> C2759c<span style="color:#ff79c6">.</span><span style="color:#50fa7b">f6854a</span><span style="color:#ff79c6">)))</span> <span style="color:#ff79c6">{</span>
+            Intent intent <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Intent<span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> FlagOneSuccess<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">);</span>
+            <span style="color:#ff79c6">new</span> FlagsOverview<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4086I</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+            <span style="color:#ff79c6">new</span> ApplicationC1492j<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4065b</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;flagFourButtonColor&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+            startActivity<span style="color:#ff79c6">(</span>intent<span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>From the above,we are are getting user input and comparing with bytes in variable a. To understand the logic we analyze the class <em><strong>c1489g</strong></em> and member class <em><strong>m4070a</strong></em>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">C1489g</span> <span style="color:#ff79c6">{</span>
+
+    <span style="color:#6272a4">/* renamed from: a */</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[]</span> f4499a <span style="color:#ff79c6">=</span> Base64<span style="color:#ff79c6">.</span><span style="color:#50fa7b">decode</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;NF9vdmVyZG9uZV9vbWVsZXRz&#34;</span><span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">);</span>
+
+    <span style="color:#6272a4">/* renamed from: a */</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[]</span> <span style="color:#50fa7b">m4070a</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">f4499a</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>Looking at the public class <strong>c1489g</strong>, it implements base64 decoding of the byte string and returned to the <strong>submitFlag</strong> class .</p>
+<p>To get the string we are returning we need to decode the encoded string using base64 utility installed in linux .</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;NF9vdmVyZG9uZV9vbWVsZXRz&#34;</span> | base64 -d
+4_overdone_omelets
+</code></pre></div><p>Our flag is :  <strong>4_overdone_omelets</strong></p>
+<h2 id="flag-five---exported-broadcast-receivers">FLAG FIVE - EXPORTED BROADCAST RECEIVERS</h2>
+<p><strong>Goal:</strong> <strong>Understand how Broadcast receivers work</strong></p>
+<p>Applications receive broadcasts in two ways:</p>
+<ol>
+<li>Through manifest-declared receivers.</li>
+<li>Context-registered receivers.</li>
+</ol>
+<p>Manifest-declared receivers - This type causes the system to launch application when broadcast is received. Searching in AndroidManifest.xml file we get where our broadcast is declared.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;receiver</span> <span style="color:#50fa7b">android:name=</span><span style="color:#f1fa8c">&#34;b3nac.injuredandroid.FlagFiveReceiver&#34;</span> <span style="color:#50fa7b">android:exported=</span><span style="color:#f1fa8c">&#34;true&#34;</span><span style="color:#ff79c6">/&gt;</span>
+<span style="color:#ff79c6">&lt;activity</span> <span style="color:#50fa7b">android:theme=</span><span style="color:#f1fa8c">&#34;@style/AppTheme.NoActionBar&#34;</span> <span style="color:#50fa7b">android:label=</span><span style="color:#f1fa8c">&#34;@string/title_activity_flag_five&#34;</span> <span style="color:#50fa7b">android:name=</span><span style="color:#f1fa8c">&#34;b3nac.injuredandroid.FlagFiveActivity&#34;</span><span style="color:#ff79c6">/&gt;</span>
+</code></pre></div><p>In order to understand the Broadcast receivers, we need to analyze the <strong>oncreate()</strong> method in the <strong>FlagFiveActivity.java</strong> file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onCreate</span><span style="color:#ff79c6">(</span>Bundle bundle<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">onCreate</span><span style="color:#ff79c6">(</span>bundle<span style="color:#ff79c6">);</span>
+        setContentView<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">layout</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">activity_flag_five</span><span style="color:#ff79c6">);</span>
+        m8078C<span style="color:#ff79c6">((</span>Toolbar<span style="color:#ff79c6">)</span> findViewById<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">id</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">toolbar</span><span style="color:#ff79c6">));</span>
+        <span style="color:#ff79c6">((</span>FloatingActionButton<span style="color:#ff79c6">)</span> findViewById<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">id</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">fab</span><span style="color:#ff79c6">)).</span><span style="color:#50fa7b">setOnClickListener</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> View<span style="color:#ff79c6">.</span><span style="color:#50fa7b">OnClickListener</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span> <span style="color:#6272a4">// from class: b3nac.injuredandroid.c
+</span><span style="color:#6272a4"></span>            @Override <span style="color:#6272a4">// android.view.View.OnClickListener
+</span><span style="color:#6272a4"></span>            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onClick</span><span style="color:#ff79c6">(</span>View view<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                FlagFiveActivity<span style="color:#ff79c6">.</span><span style="color:#50fa7b">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">m4118G</span><span style="color:#ff79c6">(</span>view<span style="color:#ff79c6">);</span>  
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">});</span>
+        <span style="color:#ff79c6">new</span> ComponentName<span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> FlagFiveReceiver<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">);</span>
+        getPackageManager<span style="color:#ff79c6">();</span>
+        C0310a<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m8404b</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">).</span><span style="color:#50fa7b">m8403c</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">f4409x</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> IntentFilter<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;com.b3nac.injuredandroid.intent.action.CUSTOM_INTENT&#34;</span><span style="color:#ff79c6">));</span>
+        <span style="color:#ff79c6">((</span>Button<span style="color:#ff79c6">)</span> findViewById<span style="color:#ff79c6">(</span>R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">id</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">button9</span><span style="color:#ff79c6">)).</span><span style="color:#50fa7b">setOnClickListener</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> View<span style="color:#ff79c6">.</span><span style="color:#50fa7b">OnClickListener</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span> <span style="color:#6272a4">// from class: b3nac.injuredandroid.b
+</span><span style="color:#6272a4"></span>            @Override <span style="color:#6272a4">// android.view.View.OnClickListener
+</span><span style="color:#6272a4"></span>            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onClick</span><span style="color:#ff79c6">(</span>View view<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                FlagFiveActivity<span style="color:#ff79c6">.</span><span style="color:#50fa7b">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">m4117H</span><span style="color:#ff79c6">(</span>view<span style="color:#ff79c6">);</span>   <span style="color:#6272a4">// invokes the intent
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">});</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>From the above code, when we click flag2 button, we invoke intent which is defined in class  <em><strong>m4117H</strong></em>.</p>
+<p>An intent is used to perfom an action on the screen. Therefore clicking the button element in our application we are invoking an new intent. Intents are used for sending a broadcast receiver.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#6272a4">/* renamed from: H */</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#6272a4">/* synthetic */</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">m4117H</span><span style="color:#ff79c6">(</span>View view<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        m4119F<span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">m4119F</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        sendBroadcast<span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Intent<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;com.b3nac.injuredandroid.intent.action.CUSTOM_INTENT&#34;</span><span style="color:#ff79c6">));</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>Looking at the component name  <strong>FlagFiveReceiver</strong> class. when the intent is invoked twice, we receive our flag. The class implements a conditional if else loop for checking the number of intents. when the correct flag is displayed, the intents counter is set to zero( <em>i2 = 0)</em>, where i2 variable is the intent counter as shown in the java code below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">FlagFiveReceiver</span> <span style="color:#8be9fd;font-style:italic">extends</span> BroadcastReceiver <span style="color:#ff79c6">{</span>
+
+    <span style="color:#6272a4">/* renamed from: a */</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">int</span> f4410a<span style="color:#ff79c6">;</span>
+
+    @Override <span style="color:#6272a4">// android.content.BroadcastReceiver
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onReceive</span><span style="color:#ff79c6">(</span>Context context<span style="color:#ff79c6">,</span> Intent intent<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        String str<span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> i<span style="color:#ff79c6">;</span>
+        C2724g<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m881e</span><span style="color:#ff79c6">(</span>context<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;context&#34;</span><span style="color:#ff79c6">);</span>
+        C2724g<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m881e</span><span style="color:#ff79c6">(</span>intent<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;intent&#34;</span><span style="color:#ff79c6">);</span>
+        ApplicationC1492j<span style="color:#ff79c6">.</span><span style="color:#50fa7b">f4506j</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">m4062a</span><span style="color:#ff79c6">(</span>context<span style="color:#ff79c6">);</span>
+        <span style="color:#8be9fd">int</span> i2 <span style="color:#ff79c6">=</span> f4410a<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>i2 <span style="color:#ff79c6">==</span> 0<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            StringBuilder sb <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringBuilder<span style="color:#ff79c6">();</span>
+            sb<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span>C2765h<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m809e</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;\n    Action: &#34;</span> <span style="color:#ff79c6">+</span> intent<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getAction</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;\n\n    &#34;</span><span style="color:#ff79c6">));</span>
+            sb<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span>C2765h<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m809e</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;\n    URI: &#34;</span> <span style="color:#ff79c6">+</span> intent<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toUri</span><span style="color:#ff79c6">(</span>1<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;\n\n    &#34;</span><span style="color:#ff79c6">));</span>
+            str <span style="color:#ff79c6">=</span> sb<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">();</span>
+            C2724g<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m882d</span><span style="color:#ff79c6">(</span>str<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;sb.toString()&#34;</span><span style="color:#ff79c6">);</span>
+            Log<span style="color:#ff79c6">.</span><span style="color:#50fa7b">d</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;DUDE!:&#34;</span><span style="color:#ff79c6">,</span> str<span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+            str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;Keep trying!&#34;</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>i2 <span style="color:#ff79c6">!=</span> 1<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>i2 <span style="color:#ff79c6">==</span> 2<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    <span style="color:#ff79c6">new</span> FlagsOverview<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4087H</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+                    <span style="color:#ff79c6">new</span> ApplicationC1492j<span style="color:#ff79c6">().</span><span style="color:#50fa7b">m4065b</span><span style="color:#ff79c6">(</span>context<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;flagFiveButtonColor&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+                    Toast<span style="color:#ff79c6">.</span><span style="color:#50fa7b">makeText</span><span style="color:#ff79c6">(</span>context<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;You are a winner &#34;</span> <span style="color:#ff79c6">+</span> C1494k<span style="color:#ff79c6">.</span><span style="color:#50fa7b">m4061a</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Zkdlt0WwtLQ=&#34;</span><span style="color:#ff79c6">),</span> 1<span style="color:#ff79c6">).</span><span style="color:#50fa7b">show</span><span style="color:#ff79c6">();</span>
+                    i <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+                    f4410a <span style="color:#ff79c6">=</span> i<span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+                Toast<span style="color:#ff79c6">.</span><span style="color:#50fa7b">makeText</span><span style="color:#ff79c6">(</span>context<span style="color:#ff79c6">,</span> str<span style="color:#ff79c6">,</span> 1<span style="color:#ff79c6">).</span><span style="color:#50fa7b">show</span><span style="color:#ff79c6">();</span>
+                <span style="color:#ff79c6">return</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span>
+        Toast<span style="color:#ff79c6">.</span><span style="color:#50fa7b">makeText</span><span style="color:#ff79c6">(</span>context<span style="color:#ff79c6">,</span> str<span style="color:#ff79c6">,</span> 1<span style="color:#ff79c6">).</span><span style="color:#50fa7b">show</span><span style="color:#ff79c6">();</span>
+        i <span style="color:#ff79c6">=</span> f4410a <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">;</span>
+        f4410a <span style="color:#ff79c6">=</span> i<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p><strong>onReceive</strong> method is responsible for receiving intents sent. Invoking our Activity two times we get a flag.</p>
+<p><figure 
+	>
+	<a href="https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag5.png" >
+		<img src="https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag5.png"
+			
+			
+			
+			loading="lazy"
+			alt="Flag Five">
+	</a>
+	
+	<figcaption>Flag Five</figcaption>
+	
+</figure></p>
+<p>The flag for challenge five is <strong>F1v3!</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/android/">Android</a>
+        
+            <a href="/tags/appsec/">Appsec</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/android-application-security-part2/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/firebase.jpg" loading="lazy" data-key="" data-hash="/firebase.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Android Application Security Part2</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 Solar Bits
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">Table of contents</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a>
+      <ol>
+        <li><a href="#enviroment-setup-and-decompilation">Enviroment setup and decompilation</a></li>
+      </ol>
+    </li>
+    <li><a href="#flag-one---login">FLAG ONE - LOGIN</a></li>
+    <li><a href="#flag-two---exported-activity">FLAG TWO - EXPORTED ACTIVITY</a></li>
+    <li><a href="#flag-three---resources">FLAG THREE - RESOURCES</a></li>
+    <li><a href="#flag-four---login2">FLAG FOUR - LOGIN2</a></li>
+    <li><a href="#flag-five---exported-broadcast-receivers">FLAG FIVE - EXPORTED BROADCAST RECEIVERS</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

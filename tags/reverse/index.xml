@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>reverse on Solar Bits</title>
+    <link>https://thuri10.github.io/tags/reverse/</link>
+    <description>Recent content in reverse on Solar Bits</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 12 Dec 2021 19:02:05 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/tags/reverse/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android Malware analysis series</title>
+      <link>https://thuri10.github.io/p/android-malware-analysis-series/</link>
+      <pubDate>Sun, 12 Dec 2021 19:02:05 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/android-malware-analysis-series/</guid>
+      <description>the sample for analysis is Anubis sha256 of the sample is: edda95f68c0cdf9f4c13e4e35211b42666c014f2c0831210b59296071139f159
+steps for analysis malware
+ decompilation static analysis of manifest files to understand file name, permissions , etc   </description>
+    </item>
+    
+    <item>
+      <title>Analyzing Ransomware Malware challenge</title>
+      <link>https://thuri10.github.io/p/ransomware/</link>
+      <pubDate>Tue, 07 Dec 2021 19:02:36 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/ransomware/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Reversing Custom Bytecode Virtual Machine</title>
+      <link>https://thuri10.github.io/p/reversing-custom-bytecode-virtual-machine/</link>
+      <pubDate>Tue, 07 Dec 2021 19:02:24 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/reversing-custom-bytecode-virtual-machine/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Static analysis of Malware Strings</title>
+      <link>https://thuri10.github.io/p/static-analysis-of-malware-strings/</link>
+      <pubDate>Tue, 07 Dec 2021 19:02:13 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/static-analysis-of-malware-strings/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
