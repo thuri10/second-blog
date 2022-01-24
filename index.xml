@@ -1637,8 +1637,8 @@ Example of a firebase rule where read and write are allowed.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Launching the application in the emulator ,the interface will look like the image below.&lt;/p&gt;
 &lt;p&gt;&lt;figure 
 	&gt;
-	&lt;a href=&#34;https://raw.githubusercontent.com/thuri10/images-blog/development/android/android_injured.png&#34; &gt;
-		&lt;img src=&#34;https://raw.githubusercontent.com/thuri10/images-blog/development/android/android_injured.png&#34;
+	&lt;a href=&#34;https://thuri10.github.io/post/androidsec/android_injured.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/androidsec/android_injured.png&#34;
 			
 			
 			
@@ -1662,7 +1662,7 @@ Example of a firebase rule where read and write are allowed.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;flag-one---login&#34;&gt;FLAG ONE - LOGIN&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Goal : Input the right flag.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;For the first challenge is to get the correct flag. &lt;strong&gt;flag&lt;/strong&gt; is a piece of reward if you do correct task you are asked to do. Looking at the decompiled code in the editor as shown below, there is an interesting function called &lt;strong&gt;submitFlag&lt;/strong&gt;. submit flag function is responsible for validation of the userinput.&lt;/p&gt;
+&lt;p&gt;For the first challenge is to get the correct flag. &lt;strong&gt;flag&lt;/strong&gt; is a piece of reward if you do correct task you are asked to do. Looking at the decompiled code in the editor as shown below, there is an interesting function called &lt;strong&gt;submitFlag&lt;/strong&gt;. submit flag function is responsible for validation of the user input.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#815ba4&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#815ba4&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color:#fec418&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#06b6ef&#34;&gt;submitFlag&lt;/span&gt;&lt;span style=&#34;color:#5bc4bf&#34;&gt;(&lt;/span&gt;View view&lt;span style=&#34;color:#5bc4bf&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#5bc4bf&#34;&gt;{&lt;/span&gt;
         EditText editText &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#5bc4bf&#34;&gt;(&lt;/span&gt;EditText&lt;span style=&#34;color:#5bc4bf&#34;&gt;)&lt;/span&gt; findViewById&lt;span style=&#34;color:#5bc4bf&#34;&gt;(&lt;/span&gt;R&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#06b6ef&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#06b6ef&#34;&gt;editText2&lt;/span&gt;&lt;span style=&#34;color:#5bc4bf&#34;&gt;);&lt;/span&gt;
         C2724g&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#06b6ef&#34;&gt;m882d&lt;/span&gt;&lt;span style=&#34;color:#5bc4bf&#34;&gt;(&lt;/span&gt;editText&lt;span style=&#34;color:#5bc4bf&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#48b685&#34;&gt;&amp;#34;editText2&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#5bc4bf&#34;&gt;);&lt;/span&gt;
@@ -1681,8 +1681,8 @@ Example of a firebase rule where read and write are allowed.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If the condition is True, new Intent is started which is &lt;strong&gt;FlagOneSuccess&lt;/strong&gt;. Entering hardcoded flag as our input, we get a success message and color of &lt;strong&gt;Flag1&lt;/strong&gt; in flagsOverview Activity changes to green, meaning we have successfully solved the challenge1.&lt;/p&gt;
 &lt;p&gt;&lt;figure 
 	&gt;
-	&lt;a href=&#34;https://raw.githubusercontent.com/thuri10/images-blog/development/android/solved.png&#34; &gt;
-		&lt;img src=&#34;https://raw.githubusercontent.com/thuri10/images-blog/development/android/solved.png&#34;
+	&lt;a href=&#34;https://thuri10.github.io/post/androidsec/solved.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/androidsec/solved.png&#34;
 			
 			
 			
@@ -1762,8 +1762,8 @@ Starting: Intent &lt;span style=&#34;color:#5bc4bf&#34;&gt;{&lt;/span&gt; &lt;sp
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;when the activity two is started successfully by an external application, we are rewarded with a flag.&lt;/p&gt;
 &lt;p&gt;&lt;figure 
 	&gt;
-	&lt;a href=&#34;https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag2.png&#34; &gt;
-		&lt;img src=&#34;https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag2.png&#34;
+	&lt;a href=&#34;https://thuri10.github.io/post/androidsec/flag2.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/androidsec/flag2.png&#34;
 			
 			
 			
@@ -1908,8 +1908,8 @@ Starting: Intent &lt;span style=&#34;color:#5bc4bf&#34;&gt;{&lt;/span&gt; &lt;sp
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;onReceive&lt;/strong&gt; method is responsible for receiving intents sent. Invoking our Activity two times we get a flag.&lt;/p&gt;
 &lt;p&gt;&lt;figure 
 	&gt;
-	&lt;a href=&#34;https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag5.png&#34; &gt;
-		&lt;img src=&#34;https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag5.png&#34;
+	&lt;a href=&#34;https://thuri10.github.io/post/androidsec/flag5.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/androidsec/flag5.png&#34;
 			
 			
 			

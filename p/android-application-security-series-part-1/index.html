@@ -148,8 +148,8 @@ if (!doNotTrack) {
 </code></pre></div><p>Launching the application in the emulator ,the interface will look like the image below.</p>
 <p><figure 
 	>
-	<a href="https://raw.githubusercontent.com/thuri10/images-blog/development/android/android_injured.png" >
-		<img src="https://raw.githubusercontent.com/thuri10/images-blog/development/android/android_injured.png"
+	<a href="/post/androidsec/android_injured.png" >
+		<img src="/post/androidsec/android_injured.png"
 			
 			
 			
@@ -173,7 +173,7 @@ if (!doNotTrack) {
 </blockquote>
 <h2 id="flag-one---login">FLAG ONE - LOGIN</h2>
 <p><strong>Goal : Input the right flag.</strong></p>
-<p>For the first challenge is to get the correct flag. <strong>flag</strong> is a piece of reward if you do correct task you are asked to do. Looking at the decompiled code in the editor as shown below, there is an interesting function called <strong>submitFlag</strong>. submit flag function is responsible for validation of the userinput.</p>
+<p>For the first challenge is to get the correct flag. <strong>flag</strong> is a piece of reward if you do correct task you are asked to do. Looking at the decompiled code in the editor as shown below, there is an interesting function called <strong>submitFlag</strong>. submit flag function is responsible for validation of the user input.</p>
 <div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#815ba4">public</span> <span style="color:#815ba4">final</span> <span style="color:#fec418">void</span> <span style="color:#06b6ef">submitFlag</span><span style="color:#5bc4bf">(</span>View view<span style="color:#5bc4bf">)</span> <span style="color:#5bc4bf">{</span>
         EditText editText <span style="color:#5bc4bf">=</span> <span style="color:#5bc4bf">(</span>EditText<span style="color:#5bc4bf">)</span> findViewById<span style="color:#5bc4bf">(</span>R<span style="color:#5bc4bf">.</span><span style="color:#06b6ef">id</span><span style="color:#5bc4bf">.</span><span style="color:#06b6ef">editText2</span><span style="color:#5bc4bf">);</span>
         C2724g<span style="color:#5bc4bf">.</span><span style="color:#06b6ef">m882d</span><span style="color:#5bc4bf">(</span>editText<span style="color:#5bc4bf">,</span> <span style="color:#48b685">&#34;editText2&#34;</span><span style="color:#5bc4bf">);</span>
@@ -192,8 +192,8 @@ if (!doNotTrack) {
 </code></pre></div><p>If the condition is True, new Intent is started which is <strong>FlagOneSuccess</strong>. Entering hardcoded flag as our input, we get a success message and color of <strong>Flag1</strong> in flagsOverview Activity changes to green, meaning we have successfully solved the challenge1.</p>
 <p><figure 
 	>
-	<a href="https://raw.githubusercontent.com/thuri10/images-blog/development/android/solved.png" >
-		<img src="https://raw.githubusercontent.com/thuri10/images-blog/development/android/solved.png"
+	<a href="/post/androidsec/solved.png" >
+		<img src="/post/androidsec/solved.png"
 			
 			
 			
@@ -273,8 +273,8 @@ Starting: Intent <span style="color:#5bc4bf">{</span> <span style="color:#ef6155
 </code></pre></div><p>when the activity two is started successfully by an external application, we are rewarded with a flag.</p>
 <p><figure 
 	>
-	<a href="https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag2.png" >
-		<img src="https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag2.png"
+	<a href="/post/androidsec/flag2.png" >
+		<img src="/post/androidsec/flag2.png"
 			
 			
 			
@@ -419,8 +419,8 @@ Starting: Intent <span style="color:#5bc4bf">{</span> <span style="color:#ef6155
 </code></pre></div><p><strong>onReceive</strong> method is responsible for receiving intents sent. Invoking our Activity two times we get a flag.</p>
 <p><figure 
 	>
-	<a href="https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag5.png" >
-		<img src="https://raw.githubusercontent.com/thuri10/images-blog/development/android/flag5.png"
+	<a href="/post/androidsec/flag5.png" >
+		<img src="/post/androidsec/flag5.png"
 			
 			
 			
