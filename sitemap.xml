@@ -14,7 +14,7 @@
     <loc>https://thuri10.github.io/tags/rop/</loc>
     <lastmod>2021-12-20T20:50:44+03:00</lastmod>
   </url><url>
-    <loc>https://thuri10.github.io/tags/ropemprium/</loc>
+    <loc>https://thuri10.github.io/tags/ropemporium/</loc>
     <lastmod>2021-12-20T20:50:44+03:00</lastmod>
   </url><url>
     <loc>https://thuri10.github.io/</loc>
@@ -23,23 +23,11 @@
     <loc>https://thuri10.github.io/tags/</loc>
     <lastmod>2021-12-20T20:50:44+03:00</lastmod>
   </url><url>
-    <loc>https://thuri10.github.io/p/return-oriented-programming-pivot/</loc>
-    <lastmod>2021-12-20T20:50:30+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/p/return-oriented-programming-fluff/</loc>
-    <lastmod>2021-12-20T20:50:20+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/p/return-oriented-programming-badchars/</loc>
-    <lastmod>2021-12-20T20:50:06+03:00</lastmod>
-  </url><url>
     <loc>https://thuri10.github.io/p/return-oriented-programming-write4/</loc>
     <lastmod>2021-12-20T20:49:54+03:00</lastmod>
   </url><url>
     <loc>https://thuri10.github.io/p/return-oriented-programming-callme/</loc>
     <lastmod>2021-12-20T20:49:43+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/tags/ctf/</loc>
-    <lastmod>2021-12-20T20:49:37+03:00</lastmod>
   </url><url>
     <loc>https://thuri10.github.io/p/return-oriented-programming-split/</loc>
     <lastmod>2021-12-20T20:49:37+03:00</lastmod>
@@ -47,28 +35,13 @@
     <loc>https://thuri10.github.io/p/return-oriented-programming-ret2win/</loc>
     <lastmod>2021-12-20T20:49:23+03:00</lastmod>
   </url><url>
-    <loc>https://thuri10.github.io/tags/android/</loc>
-    <lastmod>2021-12-12T19:02:05+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/p/android-malware-analysis-series/</loc>
-    <lastmod>2021-12-12T19:02:05+03:00</lastmod>
-  </url><url>
     <loc>https://thuri10.github.io/tags/malware/</loc>
-    <lastmod>2021-12-12T19:02:05+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/tags/reverse/</loc>
-    <lastmod>2021-12-12T19:02:05+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/p/ransomware/</loc>
-    <lastmod>2021-12-07T19:02:36+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/tags/static/</loc>
-    <lastmod>2021-12-07T19:02:36+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/p/reversing-custom-bytecode-virtual-machine/</loc>
     <lastmod>2021-12-07T19:02:24+03:00</lastmod>
   </url><url>
-    <loc>https://thuri10.github.io/tags/shellcode/</loc>
+    <loc>https://thuri10.github.io/tags/reverse/</loc>
+    <lastmod>2021-12-07T19:02:24+03:00</lastmod>
+  </url><url>
+    <loc>https://thuri10.github.io/p/reversing-malwaretech-8-bit-bytecode-virtual-machine/</loc>
     <lastmod>2021-12-07T19:02:24+03:00</lastmod>
   </url><url>
     <loc>https://thuri10.github.io/p/static-analysis-of-malware-strings/</loc>
@@ -86,13 +59,10 @@
     <loc>https://thuri10.github.io/about/</loc>
     <lastmod>2021-12-07T15:25:49+03:00</lastmod>
   </url><url>
-    <loc>https://thuri10.github.io/p/android-application-security-part4/</loc>
-    <lastmod>2021-11-03T15:54:03+03:00</lastmod>
+    <loc>https://thuri10.github.io/tags/android/</loc>
+    <lastmod>2021-10-25T15:53:55+03:00</lastmod>
   </url><url>
-    <loc>https://thuri10.github.io/p/android-application-security-part-3/</loc>
-    <lastmod>2021-10-27T15:53:59+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/p/firebase/</loc>
+    <loc>https://thuri10.github.io/p/android-application-security-part2/</loc>
     <lastmod>2021-10-25T15:53:55+03:00</lastmod>
   </url><url>
     <loc>https://thuri10.github.io/tags/appsec/</loc>

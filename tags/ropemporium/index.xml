@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ropemporium on Solar Bits</title>
+    <link>https://thuri10.github.io/tags/ropemporium/</link>
+    <description>Recent content in ropemporium on Solar Bits</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 20 Dec 2021 20:50:44 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/tags/ropemporium/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Return-Oriented Programming - Retcsu</title>
+      <link>https://thuri10.github.io/p/return-oriented-programming-retcsu/</link>
+      <pubDate>Mon, 20 Dec 2021 20:50:44 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/return-oriented-programming-retcsu/</guid>
+      <description>Introduction Challenge description
+ We&amp;rsquo;re back in ret2win territory, but this time with no useful gadgets.How will we populate critical registers without them? The goal of this level is understanding of universal rop techniques due to to the limited gadgets available in the binary as compared to the ret2win challenge. The binary can be downloaded from authors website https://ropemporium.com
+ After downloading the binary, check the enabled protections and mitigation&amp;rsquo;s. Only NX and Partial RELRO protections are turned on as shown below.</description>
+    </item>
+    
+    <item>
+      <title>Return-Oriented Programming - Write4</title>
+      <link>https://thuri10.github.io/p/return-oriented-programming-write4/</link>
+      <pubDate>Mon, 20 Dec 2021 20:49:54 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/return-oriented-programming-write4/</guid>
+      <description>Introduction Challenge Description
+ Our first foray into proper gadget use. A useful function is still present, but we&amp;rsquo;ll need to write a string into memory somehow.
+ The goal of this challenge is understanding how to abuse readable and writable memory regions in binary files.The target binary can be downloaded from the authors website ropemporium.
+First we check the binary protections enabled on the downloaded binary. Only NX (Not executable) is enabled on the binary according to checksec binary utility as shown in image below.</description>
+    </item>
+    
+    <item>
+      <title>Return-Oriented Programming - Callme</title>
+      <link>https://thuri10.github.io/p/return-oriented-programming-callme/</link>
+      <pubDate>Mon, 20 Dec 2021 20:49:43 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/return-oriented-programming-callme/</guid>
+      <description>Introduction Challenge Description
+The goal of this challenge is to understand how more than one argument is passed in x64 function. The challenge can be downloaded from the authors website ropemporium
+ Reliably make consecutive calls to imported functions. Use some new techniques and learn about the Procedure Linkage Table.
+ The program needs make consecutive calls to a function with three arguments in order to get a correct flag. The challenge description is similar to the split challenge.</description>
+    </item>
+    
+    <item>
+      <title>Return-Oriented Programming - Split</title>
+      <link>https://thuri10.github.io/p/return-oriented-programming-split/</link>
+      <pubDate>Mon, 20 Dec 2021 20:49:37 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/return-oriented-programming-split/</guid>
+      <description>Introduction Challenge Description
+ The elements that allowed you to complete ret2win are still present, they&amp;rsquo;ve just been split apart. Find them and recombine them using a short ROP chain
+ The goal of this challenge is to understand how function arguments are passed in 64bit machine when doing return oriented programming. The target binary can be downloaded from the authors website ropemporium.
+First we check the binary protections enabled on the downloaded.</description>
+    </item>
+    
+    <item>
+      <title>Return-Oriented Programming - Ret2win</title>
+      <link>https://thuri10.github.io/p/return-oriented-programming-ret2win/</link>
+      <pubDate>Mon, 20 Dec 2021 20:49:23 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/return-oriented-programming-ret2win/</guid>
+      <description>Introduction Challenge description
+ Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.
+ This challenge is classical pwn challenge of overwriting the return address with desired address you want to return to.
+The binaries for the challenges can be downloaded from the author`s website ropemporium.The goal of first challenge is to call the ret2win function.
+After downloading the binary, the first thing is to check the binary protection enabled on the binary using checksec utility.</description>
+    </item>
+    
+  </channel>
+</rss>

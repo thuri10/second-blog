@@ -13,34 +13,9 @@
       <pubDate>Mon, 20 Dec 2021 20:50:44 +0300</pubDate>
       
       <guid>https://thuri10.github.io/p/return-oriented-programming-retcsu/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Return-Oriented Programming - Pivot</title>
-      <link>https://thuri10.github.io/p/return-oriented-programming-pivot/</link>
-      <pubDate>Mon, 20 Dec 2021 20:50:30 +0300</pubDate>
-      
-      <guid>https://thuri10.github.io/p/return-oriented-programming-pivot/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Return-Oriented Programming - Fluff</title>
-      <link>https://thuri10.github.io/p/return-oriented-programming-fluff/</link>
-      <pubDate>Mon, 20 Dec 2021 20:50:20 +0300</pubDate>
-      
-      <guid>https://thuri10.github.io/p/return-oriented-programming-fluff/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Return-Oriented Programming - Badchars</title>
-      <link>https://thuri10.github.io/p/return-oriented-programming-badchars/</link>
-      <pubDate>Mon, 20 Dec 2021 20:50:06 +0300</pubDate>
-      
-      <guid>https://thuri10.github.io/p/return-oriented-programming-badchars/</guid>
-      <description></description>
+      <description>Introduction Challenge description
+ We&amp;rsquo;re back in ret2win territory, but this time with no useful gadgets.How will we populate critical registers without them? The goal of this level is understanding of universal rop techniques due to to the limited gadgets available in the binary as compared to the ret2win challenge. The binary can be downloaded from authors website https://ropemporium.com
+ After downloading the binary, check the enabled protections and mitigation&amp;rsquo;s. Only NX and Partial RELRO protections are turned on as shown below.</description>
     </item>
     
     <item>
@@ -49,7 +24,10 @@
       <pubDate>Mon, 20 Dec 2021 20:49:54 +0300</pubDate>
       
       <guid>https://thuri10.github.io/p/return-oriented-programming-write4/</guid>
-      <description></description>
+      <description>Introduction Challenge Description
+ Our first foray into proper gadget use. A useful function is still present, but we&amp;rsquo;ll need to write a string into memory somehow.
+ The goal of this challenge is understanding how to abuse readable and writable memory regions in binary files.The target binary can be downloaded from the authors website ropemporium.
+First we check the binary protections enabled on the downloaded binary. Only NX (Not executable) is enabled on the binary according to checksec binary utility as shown in image below.</description>
     </item>
     
     <item>
@@ -58,7 +36,10 @@
       <pubDate>Mon, 20 Dec 2021 20:49:43 +0300</pubDate>
       
       <guid>https://thuri10.github.io/p/return-oriented-programming-callme/</guid>
-      <description></description>
+      <description>Introduction Challenge Description
+The goal of this challenge is to understand how more than one argument is passed in x64 function. The challenge can be downloaded from the authors website ropemporium
+ Reliably make consecutive calls to imported functions. Use some new techniques and learn about the Procedure Linkage Table.
+ The program needs make consecutive calls to a function with three arguments in order to get a correct flag. The challenge description is similar to the split challenge.</description>
     </item>
     
     <item>
@@ -67,8 +48,10 @@
       <pubDate>Mon, 20 Dec 2021 20:49:37 +0300</pubDate>
       
       <guid>https://thuri10.github.io/p/return-oriented-programming-split/</guid>
-      <description>disassembling of the usefulfunction in the binary
-(gdb) disas usefulFunction Dump of assembler code for function usefulFunction: 0x0000000000400742 &amp;lt;+0&amp;gt;:	push rbp 0x0000000000400743 &amp;lt;+1&amp;gt;:	mov rbp,rsp 0x0000000000400746 &amp;lt;+4&amp;gt;:	mov edi,0x40084a 0x000000000040074b &amp;lt;+9&amp;gt;:	call 0x400560 &amp;lt;system@plt&amp;gt; 0x0000000000400750 &amp;lt;+14&amp;gt;:	nop 0x0000000000400751 &amp;lt;+15&amp;gt;:	pop rbp 0x0000000000400752 &amp;lt;+16&amp;gt;:	ret End of assembler dump. (gdb) x/s 0x40084a 0x40084a:	&amp;#34;/bin/ls&amp;#34; (gdb) let look at the strings in order to get useful strings for our case. The goal is to read the flag from the system.</description>
+      <description>Introduction Challenge Description
+ The elements that allowed you to complete ret2win are still present, they&amp;rsquo;ve just been split apart. Find them and recombine them using a short ROP chain
+ The goal of this challenge is to understand how function arguments are passed in 64bit machine when doing return oriented programming. The target binary can be downloaded from the authors website ropemporium.
+First we check the binary protections enabled on the downloaded.</description>
     </item>
     
     <item>
@@ -77,9 +60,11 @@
       <pubDate>Mon, 20 Dec 2021 20:49:23 +0300</pubDate>
       
       <guid>https://thuri10.github.io/p/return-oriented-programming-ret2win/</guid>
-      <description>Introduction GOAL: Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.
-find the address of the ret2win and determine the size of the buffer by looking at the gdb.
-(gdb) info functions All defined functions: Non-debugging symbols: 0x0000000000400528 _init 0x0000000000400550 puts@plt 0x0000000000400560 system@plt 0x0000000000400570 printf@plt 0x0000000000400580 memset@plt 0x0000000000400590 read@plt 0x00000000004005a0 setvbuf@plt 0x00000000004005b0 _start 0x00000000004005e0 _dl_relocate_static_pie 0x00000000004005f0 deregister_tm_clones 0x0000000000400620 register_tm_clones 0x0000000000400660 __do_global_dtors_aux 0x0000000000400690 frame_dummy 0x0000000000400697 main 0x00000000004006e8 pwnme 0x0000000000400756 ret2win 0x0000000000400780 __libc_csu_init 0x00000000004007f0 __libc_csu_fini 0x00000000004007f4 _fini (gdb) from the disassembly of the pwnme function, we can determine the size of the buffer we reading to.</description>
+      <description>Introduction Challenge description
+ Locate a method that you want to call within the binary. Call it by overwriting a saved return address on the stack.
+ This challenge is classical pwn challenge of overwriting the return address with desired address you want to return to.
+The binaries for the challenges can be downloaded from the author`s website ropemporium.The goal of first challenge is to call the ret2win function.
+After downloading the binary, the first thing is to check the binary protection enabled on the binary using checksec utility.</description>
     </item>
     
   </channel>

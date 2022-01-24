@@ -6,27 +6,17 @@
     <description>Recent content in Android on Solar Bits</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 12 Dec 2021 19:02:05 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Android Malware analysis series</title>
-      <link>https://thuri10.github.io/p/android-malware-analysis-series/</link>
-      <pubDate>Sun, 12 Dec 2021 19:02:05 +0300</pubDate>
-      
-      <guid>https://thuri10.github.io/p/android-malware-analysis-series/</guid>
-      <description>the sample for analysis is Anubis sha256 of the sample is: edda95f68c0cdf9f4c13e4e35211b42666c014f2c0831210b59296071139f159
-steps for analysis malware
- decompilation static analysis of manifest files to understand file name, permissions , etc   </description>
-    </item>
-    
+    <lastBuildDate>Mon, 25 Oct 2021 15:53:55 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android Application Security Part2</title>
-      <link>https://thuri10.github.io/p/firebase/</link>
+      <link>https://thuri10.github.io/p/android-application-security-part2/</link>
       <pubDate>Mon, 25 Oct 2021 15:53:55 +0300</pubDate>
       
-      <guid>https://thuri10.github.io/p/firebase/</guid>
-      <description>Insecure Storages This is the second part of the android application security. This part focuses on the local sqlite databases, firebase and AWS security.
-Flag7 - Sqlite This is level is about understanding the sqlite local database in the applications folder.
-public FlagSevenSqliteActivity() { byte[] bArr = this.x; //sqlite  d.m.b.d.b(bArr, &amp;#34;decodedDirectoryOne&amp;#34;); Charset charset = StandardCharsets.UTF_8; d.m.b.d.b(charset, &amp;#34;StandardCharsets.UTF_8&amp;#34;); this.z = new String(bArr, charset); byte[] bArr2 = this.y; //f1ag-pa55  d.m.b.d.b(bArr2, &amp;#34;decodedDirectoryTwo&amp;#34;); Charset charset2 = StandardCharsets.</description>
+      <guid>https://thuri10.github.io/p/android-application-security-part2/</guid>
+      <description>Insecure Storages This is the second part series of the android application security. This part focuses on the security of sqlite databases, firebase and AWS security.
+Flag7 - Sqlite What is sqlite?
+Sqlite is a structure query base database that enables applications to do local storage in the application directory. The goal of the challenge is to understand how local storage of databases may lead to leakage of information.
+First step is to decompile the FlagSevenSqliteActivity using jadx.</description>
     </item>
     
     <item>
@@ -36,8 +26,8 @@ public FlagSevenSqliteActivity() { byte[] bArr = this.x; //sqlite  d.m.b.d.b(bAr
       
       <guid>https://thuri10.github.io/p/android-application-security-series-part-1/</guid>
       <description>Introduction This is a five part beginner series of Android application security with Vulnerable Android application examples. The application used in the first three part series is a vulnerable Android application developed by @B3nac.
-The application is InjuredAndroid, it covers different security concepts such as hardcoded secrets, weak cryptographic algorithms, misconfiguration etc. The application can be downloaded from the following provided links playstore or from github.
-Inorder to solve the challenges or follow through the guides is you need to have an android phone or an emulator.</description>
+The application is called InjuredAndroid, it covers different security concepts such as hardcoded secrets, weak cryptographic algorithms, misconfiguration, webview vulnerabilities etc. The application can be downloaded from the following provided links playstore or github.
+For solving the challenges or following through the guides is you need to have an android phone or an emulator.</description>
     </item>
     
   </channel>
