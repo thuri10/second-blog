@@ -14,7 +14,7 @@
       
       <guid>https://thuri10.github.io/p/return-oriented-programming-retcsu/</guid>
       <description>Introduction Challenge description
- We&amp;rsquo;re back in ret2win territory, but this time with no useful gadgets.How will we populate critical registers without them? The goal of this level is understanding of universal rop techniques due to to the limited gadgets available in the binary as compared to the ret2win challenge. The binary can be downloaded from authors website https://ropemporium.com
+ We&amp;rsquo;re back in ret2win territory, but this time with no useful gadgets.How will we populate critical registers without them? The goal of this level is understanding of universal rop techniques due to to the limited gadgets available in the binary as compared to the ret2win challenge. The binary can be downloaded from authors website Ropemporium
  After downloading the binary, check the enabled protections and mitigation&amp;rsquo;s. Only NX and Partial RELRO protections are turned on as shown below.</description>
     </item>
     

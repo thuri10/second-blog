@@ -2,8 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://thuri10.github.io/tags/malware/</loc>
+    <lastmod>2022-01-25T15:27:57+03:00</lastmod>
+  </url><url>
     <loc>https://thuri10.github.io/post/</loc>
-    <lastmod>2021-12-20T20:50:44+03:00</lastmod>
+    <lastmod>2022-01-25T15:27:57+03:00</lastmod>
+  </url><url>
+    <loc>https://thuri10.github.io/tags/remcosrat/</loc>
+    <lastmod>2022-01-25T15:27:57+03:00</lastmod>
+  </url><url>
+    <loc>https://thuri10.github.io/p/remcosrat-infection-chain-from-excel-with-macros/</loc>
+    <lastmod>2022-01-25T15:27:57+03:00</lastmod>
+  </url><url>
+    <loc>https://thuri10.github.io/</loc>
+    <lastmod>2022-01-25T15:27:57+03:00</lastmod>
+  </url><url>
+    <loc>https://thuri10.github.io/tags/</loc>
+    <lastmod>2022-01-25T15:27:57+03:00</lastmod>
   </url><url>
     <loc>https://thuri10.github.io/tags/pwn/</loc>
     <lastmod>2021-12-20T20:50:44+03:00</lastmod>
@@ -17,12 +32,6 @@
     <loc>https://thuri10.github.io/tags/ropemporium/</loc>
     <lastmod>2021-12-20T20:50:44+03:00</lastmod>
   </url><url>
-    <loc>https://thuri10.github.io/</loc>
-    <lastmod>2021-12-20T20:50:44+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/tags/</loc>
-    <lastmod>2021-12-20T20:50:44+03:00</lastmod>
-  </url><url>
     <loc>https://thuri10.github.io/p/return-oriented-programming-write4/</loc>
     <lastmod>2021-12-20T20:49:54+03:00</lastmod>
   </url><url>
@@ -34,9 +43,6 @@
   </url><url>
     <loc>https://thuri10.github.io/p/return-oriented-programming-ret2win/</loc>
     <lastmod>2021-12-20T20:49:23+03:00</lastmod>
-  </url><url>
-    <loc>https://thuri10.github.io/tags/malware/</loc>
-    <lastmod>2021-12-07T19:02:24+03:00</lastmod>
   </url><url>
     <loc>https://thuri10.github.io/tags/reverse/</loc>
     <lastmod>2021-12-07T19:02:24+03:00</lastmod>

@@ -22,19 +22,6 @@ The goal of this challenge is to understand how more than one argument is passed
  Reliably make consecutive calls to imported functions. Use some new techniques and learn about the Procedure Linkage Table.
  The program needs make consecutive calls to a function with three arguments in order to get a correct flag. The challenge description is similar to the split challenge."><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://thuri10.github.io/post/ropemporium/callme.jpg' />
-    <link rel="shortcut icon" href="img/avatar.png" />
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DC4ZP2YRDZ"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-DC4ZP2YRDZ', { 'anonymize_ip': false });
-}
-</script>
-
     </head>
     <body class="
     article-page has-toc
@@ -277,7 +264,7 @@ Use some new techniques and learn about the Procedure Linkage Table.</p>
 <p>From previous knowledge of solving other challenges, we need to overwrite the return address with the pop rdi, pop rsi, pop rdx, ret gadget and call each function in a sequential manner.</p>
 <h2 id="exploit">Exploit</h2>
 <p>Fully working rop chain code is as shown below.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#5bc4bf">import</span> <span style="color:#fec418">pwn</span>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python3" data-lang="python3"><span style="color:#5bc4bf">import</span> <span style="color:#fec418">pwn</span>
 
 pwn<span style="color:#5bc4bf">.</span>context<span style="color:#5bc4bf">.</span>encoding <span style="color:#5bc4bf">=</span> <span style="color:#48b685">&#34;latin-1&#34;</span>
 pwn<span style="color:#5bc4bf">.</span>warnings<span style="color:#5bc4bf">.</span>simplefilter(<span style="color:#48b685">&#34;ignore&#34;</span>)

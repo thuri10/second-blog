@@ -6,7 +6,18 @@
     <description>Recent content in Posts on Solar Bits</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Dec 2021 20:50:44 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Jan 2022 15:27:57 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RemcosRat infection chain from excel with Macros</title>
+      <link>https://thuri10.github.io/p/remcosrat-infection-chain-from-excel-with-macros/</link>
+      <pubDate>Tue, 25 Jan 2022 15:27:57 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/remcosrat-infection-chain-from-excel-with-macros/</guid>
+      <description>What is RemcosRat? RemcosRAT is a Fileless multi-stage malware that is distributed through malicious macros in Excel files. The malware enables remote administration of infected systems to perform unintended actions. This is a simple guide on understanding RemcosRat infection chain. The RemcosRAT infection can be described as shown in the image by @Unit 42.
+ Infection Chain 
+The infection chain start through phishing of the targets through mail services, the final payload of the infection chain is the used for communicating through TCP port 10174 as shown in the image.</description>
+    </item>
+    
     <item>
       <title>Return-Oriented Programming - Retcsu</title>
       <link>https://thuri10.github.io/p/return-oriented-programming-retcsu/</link>
@@ -14,7 +25,7 @@
       
       <guid>https://thuri10.github.io/p/return-oriented-programming-retcsu/</guid>
       <description>Introduction Challenge description
- We&amp;rsquo;re back in ret2win territory, but this time with no useful gadgets.How will we populate critical registers without them? The goal of this level is understanding of universal rop techniques due to to the limited gadgets available in the binary as compared to the ret2win challenge. The binary can be downloaded from authors website https://ropemporium.com
+ We&amp;rsquo;re back in ret2win territory, but this time with no useful gadgets.How will we populate critical registers without them? The goal of this level is understanding of universal rop techniques due to to the limited gadgets available in the binary as compared to the ret2win challenge. The binary can be downloaded from authors website Ropemporium
  After downloading the binary, check the enabled protections and mitigation&amp;rsquo;s. Only NX and Partial RELRO protections are turned on as shown below.</description>
     </item>
     

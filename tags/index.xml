@@ -6,7 +6,25 @@
     <description>Recent content in Tags on Solar Bits</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Dec 2021 20:50:44 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Jan 2022 15:27:57 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>malware</title>
+      <link>https://thuri10.github.io/tags/malware/</link>
+      <pubDate>Tue, 25 Jan 2022 15:27:57 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/malware/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>RemcosRat</title>
+      <link>https://thuri10.github.io/tags/remcosrat/</link>
+      <pubDate>Tue, 25 Jan 2022 15:27:57 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/tags/remcosrat/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>pwn</title>
       <link>https://thuri10.github.io/tags/pwn/</link>
@@ -31,15 +49,6 @@
       <pubDate>Mon, 20 Dec 2021 20:50:44 +0300</pubDate>
       
       <guid>https://thuri10.github.io/tags/ropemporium/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>malware</title>
-      <link>https://thuri10.github.io/tags/malware/</link>
-      <pubDate>Tue, 07 Dec 2021 19:02:24 +0300</pubDate>
-      
-      <guid>https://thuri10.github.io/tags/malware/</guid>
       <description></description>
     </item>
     
