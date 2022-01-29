@@ -191,7 +191,7 @@ The goal of this level is understanding of universal rop techniques due to to th
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;    Arch:     amd64-64-little
     RELRO:    Partial RELRO
     Stack:    No canary found
-    NX:       NX enabledrop
+    NX:       NX enabled
     PIE:      No PIE &lt;span style=&#34;color:#5bc4bf&#34;&gt;(&lt;/span&gt;0x400000&lt;span style=&#34;color:#5bc4bf&#34;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;First step is to find the vulnerability in the binary that will enable us to subvert the program execution control flow. From the disassembly of the main function we are only calling &lt;strong&gt;pwnme&lt;/strong&gt; function.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-nasm&#34; data-lang=&#34;nasm&#34;&gt;&lt;span style=&#34;color:#ef6155&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#06b6ef&#34;&gt;gdb&lt;/span&gt;) di&lt;span style=&#34;color:#ef6155&#34;&gt;sas&lt;/span&gt; &lt;span style=&#34;color:#ef6155&#34;&gt;main&lt;/span&gt;
