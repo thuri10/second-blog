@@ -6,7 +6,291 @@
         <description>Recent content on Solar Bits</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Tue, 25 Jan 2022 15:27:57 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 06 Feb 2022 17:40:18 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>RedLineStealer Information Stealer Analysis</title>
+        <link>https://thuri10.github.io/p/redlinestealer-information-stealer-analysis/</link>
+        <pubDate>Sun, 06 Feb 2022 17:40:18 +0300</pubDate>
+        
+        <guid>https://thuri10.github.io/p/redlinestealer-information-stealer-analysis/</guid>
+        <description>&lt;img src="https://thuri10.github.io/post/malware/redline/coverpage.png" alt="Featured image of post RedLineStealer Information Stealer Analysis" /&gt;&lt;h2 id=&#34;what-is-redline-malware&#34;&gt;What is RedLine Malware?&lt;/h2&gt;
+&lt;p&gt;Redline malware is an Information Stealer written in c# , targeting windows victims. It is used for gathering victims information ranging from the Browser cookies, saved credentials, Discord tokens, OS information, Languages, VPN profiles, Installed Programs and Network configurations.&lt;/p&gt;
+&lt;p&gt;The malware is also capable of downloading additional malware from its C2 servers.&lt;/p&gt;
+&lt;h2 id=&#34;stage1---loader-analysis&#34;&gt;Stage1 - Loader Analysis&lt;/h2&gt;
+&lt;p&gt;The first stage of sample malware is used for assembling and executing an additional payload. The sample used throughout this post is &lt;code&gt;RedlineStealer&lt;/code&gt; malware which can be downloaded from &lt;a class=&#34;link&#34; href=&#34;https://bazaar.abuse.ch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MalwareBaazar&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The sha256 hash of the sample is &lt;code&gt;72b7f772e019def30abcf817ae7a3004a84215daef67588eaa1fde3839df2fa2&lt;/code&gt;. First step is to load the sample in &lt;code&gt;Detect it Easy&lt;/code&gt; tool to check whether it is packed or not.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/redliner.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/redliner.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;
+From the initial Analysis, the sample is not packed and is a &lt;code&gt;.NET&lt;/code&gt; Family malware. Vast amount of &lt;code&gt;.NET&lt;/code&gt; family programming languages functionality has given malware authors power to write simple yet powerful tools therefore leading to an increase in malware distributed.&lt;/p&gt;
+&lt;h2 id=&#34;payload-extraction&#34;&gt;Payload Extraction&lt;/h2&gt;
+&lt;p&gt;For Analysis compiled PE ,&lt;code&gt;IDA&lt;/code&gt; and &lt;code&gt;ghidra&lt;/code&gt; are main first tools of choice to an analyst. For analysis of .NET binaries is different, we use &lt;code&gt;dnSpy&lt;/code&gt; which helps debug the functionality of the sample.&lt;/p&gt;
+&lt;p&gt;For extraction of our payload, we will do both manual and dynamic extraction of the second stage binary. Both methods have their own advantages and disadvantages as highlighted below.&lt;/p&gt;
+&lt;h3 id=&#34;method1---manual-extraction&#34;&gt;Method1 - Manual Extraction&lt;/h3&gt;
+&lt;p&gt;This method is we extract payload from the encrypted string arrays &lt;code&gt;s&lt;/code&gt; as shown in the image below. The author of the malware uses some anti-analysis technique to prevent it from being analyzed.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/stringarray.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/stringarray.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;From the above image we first de-obfuscate the malware by replacing the strings with the target strings as shown in the program. After replacing all the  strings,we write a small python program to convert the base64 encoded string to PE binary.&lt;/p&gt;
+&lt;p&gt;The python script to decode the base64 encoded string to binary.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python3&#34; data-lang=&#34;python3&#34;&gt;&lt;span style=&#34;color:#5bc4bf&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#fec418&#34;&gt;base64&lt;/span&gt;
+
+&lt;span style=&#34;color:#776e71&#34;&gt;#s string array is our binary&lt;/span&gt;
+string_encoded &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#48b685&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;
+decoded &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt; base64&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;b64decode(string_encoded)
+open(&lt;span style=&#34;color:#48b685&#34;&gt;&amp;#39;stage2.exe&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#48b685&#34;&gt;&amp;#39;wb&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;write(decoded)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Our dumped files are valid binaries, but do not contain all the features because the malware is using Reflection method to load additional assembly code. Reflection is a method used to load other assemblies at runtime of the program. This enables the malware to add extra features and validation of the program.&lt;/p&gt;
+&lt;h3 id=&#34;method2---dynamic-extraction&#34;&gt;Method2 - Dynamic Extraction&lt;/h3&gt;
+&lt;p&gt;The second method &lt;code&gt;Dynamic&lt;/code&gt; is more powerful compared to the manual method.This enables us to inspect the program behavior at runtime. For extraction of the second stage payload we put a breakpoint on the line &lt;code&gt;22&lt;/code&gt; as shown in image below.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/breakpoint.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/breakpoint.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;On the dnspy debugger put a breakpoint on line 22, Run the program  until the execution hits the breakpoint. we are passing our arguments stored in object array to the member we are invoking.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/righclick_array.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/righclick_array.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;By examining the values in image above,we can examine the array we passing to the object method. Looking at the bytes data of the above array, the first two bytes are magic number of PE file &lt;code&gt;4D5A&lt;/code&gt; or ascii &lt;code&gt;MZ&lt;/code&gt;. From the  first two bytes we can make an assumption the array buffer is our second stage binary. Right click the buffer memory to save the file.&lt;/p&gt;
+&lt;h2 id=&#34;stage2---payload-analysis&#34;&gt;Stage2 - Payload Analysis&lt;/h2&gt;
+&lt;p&gt;This is the second stage analysis of our extracted malware file, The extracted binary is &lt;code&gt;.NET&lt;/code&gt; binary. Opening the binary in dnspy debugger, entrypoint of the binary looks as shown in the image below. The main function executes the &lt;code&gt;WriteLine&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/dumpedfile.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/dumpedfile.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;First, the malware does environment check before communication to the configured C2 servers.&lt;/p&gt;
+&lt;h3 id=&#34;language-culture-check&#34;&gt;Language Culture check&lt;/h3&gt;
+&lt;p&gt;The malware checks the language, Timezone, CultureInfo and region country of the Victims Machine. The cultureInfo class provides information about a specific culture, known as &lt;code&gt;locale&lt;/code&gt;. The information includes the formatting of the dates, writing system, numbers and calendar used.
+&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/languagecheck.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/languagecheck.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The malware check if victims region country is within the array of the strings shown above and if the does not contain &lt;code&gt;EnglishName&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;network-communication-analysis&#34;&gt;Network Communication Analysis&lt;/h3&gt;
+&lt;p&gt;The second part of our analysis is to determine the IP address in which the malware is communicating to.The Ip address of the malware seems to be encrypted as shown in the image below. &lt;code&gt;StringDecrypt&lt;/code&gt; function takes two arguments, the IP address and Key and decrypts the &lt;code&gt;address&lt;/code&gt;
+&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/connection.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/connection.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The arguments variables of the malware are shown in the image below. The arguments includes the IP address and Key used for encryption of the data.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/args_key.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/args_key.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;With the encrypted &lt;code&gt;IP&lt;/code&gt; and &lt;code&gt;key&lt;/code&gt; we can decrypt the address used for providing the connection.&lt;/p&gt;
+&lt;h3 id=&#34;ip-address-decryption&#34;&gt;IP address Decryption&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;StringDecrypt&lt;/code&gt; is a multistage decryption method which employs both &lt;code&gt;base64&lt;/code&gt; encoding and bitwise &lt;code&gt;xor&lt;/code&gt; logic for decryption of the data.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/decrypt_method.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/decrypt_method.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;From the logic above, we can reimplement the logic in &lt;code&gt;python&lt;/code&gt; and recover the encrypted data.&lt;/p&gt;
+&lt;p&gt;The python code used for decrypting the code is,&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python3&#34; data-lang=&#34;python3&#34;&gt;&lt;span style=&#34;color:#776e71&#34;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
+&lt;span style=&#34;color:#5bc4bf&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#fec418&#34;&gt;base64&lt;/span&gt;
+&lt;span style=&#34;color:#5bc4bf&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#fec418&#34;&gt;pwn&lt;/span&gt; 
+ip_addr &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#48b685&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#48b685&#34;&gt;&amp;#34;AiE1CyQDBVA/JR4OPwIKGSoZGkU6NyVa&amp;#34;&lt;/span&gt;
+
+key &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#48b685&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#48b685&#34;&gt;&amp;#34;Outshines&amp;#34;&lt;/span&gt;
+ip_addr_decode &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt; base64&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;b64decode(ip_addr)
+print(ip_addr_decode)
+
+result_encoded &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt;pwn&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;xor(ip_addr_decode, key)
+result &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt; base64&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;b64decode(result_encoded)
+print(result)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Running above code we get C2 server address&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; $ python3 base.py 
+b&lt;span style=&#34;color:#48b685&#34;&gt;&amp;#39;101.99.93.70:54437&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;strings--conciliation-methods&#34;&gt;Strings  Conciliation methods&lt;/h3&gt;
+&lt;p&gt;The malware employs strings concilation methods to slow down an analyst. It adds some junk strings to the target strings which is replaced during the runtime of the malware with an empty string.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/stringreplace.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/stringreplace.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Example of string concilation tactic is above function. The junk string added to the string array is &lt;code&gt;MANGO&lt;/code&gt; which is replaced with an empty string.
+The string from the char array is &lt;code&gt;coMANGOokies.sqMANGOlite&lt;/code&gt; , replacing the &lt;code&gt;MANGO&lt;/code&gt; string with an empty string, we get &lt;code&gt;cookies.sqlite&lt;/code&gt; which is a file used for storing cookies by Firefox browser.&lt;/p&gt;
+&lt;p&gt;The above tactic is implemented allover the malware functions.&lt;/p&gt;
+&lt;h2 id=&#34;information-harvesting&#34;&gt;Information Harvesting&lt;/h2&gt;
+&lt;p&gt;The Malware harverst a lot of Victims data and sends back to the configured c2 server. The malware is simple but effective in collecting a lot of user information. The information collected by malware includes cookies, user tokens, system configurations, graphic cards, processor count, Network information, application installed, credit wallet information and many more.&lt;/p&gt;
+&lt;p&gt;Below is explanation of the capabilities of the malware.&lt;/p&gt;
+&lt;h3 id=&#34;browser&#34;&gt;Browser&lt;/h3&gt;
+&lt;p&gt;The malware is capable of stealing the user`s credentials and cookies of from browser session.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/browsers.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/browsers.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&#34;filezilla&#34;&gt;FileZilla&lt;/h3&gt;
+&lt;p&gt;Filezilla is a professional software that makes transfer of files from one computer to another easier via FTP, SFTP, FTPs protocols and other cloud services such as Amazon S3.
+&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/filezillacredentials.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/filezillacredentials.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;
+The malware scans for the saved credentials used by Victim in transferring files to other machines. The malware collects &lt;code&gt;host, Port, User, Pass&lt;/code&gt; of the machines&lt;/p&gt;
+&lt;h3 id=&#34;programs-enumeration&#34;&gt;Programs Enumeration&lt;/h3&gt;
+&lt;p&gt;Malware is also capable of collecting all installed applications on the machine using &lt;code&gt;ListofPrograms&lt;/code&gt; function as shown in the below. After enumerating all the installed applications, the malware sends data back to the C2 server.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/program_exfil.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/program_exfil.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The malware enumerates installed application through use of registry. Querying of registry is an effective way of finding out all installed applications in Windows. The malware gets the program name and version as shown by &lt;code&gt;text&lt;/code&gt; and &lt;code&gt;text2&lt;/code&gt; strings.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/programenumeration_registry.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/programenumeration_registry.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&#34;vpn-information-gathering&#34;&gt;VPN information Gathering&lt;/h3&gt;
+&lt;p&gt;The malware scans for Victim`s configuration files and profiles of various VPNs installed on the device. The malware scans File configs NordVPN, OpenVpn configs and ProtonVPN profiles.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/vpns.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/vpns.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&#34;exfilitration&#34;&gt;Exfilitration&lt;/h3&gt;
+&lt;p&gt;For the exfiltration of the data, the malware creates a folder in &lt;code&gt;APPdata&lt;/code&gt; folder called &lt;code&gt;Yandex\YAddon&lt;/code&gt;. The data collected is uploaded in parts the c2 server.&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/exfil_folder.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/exfil_folder.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.natlawreview.com/article/privacy-tip-315-redline-malware-used-to-steal-saved-credentials&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.natlawreview.com/article/privacy-tip-315-redline-malware-used-to-steal-saved-credentials&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.zdnet.com/article/fortinet-warns-of-cybercriminals-using-omicron-variant-news-to-distribute-redline-stealer/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.zdnet.com/article/fortinet-warns-of-cybercriminals-using-omicron-variant-news-to-distribute-redline-stealer/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.proofpoint.com/us/blog/threat-insight/new-redline-stealer-distributed-using-coronavirus-themed-email-campaign&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.proofpoint.com/us/blog/threat-insight/new-redline-stealer-distributed-using-coronavirus-themed-email-campaign&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
         <title>RemcosRat infection chain from excel with Macros</title>
         <link>https://thuri10.github.io/p/remcosrat-infection-chain-from-excel-with-macros/</link>
         <pubDate>Tue, 25 Jan 2022 15:27:57 +0300</pubDate>
@@ -2089,6 +2373,53 @@ Starting: Intent &lt;span style=&#34;color:#5bc4bf&#34;&gt;{&lt;/span&gt; &lt;sp
 	
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The flag for challenge five is &lt;strong&gt;F1v3!&lt;/strong&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title></title>
+        <link>https://thuri10.github.io/p/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://thuri10.github.io/p/</guid>
+        <description>&lt;h2 id=&#34;what-is-readline-stealer&#34;&gt;What is readline stealer&lt;/h2&gt;
+&lt;h2 id=&#34;sample-analysis&#34;&gt;sample analysis&lt;/h2&gt;
+&lt;p&gt;the sha256 of the sample
+72b7f772e019def30abcf817ae7a3004a84215daef67588eaa1fde3839df2fa2&lt;/p&gt;
+&lt;p&gt;readline.png&lt;/p&gt;
+&lt;h2 id=&#34;stage1-loader-analysis&#34;&gt;stage1 Loader Analysis&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;explain how the assembly code works&lt;/li&gt;
+&lt;li&gt;decode the base64 files&lt;/li&gt;
+&lt;li&gt;replace the text files and provide the files back&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;loading our program&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c#&#34; data-lang=&#34;c#&#34;&gt;		Assembly assembly = Assembly.Load(Program.NBXbnmXNBN());
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;#information stolen by the malware&lt;/p&gt;
+&lt;p&gt;Mozilla&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;coMANGOokies.sqMANGOlite
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
+&lt;li&gt;steals the mozilla browser cookies&lt;/li&gt;
+&lt;li&gt;steals mozilla personal profiles&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;VPn data&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;NordApp&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;OpenVPN
+it also steals the profiles of openvpn.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;protonvpn&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The program  does program enumeration of the installed through use of registry&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;data-exfiltaration&#34;&gt;Data Exfiltaration&lt;/h2&gt;
 </description>
         </item>
         

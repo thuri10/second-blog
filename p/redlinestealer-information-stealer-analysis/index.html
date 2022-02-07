@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='What is RedLine Malware? Redline malware is an Information Stealer written in c# , targeting windows victims. It is used for gathering victims information ranging from the Browser cookies, saved credentials, Discord tokens, OS information, Languages, VPN profiles, Installed Programs and Network configurations.
+The malware is also capable of downloading additional malware from its C2 servers.
+Stage1 - Loader Analysis The first stage of sample malware is used for assembling and executing an additional payload.'><title>RedLineStealer Information Stealer Analysis</title>
+
+<link rel='canonical' href='https://thuri10.github.io/p/redlinestealer-information-stealer-analysis/'>
+
+<link rel="stylesheet" href="/scss/style.min.1b3ac667198cb83edcc9c45e606a6f4dd6910b8ada6b74d7fd988f1b2dfd0c7c.css"><meta property='og:title' content='RedLineStealer Information Stealer Analysis'>
+<meta property='og:description' content='What is RedLine Malware? Redline malware is an Information Stealer written in c# , targeting windows victims. It is used for gathering victims information ranging from the Browser cookies, saved credentials, Discord tokens, OS information, Languages, VPN profiles, Installed Programs and Network configurations.
+The malware is also capable of downloading additional malware from its C2 servers.
+Stage1 - Loader Analysis The first stage of sample malware is used for assembling and executing an additional payload.'>
+<meta property='og:url' content='https://thuri10.github.io/p/redlinestealer-information-stealer-analysis/'>
+<meta property='og:site_name' content='Solar Bits'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='RedlineStealer' /><meta property='article:tag' content='malware' /><meta property='article:published_time' content='2022-02-06T17:40:18&#43;03:00'/><meta property='article:modified_time' content='2022-02-06T17:40:18&#43;03:00'/><meta property='og:image' content='https://thuri10.github.io/post/malware/redline/coverpage.png' />
+<meta name="twitter:title" content="RedLineStealer Information Stealer Analysis">
+<meta name="twitter:description" content="What is RedLine Malware? Redline malware is an Information Stealer written in c# , targeting windows victims. It is used for gathering victims information ranging from the Browser cookies, saved credentials, Discord tokens, OS information, Languages, VPN profiles, Installed Programs and Network configurations.
+The malware is also capable of downloading additional malware from its C2 servers.
+Stage1 - Loader Analysis The first stage of sample malware is used for assembling and executing an additional payload."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://thuri10.github.io/post/malware/redline/coverpage.png' />
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>Back</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/redlinestealer-information-stealer-analysis/">
+                
+                    <img src="/post/malware/redline/coverpage.png" loading="lazy" alt="Featured image of post RedLineStealer Information Stealer Analysis" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/redlinestealer-information-stealer-analysis/">RedLineStealer Information Stealer Analysis</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 06, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    6 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="what-is-redline-malware">What is RedLine Malware?</h2>
+<p>Redline malware is an Information Stealer written in c# , targeting windows victims. It is used for gathering victims information ranging from the Browser cookies, saved credentials, Discord tokens, OS information, Languages, VPN profiles, Installed Programs and Network configurations.</p>
+<p>The malware is also capable of downloading additional malware from its C2 servers.</p>
+<h2 id="stage1---loader-analysis">Stage1 - Loader Analysis</h2>
+<p>The first stage of sample malware is used for assembling and executing an additional payload. The sample used throughout this post is <code>RedlineStealer</code> malware which can be downloaded from <a class="link" href="https://bazaar.abuse.ch"  target="_blank" rel="noopener"
+    >MalwareBaazar</a>.</p>
+<p>The sha256 hash of the sample is <code>72b7f772e019def30abcf817ae7a3004a84215daef67588eaa1fde3839df2fa2</code>. First step is to load the sample in <code>Detect it Easy</code> tool to check whether it is packed or not.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/redliner.png" >
+		<img src="/post/malware/redline/redliner.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure>
+From the initial Analysis, the sample is not packed and is a <code>.NET</code> Family malware. Vast amount of <code>.NET</code> family programming languages functionality has given malware authors power to write simple yet powerful tools therefore leading to an increase in malware distributed.</p>
+<h2 id="payload-extraction">Payload Extraction</h2>
+<p>For Analysis compiled PE ,<code>IDA</code> and <code>ghidra</code> are main first tools of choice to an analyst. For analysis of .NET binaries is different, we use <code>dnSpy</code> which helps debug the functionality of the sample.</p>
+<p>For extraction of our payload, we will do both manual and dynamic extraction of the second stage binary. Both methods have their own advantages and disadvantages as highlighted below.</p>
+<h3 id="method1---manual-extraction">Method1 - Manual Extraction</h3>
+<p>This method is we extract payload from the encrypted string arrays <code>s</code> as shown in the image below. The author of the malware uses some anti-analysis technique to prevent it from being analyzed.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/stringarray.png" >
+		<img src="/post/malware/redline/stringarray.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>From the above image we first de-obfuscate the malware by replacing the strings with the target strings as shown in the program. After replacing all the  strings,we write a small python program to convert the base64 encoded string to PE binary.</p>
+<p>The python script to decode the base64 encoded string to binary.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python3" data-lang="python3"><span style="color:#5bc4bf">import</span> <span style="color:#fec418">base64</span>
+
+<span style="color:#776e71">#s string array is our binary</span>
+string_encoded <span style="color:#5bc4bf">=</span> <span style="color:#48b685">&#34; &#34;</span>
+decoded <span style="color:#5bc4bf">=</span> base64<span style="color:#5bc4bf">.</span>b64decode(string_encoded)
+open(<span style="color:#48b685">&#39;stage2.exe&#39;</span>, <span style="color:#48b685">&#39;wb&#39;</span>)<span style="color:#5bc4bf">.</span>write(decoded)
+</code></pre></div><p>Our dumped files are valid binaries, but do not contain all the features because the malware is using Reflection method to load additional assembly code. Reflection is a method used to load other assemblies at runtime of the program. This enables the malware to add extra features and validation of the program.</p>
+<h3 id="method2---dynamic-extraction">Method2 - Dynamic Extraction</h3>
+<p>The second method <code>Dynamic</code> is more powerful compared to the manual method.This enables us to inspect the program behavior at runtime. For extraction of the second stage payload we put a breakpoint on the line <code>22</code> as shown in image below.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/breakpoint.png" >
+		<img src="/post/malware/redline/breakpoint.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>On the dnspy debugger put a breakpoint on line 22, Run the program  until the execution hits the breakpoint. we are passing our arguments stored in object array to the member we are invoking.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/righclick_array.png" >
+		<img src="/post/malware/redline/righclick_array.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>By examining the values in image above,we can examine the array we passing to the object method. Looking at the bytes data of the above array, the first two bytes are magic number of PE file <code>4D5A</code> or ascii <code>MZ</code>. From the  first two bytes we can make an assumption the array buffer is our second stage binary. Right click the buffer memory to save the file.</p>
+<h2 id="stage2---payload-analysis">Stage2 - Payload Analysis</h2>
+<p>This is the second stage analysis of our extracted malware file, The extracted binary is <code>.NET</code> binary. Opening the binary in dnspy debugger, entrypoint of the binary looks as shown in the image below. The main function executes the <code>WriteLine</code> function.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/dumpedfile.png" >
+		<img src="/post/malware/redline/dumpedfile.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>First, the malware does environment check before communication to the configured C2 servers.</p>
+<h3 id="language-culture-check">Language Culture check</h3>
+<p>The malware checks the language, Timezone, CultureInfo and region country of the Victims Machine. The cultureInfo class provides information about a specific culture, known as <code>locale</code>. The information includes the formatting of the dates, writing system, numbers and calendar used.
+<figure 
+	>
+	<a href="/post/malware/redline/languagecheck.png" >
+		<img src="/post/malware/redline/languagecheck.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>The malware check if victims region country is within the array of the strings shown above and if the does not contain <code>EnglishName</code>.</p>
+<h3 id="network-communication-analysis">Network Communication Analysis</h3>
+<p>The second part of our analysis is to determine the IP address in which the malware is communicating to.The Ip address of the malware seems to be encrypted as shown in the image below. <code>StringDecrypt</code> function takes two arguments, the IP address and Key and decrypts the <code>address</code>
+<figure 
+	>
+	<a href="/post/malware/redline/connection.png" >
+		<img src="/post/malware/redline/connection.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>The arguments variables of the malware are shown in the image below. The arguments includes the IP address and Key used for encryption of the data.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/args_key.png" >
+		<img src="/post/malware/redline/args_key.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>With the encrypted <code>IP</code> and <code>key</code> we can decrypt the address used for providing the connection.</p>
+<h3 id="ip-address-decryption">IP address Decryption</h3>
+<p>The <code>StringDecrypt</code> is a multistage decryption method which employs both <code>base64</code> encoding and bitwise <code>xor</code> logic for decryption of the data.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/decrypt_method.png" >
+		<img src="/post/malware/redline/decrypt_method.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>From the logic above, we can reimplement the logic in <code>python</code> and recover the encrypted data.</p>
+<p>The python code used for decrypting the code is,</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python3" data-lang="python3"><span style="color:#776e71"># -*- coding: utf-8 -*-</span>
+<span style="color:#5bc4bf">import</span> <span style="color:#fec418">base64</span>
+<span style="color:#5bc4bf">import</span> <span style="color:#fec418">pwn</span> 
+ip_addr <span style="color:#5bc4bf">=</span><span style="color:#48b685">b</span><span style="color:#48b685">&#34;AiE1CyQDBVA/JR4OPwIKGSoZGkU6NyVa&#34;</span>
+
+key <span style="color:#5bc4bf">=</span><span style="color:#48b685">b</span><span style="color:#48b685">&#34;Outshines&#34;</span>
+ip_addr_decode <span style="color:#5bc4bf">=</span> base64<span style="color:#5bc4bf">.</span>b64decode(ip_addr)
+print(ip_addr_decode)
+
+result_encoded <span style="color:#5bc4bf">=</span>pwn<span style="color:#5bc4bf">.</span>xor(ip_addr_decode, key)
+result <span style="color:#5bc4bf">=</span> base64<span style="color:#5bc4bf">.</span>b64decode(result_encoded)
+print(result)
+</code></pre></div><p>Running above code we get C2 server address</p>
+<div class="highlight"><pre tabindex="0" style="color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ python3 base.py 
+b<span style="color:#48b685">&#39;101.99.93.70:54437&#39;</span>
+</code></pre></div><h3 id="strings--conciliation-methods">Strings  Conciliation methods</h3>
+<p>The malware employs strings concilation methods to slow down an analyst. It adds some junk strings to the target strings which is replaced during the runtime of the malware with an empty string.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/stringreplace.png" >
+		<img src="/post/malware/redline/stringreplace.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>Example of string concilation tactic is above function. The junk string added to the string array is <code>MANGO</code> which is replaced with an empty string.
+The string from the char array is <code>coMANGOokies.sqMANGOlite</code> , replacing the <code>MANGO</code> string with an empty string, we get <code>cookies.sqlite</code> which is a file used for storing cookies by Firefox browser.</p>
+<p>The above tactic is implemented allover the malware functions.</p>
+<h2 id="information-harvesting">Information Harvesting</h2>
+<p>The Malware harverst a lot of Victims data and sends back to the configured c2 server. The malware is simple but effective in collecting a lot of user information. The information collected by malware includes cookies, user tokens, system configurations, graphic cards, processor count, Network information, application installed, credit wallet information and many more.</p>
+<p>Below is explanation of the capabilities of the malware.</p>
+<h3 id="browser">Browser</h3>
+<p>The malware is capable of stealing the user`s credentials and cookies of from browser session.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/browsers.png" >
+		<img src="/post/malware/redline/browsers.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<h3 id="filezilla">FileZilla</h3>
+<p>Filezilla is a professional software that makes transfer of files from one computer to another easier via FTP, SFTP, FTPs protocols and other cloud services such as Amazon S3.
+<figure 
+	>
+	<a href="/post/malware/redline/filezillacredentials.png" >
+		<img src="/post/malware/redline/filezillacredentials.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure>
+The malware scans for the saved credentials used by Victim in transferring files to other machines. The malware collects <code>host, Port, User, Pass</code> of the machines</p>
+<h3 id="programs-enumeration">Programs Enumeration</h3>
+<p>Malware is also capable of collecting all installed applications on the machine using <code>ListofPrograms</code> function as shown in the below. After enumerating all the installed applications, the malware sends data back to the C2 server.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/program_exfil.png" >
+		<img src="/post/malware/redline/program_exfil.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>The malware enumerates installed application through use of registry. Querying of registry is an effective way of finding out all installed applications in Windows. The malware gets the program name and version as shown by <code>text</code> and <code>text2</code> strings.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/programenumeration_registry.png" >
+		<img src="/post/malware/redline/programenumeration_registry.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<h3 id="vpn-information-gathering">VPN information Gathering</h3>
+<p>The malware scans for Victim`s configuration files and profiles of various VPNs installed on the device. The malware scans File configs NordVPN, OpenVpn configs and ProtonVPN profiles.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/vpns.png" >
+		<img src="/post/malware/redline/vpns.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<h3 id="exfilitration">Exfilitration</h3>
+<p>For the exfiltration of the data, the malware creates a folder in <code>APPdata</code> folder called <code>Yandex\YAddon</code>. The data collected is uploaded in parts the c2 server.</p>
+<p><figure 
+	>
+	<a href="/post/malware/redline/exfil_folder.png" >
+		<img src="/post/malware/redline/exfil_folder.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<h2 id="references">References</h2>
+<ol>
+<li><a class="link" href="https://www.natlawreview.com/article/privacy-tip-315-redline-malware-used-to-steal-saved-credentials"  target="_blank" rel="noopener"
+    >https://www.natlawreview.com/article/privacy-tip-315-redline-malware-used-to-steal-saved-credentials</a></li>
+<li><a class="link" href="https://www.zdnet.com/article/fortinet-warns-of-cybercriminals-using-omicron-variant-news-to-distribute-redline-stealer/"  target="_blank" rel="noopener"
+    >https://www.zdnet.com/article/fortinet-warns-of-cybercriminals-using-omicron-variant-news-to-distribute-redline-stealer/</a></li>
+<li><a class="link" href="https://www.proofpoint.com/us/blog/threat-insight/new-redline-stealer-distributed-using-coronavirus-themed-email-campaign"  target="_blank" rel="noopener"
+    >https://www.proofpoint.com/us/blog/threat-insight/new-redline-stealer-distributed-using-coronavirus-themed-email-campaign</a></li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/redlinestealer/">RedlineStealer</a>
+        
+            <a href="/tags/malware/">malware</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 Solar Bits
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">Table of contents</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#what-is-redline-malware">What is RedLine Malware?</a></li>
+    <li><a href="#stage1---loader-analysis">Stage1 - Loader Analysis</a></li>
+    <li><a href="#payload-extraction">Payload Extraction</a>
+      <ol>
+        <li><a href="#method1---manual-extraction">Method1 - Manual Extraction</a></li>
+        <li><a href="#method2---dynamic-extraction">Method2 - Dynamic Extraction</a></li>
+      </ol>
+    </li>
+    <li><a href="#stage2---payload-analysis">Stage2 - Payload Analysis</a>
+      <ol>
+        <li><a href="#language-culture-check">Language Culture check</a></li>
+        <li><a href="#network-communication-analysis">Network Communication Analysis</a></li>
+        <li><a href="#ip-address-decryption">IP address Decryption</a></li>
+        <li><a href="#strings--conciliation-methods">Strings  Conciliation methods</a></li>
+      </ol>
+    </li>
+    <li><a href="#information-harvesting">Information Harvesting</a>
+      <ol>
+        <li><a href="#browser">Browser</a></li>
+        <li><a href="#filezilla">FileZilla</a></li>
+        <li><a href="#programs-enumeration">Programs Enumeration</a></li>
+        <li><a href="#vpn-information-gathering">VPN information Gathering</a></li>
+        <li><a href="#exfilitration">Exfilitration</a></li>
+      </ol>
+    </li>
+    <li><a href="#references">References</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -6,7 +6,18 @@
     <description>Recent content in Posts on Solar Bits</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 25 Jan 2022 15:27:57 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Feb 2022 17:40:18 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RedLineStealer Information Stealer Analysis</title>
+      <link>https://thuri10.github.io/p/redlinestealer-information-stealer-analysis/</link>
+      <pubDate>Sun, 06 Feb 2022 17:40:18 +0300</pubDate>
+      
+      <guid>https://thuri10.github.io/p/redlinestealer-information-stealer-analysis/</guid>
+      <description>What is RedLine Malware? Redline malware is an Information Stealer written in c# , targeting windows victims. It is used for gathering victims information ranging from the Browser cookies, saved credentials, Discord tokens, OS information, Languages, VPN profiles, Installed Programs and Network configurations.
+The malware is also capable of downloading additional malware from its C2 servers.
+Stage1 - Loader Analysis The first stage of sample malware is used for assembling and executing an additional payload.</description>
+    </item>
+    
     <item>
       <title>RemcosRat infection chain from excel with Macros</title>
       <link>https://thuri10.github.io/p/remcosrat-infection-chain-from-excel-with-macros/</link>
@@ -120,6 +131,22 @@ First step is to decompile the FlagSevenSqliteActivity using jadx.</description>
       <description>Introduction This is a five part beginner series of Android application security with Vulnerable Android application examples. The application used in the first three part series is a vulnerable Android application developed by @B3nac.
 The application is called InjuredAndroid, it covers different security concepts such as hardcoded secrets, weak cryptographic algorithms, misconfiguration, webview vulnerabilities etc. The application can be downloaded from the following provided links playstore or github.
 For solving the challenges or following through the guides is you need to have an android phone or an emulator.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://thuri10.github.io/p/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://thuri10.github.io/p/</guid>
+      <description>What is readline stealer sample analysis the sha256 of the sample 72b7f772e019def30abcf817ae7a3004a84215daef67588eaa1fde3839df2fa2
+readline.png
+stage1 Loader Analysis  explain how the assembly code works decode the base64 files replace the text files and provide the files back   loading our program
+Assembly assembly = Assembly.Load(Program.NBXbnmXNBN()); #information stolen by the malware
+Mozilla
+coMANGOokies.sqMANGOlite  steals the mozilla browser cookies steals mozilla personal profiles   VPn data
+  NordApp
+  OpenVPN it also steals the profiles of openvpn.</description>
     </item>
     
   </channel>
