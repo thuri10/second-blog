@@ -6,10 +6,10 @@
         <description>Recent content on Solar Bits</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sun, 06 Feb 2022 17:40:18 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 07 Feb 2022 17:40:18 +0300</lastBuildDate><atom:link href="https://thuri10.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>RedLineStealer Information Stealer Analysis</title>
         <link>https://thuri10.github.io/p/redlinestealer-information-stealer-analysis/</link>
-        <pubDate>Sun, 06 Feb 2022 17:40:18 +0300</pubDate>
+        <pubDate>Mon, 07 Feb 2022 17:40:18 +0300</pubDate>
         
         <guid>https://thuri10.github.io/p/redlinestealer-information-stealer-analysis/</guid>
         <description>&lt;img src="https://thuri10.github.io/post/malware/redline/coverpage.png" alt="Featured image of post RedLineStealer Information Stealer Analysis" /&gt;&lt;h2 id=&#34;what-is-redline-malware&#34;&gt;What is RedLine Malware?&lt;/h2&gt;
@@ -164,11 +164,9 @@ open(&lt;span style=&#34;color:#48b685&#34;&gt;&amp;#39;stage2.exe&amp;#39;&lt;/
 &lt;span style=&#34;color:#5bc4bf&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#fec418&#34;&gt;base64&lt;/span&gt;
 &lt;span style=&#34;color:#5bc4bf&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#fec418&#34;&gt;pwn&lt;/span&gt; 
 ip_addr &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#48b685&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#48b685&#34;&gt;&amp;#34;AiE1CyQDBVA/JR4OPwIKGSoZGkU6NyVa&amp;#34;&lt;/span&gt;
-
 key &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#48b685&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#48b685&#34;&gt;&amp;#34;Outshines&amp;#34;&lt;/span&gt;
-ip_addr_decode &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt; base64&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;b64decode(ip_addr)
-print(ip_addr_decode)
 
+ip_addr_decode &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt; base64&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;b64decode(ip_addr)
 result_encoded &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt;pwn&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;xor(ip_addr_decode, key)
 result &lt;span style=&#34;color:#5bc4bf&#34;&gt;=&lt;/span&gt; base64&lt;span style=&#34;color:#5bc4bf&#34;&gt;.&lt;/span&gt;b64decode(result_encoded)
 print(result)
@@ -201,6 +199,19 @@ The string from the char array is &lt;code&gt;coMANGOokies.sqMANGOlite&lt;/code&
 	&gt;
 	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/browsers.png&#34; &gt;
 		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/browsers.png&#34;
+			
+			
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The malware is also capable of enumerating chrome and  Opera Mini if installed on the Victim`s machine. It also gets the version of the installed browser as shown in the image below.
+&lt;figure 
+	&gt;
+	&lt;a href=&#34;https://thuri10.github.io/post/malware/redline/chrome_scan.png&#34; &gt;
+		&lt;img src=&#34;https://thuri10.github.io/post/malware/redline/chrome_scan.png&#34;
 			
 			
 			
@@ -2373,53 +2384,6 @@ Starting: Intent &lt;span style=&#34;color:#5bc4bf&#34;&gt;{&lt;/span&gt; &lt;sp
 	
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The flag for challenge five is &lt;strong&gt;F1v3!&lt;/strong&gt;&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title></title>
-        <link>https://thuri10.github.io/p/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://thuri10.github.io/p/</guid>
-        <description>&lt;h2 id=&#34;what-is-readline-stealer&#34;&gt;What is readline stealer&lt;/h2&gt;
-&lt;h2 id=&#34;sample-analysis&#34;&gt;sample analysis&lt;/h2&gt;
-&lt;p&gt;the sha256 of the sample
-72b7f772e019def30abcf817ae7a3004a84215daef67588eaa1fde3839df2fa2&lt;/p&gt;
-&lt;p&gt;readline.png&lt;/p&gt;
-&lt;h2 id=&#34;stage1-loader-analysis&#34;&gt;stage1 Loader Analysis&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;explain how the assembly code works&lt;/li&gt;
-&lt;li&gt;decode the base64 files&lt;/li&gt;
-&lt;li&gt;replace the text files and provide the files back&lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;loading our program&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c#&#34; data-lang=&#34;c#&#34;&gt;		Assembly assembly = Assembly.Load(Program.NBXbnmXNBN());
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;#information stolen by the malware&lt;/p&gt;
-&lt;p&gt;Mozilla&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;coMANGOokies.sqMANGOlite
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
-&lt;li&gt;steals the mozilla browser cookies&lt;/li&gt;
-&lt;li&gt;steals mozilla personal profiles&lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;VPn data&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;NordApp&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;OpenVPN
-it also steals the profiles of openvpn.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;protonvpn&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The program  does program enumeration of the installed through use of registry&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;data-exfiltaration&#34;&gt;Data Exfiltaration&lt;/h2&gt;
 </description>
         </item>
         
